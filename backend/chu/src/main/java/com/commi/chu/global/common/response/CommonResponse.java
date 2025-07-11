@@ -1,5 +1,6 @@
 package com.commi.chu.global.common.response;
 
+import com.commi.chu.domain.user.dto.response.LoginResponse;
 import com.commi.chu.global.error.code.ErrorCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
@@ -202,15 +203,15 @@ public class CommonResponse<T> {
      * @param location 리다이렉션할 URL
      * @return API 응답을 포함하는 ResponseEntity
      */
-//    public static ResponseEntity<CommonResponse<LoginResponse>> redirect(String location) {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add(HttpHeaders.LOCATION, location);
-//
-//        return ResponseEntity
-//                .status(HttpStatus.FOUND)
-//                .headers(headers)
-//                .body(new CommonResponse<>(true, null, null));
-//    }
+    public static ResponseEntity<CommonResponse<LoginResponse>> redirect(String location) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.LOCATION, location);
+
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .headers(headers)
+                .body(new CommonResponse<>(true, null, null));
+    }
 
     /**
      * HTTP 302 Found 상태와 리다이렉션 URL, 그리고 쿠키로 응답을 생성합니다.
