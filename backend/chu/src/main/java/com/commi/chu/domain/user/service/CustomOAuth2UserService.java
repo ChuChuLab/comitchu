@@ -37,6 +37,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         Long githubId = ((Number) attributes.get("id")).longValue();
         String githubUsername = (String) attributes.get("login");
         String email = (String) attributes.get("email");
+        //GitHub 사용자가 이메일을 비공개로 설정하면 정보를 못 가져올 수 있음.
+        if (email == null) {
+                log.warn("GitHub 응답에 이메일 정보가 없습니다. attributes={}", attributes);
+                throw new OAuth2AuthenticationException("GitHub에서 이메일을 반환하지 않습니다.");
+        }
         String avatarUrl = (String) attributes.get("avatar_url");
 
         // 3. githubId를 기준으로 우리 DB에 사용자가 있는지 조회하거나, 없으면 새로 생성합니다.
