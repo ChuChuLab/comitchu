@@ -1,7 +1,7 @@
 package com.commi.chu.global.common.response;
 
 import com.commi.chu.domain.user.dto.response.LoginResponse;
-import com.commi.chu.global.error.code.ErrorCode;
+import com.commi.chu.global.exception.code.ErrorCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import org.springframework.http.HttpHeaders;

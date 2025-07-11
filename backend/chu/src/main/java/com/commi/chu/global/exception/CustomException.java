@@ -1,6 +1,6 @@
-package com.commi.chu.global.error.exception;
+package com.commi.chu.global.exception;
 
-import com.commi.chu.global.error.code.ErrorCode;
+import com.commi.chu.global.exception.code.ErrorCode;
 import lombok.Getter;
 
 import java.util.HashMap;

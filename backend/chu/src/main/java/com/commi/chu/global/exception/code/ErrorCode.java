@@ -1,4 +1,4 @@
-package com.commi.chu.global.error.code;
+package com.commi.chu.global.exception.code;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

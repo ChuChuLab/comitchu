@@ -29,23 +29,6 @@ public class UserController {
         return CommonResponse.ok(response);
     }
 
-    @GetMapping("/login/{provider}")
-    public ResponseEntity<CommonResponse<LoginResponse>> socialLogin(
-            @PathVariable String provider,
-            @RequestParam(required = false) String code,
-            @RequestParam(required = false) String error
-    ) {
-        if (error != null) {
-            return CommonResponse.redirect("");
-        }
 
-        Provider socialProvider = Provider.valueOf(provider.toUpperCase());
-        LoginResult loginResult = userService.handleOAuthLogin(socialProvider, code);
-
-        ResponseCookie accessTokenCookie = CookieUtil.makeAccessTokenCookie(loginResult.getAccessToken());
-        ResponseCookie refreshTokenCookie = CookieUtil.makeRefreshTokenCookie(loginResult.getRefreshToken());
-
-        return CommonResponse.redirectWithCookie("http://localhost:5173", accessTokenCookie, refreshTokenCookie);
-    }
 
 }
