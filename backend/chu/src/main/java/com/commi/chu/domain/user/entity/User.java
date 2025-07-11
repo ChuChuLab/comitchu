@@ -1,6 +1,5 @@
 package com.commi.chu.domain.user.entity;
 
-import com.commi.chu.domain.user.enums.Provider;
 import com.commi.chu.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,15 +16,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User extends BaseEntity {
 
-    @Column(nullable = false, length = 20)
-    @Enumerated(EnumType.STRING)
-    private Provider provider;
+    @Column(name = "github_id", unique = true, nullable = false)
+    private Long githubId;
 
-    @Column(name = "provider_id", nullable = false)
-    private String providerId;
+    @Column(name = "gitgub_username", nullable = false, length = 50)
+    private String githubUsername;
 
-    @Column(name = "nickname", nullable = false, length = 50)
-    private String nickname;
+    @Column(unique = true) // 이메일은 고유해야 합니다.
+    private String email;
+
+    @Column(name = "avatar_url")
+    private String avatarUrl;
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
@@ -33,5 +34,10 @@ public class User extends BaseEntity {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public void updateProfile(String githubUsername, String avatarUrl) {
+        this.githubUsername = githubUsername;
+        this.avatarUrl = avatarUrl;
+    }
 
 }

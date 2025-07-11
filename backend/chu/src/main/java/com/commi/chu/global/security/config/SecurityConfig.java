@@ -1,13 +1,22 @@
 package com.commi.chu.global.security.config;
 
+import com.commi.chu.domain.oauth.handler.OAuth2LoginSuccessHandler;
+import com.commi.chu.domain.user.service.CustomOAuth2UserService;
+import com.commi.chu.global.security.DevAuthenticationFilter;
+import com.commi.chu.global.security.jwt.JwtAuthenticationFilter;
+import com.commi.chu.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -18,8 +27,25 @@ import java.util.List;
 @Slf4j
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+
+    @Value("${app.domain.cors-origins}")
+    private List<String> allowedOrigins;
+
+    private final JwtTokenProvider jwtTokenProvider;
+
+    @Autowired(required = false)
+    private DevAuthenticationFilter devAuthenticationFilter;
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(jwtTokenProvider);
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -32,10 +58,26 @@ public class SecurityConfig {
                 // .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 // 4. 모든 요청을 허용하도록 변경합니다.
-                .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().permitAll()
+                .authorizeHttpRequests(authorize ->
+                        authorize
+                                .requestMatchers("/api/**").permitAll()
+                                .anyRequest().authenticated()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        // 1. 로그인 성공 후 사용자 정보를 처리할 서비스 지정
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+                        // 2. 로그인이 최종 성공했을 때 처리할 핸들러 지정
+                        .successHandler(oAuth2LoginSuccessHandler)
                 );
 
+        // 개발 환경 필터는 조건부로 추가
+//        if (isDevOrLocalProfile() && devAuthenticationFilter != null) {
+        log.info("개발 환경 인증 필터를 추가합니다.");
+        http.addFilterBefore(devAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//        }
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
