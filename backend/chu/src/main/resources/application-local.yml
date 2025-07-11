@@ -28,7 +28,3 @@ app:
     cors-origins: http://localhost:5173
   is-local: true
   cookie-domain: localhost
-
-oauth:
-  github:
-    redirect-uri:

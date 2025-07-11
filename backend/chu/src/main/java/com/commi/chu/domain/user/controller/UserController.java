@@ -1,18 +1,13 @@
 package com.commi.chu.domain.user.controller;
 
-import com.commi.chu.domain.user.dto.LoginResult;
-import com.commi.chu.domain.user.dto.response.LoginResponse;
-import com.commi.chu.domain.user.enums.Provider;
 import com.commi.chu.domain.user.service.UserService;
 import com.commi.chu.global.common.response.CommonResponse;
+import com.commi.chu.global.security.auth.UserPrincipal;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
@@ -22,13 +17,15 @@ public class UserController {
 
     @GetMapping("/test")
     public ResponseEntity<CommonResponse<String>> test(
-            @RequestParam(required = false) Integer age
-    ){
-        String response = "고-수";
+            @AuthenticationPrincipal UserPrincipal userPrincipal
+    ) {
+        // 1. userPrincipal 객체에서 사용자 ID를 꺼냅니다.
+        Integer userId = userPrincipal.getId();
+
+        // 2. 받아온 ID를 사용해서 응답 메시지를 만듭니다.
+        String response = "인증 성공! 당신은 " + userId + "번 유저입니다. 고-수";
 
         return CommonResponse.ok(response);
     }
-
-
 
 }
