@@ -1,7 +1,6 @@
 package com.commi.chu.domain.user.service;
 
 import com.commi.chu.domain.chu.entity.Chu;
-import com.commi.chu.domain.chu.entity.ChuStatus;
 import com.commi.chu.domain.chu.repository.ChuRepository;
 import com.commi.chu.domain.user.entity.User;
 import com.commi.chu.domain.user.repository.UserRepository;
@@ -70,8 +69,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                             .name(githubUsername + "의 츄")
                             .level(1)
                             .exp(0)
-                            .status(ChuStatus.NORMAL) // 기본 타입
-                            .isMain(true) //대표 캐릭터로 설정
+                            .type("NORMAL") // 기본 타입
                             .build();
 
                     chuRepository.save(newChu);

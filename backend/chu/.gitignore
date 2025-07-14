@@ -38,5 +38,3 @@ out/
 
 ### Secret ###
 application-secret.yml
-
-dev.env
