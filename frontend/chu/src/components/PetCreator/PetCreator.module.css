@@ -1,0 +1,162 @@
+.creator {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.creatorGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.previewTitle,
+.selectionTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #4a90e2;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.petPreview {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border: 2px solid rgba(168, 216, 234, 0.3);
+  min-width: 250px;
+}
+
+.petCharacter {
+  font-size: 80px;
+  margin-bottom: 16px;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+.petName {
+  font-size: 24px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+.petLevel {
+  font-size: 18px;
+  color: #4a90e2;
+  font-weight: 500;
+}
+
+.nameInput {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.input {
+  font-size: 16px;
+  padding: 12px 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #a8d8ea;
+}
+
+.createButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 16px 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  transition: all 0.2s ease;
+}
+
+.createButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.createButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+}
+
+.selection {
+  display: flex;
+  flex-direction: column;
+}
+
+.characterGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .creatorGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .petCharacter {
+    font-size: 60px;
+  }
+
+  .petName {
+    font-size: 20px;
+  }
+
+  .petLevel {
+    font-size: 16px;
+  }
+
+  .characterGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .previewTitle,
+  .selectionTitle {
+    font-size: 20px;
+  }
+}
