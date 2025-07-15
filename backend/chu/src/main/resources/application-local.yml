@@ -3,7 +3,6 @@ spring:
   config:
     import: optional:file:.env[.properties]
 
-
   jpa:
     hibernate:
       ddl-auto: create
@@ -17,10 +16,10 @@ spring:
       mode: always
 
   datasource:
-    url: ${DB_URL}
+    url: jdbc:mariadb://127.0.0.1:3306/comitchu
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-    driver-class-name: ${DB_DRIVER}
+    driver-class-name: org.mariadb.jdbc.Driver
 
 logging.level:
   org.hibernate.SQL: info
