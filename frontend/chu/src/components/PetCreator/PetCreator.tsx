@@ -1,21 +1,19 @@
-"use client"
-
-import { useState } from "react"
-import { useUser } from "../../contexts/UserContext"
-import CharacterGridItem from "../CharacterGridItem/CharacterGridItem"
-import styles from "./PetCreator.module.css"
+import { useState } from "react";
+import { useUser } from "../../contexts/UserContext";
+import CharacterGridItem from "../CharacterGridItem/CharacterGridItem";
+import styles from "./PetCreator.module.css";
 
 const PetCreator = () => {
-  const { createPet } = useUser()
-  const [selectedCharacter, setSelectedCharacter] = useState("🐱")
-  const [petName, setPetName] = useState("")
+  const { createPet } = useUser();
+  const [selectedCharacter, setSelectedCharacter] = useState("🐱");
+  const [petName, setPetName] = useState("");
 
-  const characters = ["🐱", "🐶", "🐰", "🦊", "🐼", "🐨", "🐸", "🐧", "🦄", "🐹", "🐯", "🦁"]
+  const characters = ["🐱", "🐶", "🐰", "🦊", "🐼", "🐨", "🐸", "🐧", "🦄", "🐹", "🐯", "🦁"];
 
   const handleCreatePet = () => {
     if (!petName.trim()) {
-      alert("Please enter a name for your pet!")
-      return
+      alert("Please enter a name for your pet!");
+      return;
     }
 
     createPet({
@@ -24,8 +22,8 @@ const PetCreator = () => {
       level: 1,
       xp: 0,
       mood: "happy",
-    })
-  }
+    });
+  };
 
   return (
     <div className={styles.creator}>
@@ -73,7 +71,7 @@ const PetCreator = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PetCreator
+export default PetCreator;

@@ -1,15 +1,13 @@
-"use client"
-
-import { useUser } from "../../contexts/UserContext"
-import { Navigate } from "react-router-dom"
-import BadgePreview from "../../components/BadgePreview/BadgePreview"
-import styles from "./Landing.module.css"
+import { useUser } from "../../contexts/UserContext";
+import { Navigate } from "react-router-dom";
+import BadgePreview from "../../components/BadgePreview/BadgePreview";
+import styles from "./Landing.module.css";
 
 const Landing = () => {
-  const { user, login } = useUser()
+  const { user, login } = useUser();
 
   if (user) {
-    return <Navigate to="/dashboard" replace />
+    return <Navigate to="/dashboard" replace />;
   }
 
   const handleGitHubLogin = () => {
@@ -18,9 +16,9 @@ const Landing = () => {
       id: "user123",
       username: "developer",
       avatarUrl: "https://github.com/github.png",
-    }
-    login(mockUser)
-  }
+    };
+    login(mockUser);
+  };
 
   return (
     <div className={styles.landing}>
@@ -81,7 +79,7 @@ const Landing = () => {
         <BadgePreview petName="Whiskers" level={5} character="🐱" mood="happy" />
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default Landing
+export default Landing;

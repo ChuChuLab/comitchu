@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom"
 import Header from "./components/Header/Header"
 import Landing from "./pages/Landing/Landing"
 import Dashboard from "./pages/Dashboard/Dashboard"
-import Settings from "./pages/Settings/Settings"
+import Setting from "./pages/Setting/Setting"
 import styles from "./App.module.css"
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/setting" element={<Setting />} />
         </Routes>
       </main>
     </div>

@@ -1,16 +1,14 @@
-"use client"
-
-import { Link, useLocation } from "react-router-dom"
-import { useUser } from "../../contexts/UserContext"
-import styles from "./Header.module.css"
+import { Link, useLocation } from "react-router-dom";
+import { useUser } from "../../contexts/UserContext";
+import styles from "./Header.module.css";
 
 const Header = () => {
-  const { user, logout } = useUser()
-  const location = useLocation()
+  const { user, logout } = useUser();
+  const location = useLocation();
 
   const handleLogout = () => {
-    logout()
-  }
+    logout();
+  };
 
   return (
     <header className={styles.header}>
@@ -51,7 +49,7 @@ const Header = () => {
         </nav>
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
