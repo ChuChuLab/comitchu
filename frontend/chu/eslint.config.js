@@ -22,7 +22,7 @@ export default [
     },
     settings: {
       react: {
-        version: "detect", // ✅ 리액트 버전 자동 감지 (필수는 아니지만 권장)
+        version: "detect", // 리액트 버전 자동 감지
       },
     },
     plugins: {
