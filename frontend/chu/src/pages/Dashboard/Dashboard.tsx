@@ -1,16 +1,14 @@
-"use client"
-
-import { useUser } from "../../contexts/UserContext"
-import { Navigate } from "react-router-dom"
-import PetCard from "../../components/PetCard/PetCard"
-import PetCreator from "../../components/PetCreator/PetCreator"
-import styles from "./Dashboard.module.css"
+import { useUser } from "../../contexts/UserContext";
+import { Navigate } from "react-router-dom";
+import PetCard from "../../components/PetCard/PetCard";
+import PetCreator from "../../components/PetCreator/PetCreator";
+import styles from "./Dashboard.module.css";
 
 const Dashboard = () => {
-  const { user } = useUser()
+  const { user } = useUser();
 
   if (!user) {
-    return <Navigate to="/" replace />
+    return <Navigate to="/" replace />;
   }
 
   return (
@@ -29,7 +27,7 @@ const Dashboard = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

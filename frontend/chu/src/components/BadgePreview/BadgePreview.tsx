@@ -1,29 +1,27 @@
-"use client"
+import type React from "react";
 
-import type React from "react"
-
-import styles from "./BadgePreview.module.css"
+import styles from "./BadgePreview.module.css";
 
 interface BadgePreviewProps {
-  petName: string
-  level: number
-  character: string
-  mood: "happy" | "neutral" | "sad"
+  petName: string;
+  level: number;
+  character: string;
+  mood: "happy" | "neutral" | "sad";
 }
 
 const BadgePreview: React.FC<BadgePreviewProps> = ({ petName, level, character, mood }) => {
   const getMoodColor = (mood: string) => {
     switch (mood) {
       case "happy":
-        return "#4CAF50"
+        return "#4CAF50";
       case "neutral":
-        return "#FF9800"
+        return "#FF9800";
       case "sad":
-        return "#F44336"
+        return "#F44336";
       default:
-        return "#9E9E9E"
+        return "#9E9E9E";
     }
-  }
+  };
 
   const svgContent = `
     <svg width="200" height="80" xmlns="http://www.w3.org/2000/svg">
@@ -39,10 +37,10 @@ const BadgePreview: React.FC<BadgePreviewProps> = ({ petName, level, character, 
       <text x="50" y="60" fontFamily="Arial, sans-serif" fontSize="12" fill="white">Level ${level}</text>
       <circle cx="170" cy="20" r="6" fill="${getMoodColor(mood)}"/>
     </svg>
-  `
+  `;
 
-  const encodedSvg = encodeURIComponent(svgContent)
-  const dataUri = `data:image/svg+xml,${encodedSvg}`
+  const encodedSvg = encodeURIComponent(svgContent);
+  const dataUri = `data:image/svg+xml,${encodedSvg}`;
 
   return (
     <div className={styles.badgePreview}>
@@ -58,7 +56,7 @@ const BadgePreview: React.FC<BadgePreviewProps> = ({ petName, level, character, 
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default BadgePreview
+export default BadgePreview;
