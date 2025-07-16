@@ -26,11 +26,11 @@ const Landing = () => {
         <div className={styles.heroContent}>
           <h1 className={styles.title}>
             Meet Your Git Companion
-            <span className={styles.titleAccent}>CommitChu</span>
+            <span className={styles.titleAccent}>ComitChu</span>
           </h1>
           <p className={styles.subtitle}>
             A virtual pet that grows with your coding journey. The more you commit, the happier and stronger your
-            CommitChu becomes!
+            ComitChu becomes!
           </p>
           <button onClick={handleGitHubLogin} className={styles.loginBtn}>
             <span className={styles.githubIcon}>🐙</span>
@@ -75,7 +75,7 @@ const Landing = () => {
 
       <section className={styles.preview}>
         <h2 className={styles.sectionTitle}>Live Badge Preview</h2>
-        <p className={styles.previewDescription}>Here's what your CommitChu badge will look like in your repository:</p>
+        <p className={styles.previewDescription}>Here's what your ComitChu badge will look like in your repository:</p>
         <BadgePreview petName="Whiskers" level={5} character="🐱" mood="happy" />
       </section>
     </div>
