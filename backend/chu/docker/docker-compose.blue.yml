@@ -1,0 +1,18 @@
+services:
+  springboot:
+    image: dmswldk/spring-chu:latest
+    build: .
+    container_name: spring-chu-blue
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    networks:
+      - backend
+
+networks:
+  backend:
+    external: true
+    name: docker-project_backend

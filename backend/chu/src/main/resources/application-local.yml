@@ -3,7 +3,6 @@ spring:
   config:
     import: optional:file:.env[.properties]
 
-
   jpa:
     hibernate:
       ddl-auto: create
@@ -17,10 +16,21 @@ spring:
       mode: always
 
   datasource:
-    url: ${DB_URL}
+    url: jdbc:mariadb://127.0.0.1:3306/comitchu
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-    driver-class-name: ${DB_DRIVER}
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
+            scope:
+              - user:email
+              - read:user
 
 logging.level:
   org.hibernate.SQL: info
@@ -33,3 +43,7 @@ app:
     cors-origins: http://localhost:5173
   is-local: true
   cookie-domain: localhost
+
+jwt:
+  secret: ${JWT_SECRET}
+  auth-token-validity-seconds: ${JWT_AUTH_VALIDITY}
