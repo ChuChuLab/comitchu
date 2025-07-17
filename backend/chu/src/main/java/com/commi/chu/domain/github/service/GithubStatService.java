@@ -8,7 +8,6 @@ import org.springframework.web.client.RestClient;
 
 import com.commi.chu.domain.github.dto.response.graphQL.GithubStat;
 import com.commi.chu.domain.github.dto.response.graphQL.GraphQlResponse;
-import com.commi.chu.domain.github.dto.response.graphQL.UserData;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +34,7 @@ public class GithubStatService {
 		return githubRestClient.post()
 			.body(Map.of("query",query))
 			.retrieve()
+			//응답을 지정한 DTO로 역직렬화
 			.body(new ParameterizedTypeReference<GraphQlResponse<GithubStat>>() {
 			});
 	}
