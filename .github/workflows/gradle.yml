@@ -3,7 +3,7 @@ name: Test Backend
 on:
   push:
     branches:
-      - DO/feat/CHU-14-DevOps-cicd
+      - 'DO/feat/CHU-14-DevOps-cicd'
 
 # 실행될 잡(job) 정의
 jobs:
@@ -72,6 +72,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            mkdir -p /home/ubuntu/spring-chu/docker
             cd /home/ubuntu/spring-chu/docker
             
             # GitHub Secret 값을 사용해 .env 파일을 생성
