@@ -1,3 +1,6 @@
+server:
+  forward-headers-strategy: NATIVE
+
 spring:
   profiles:
     active: local
