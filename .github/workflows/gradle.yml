@@ -61,6 +61,8 @@ jobs:
       - name: Build and push Docker image
         working-directory: ./backend/chu/docker
         run: |
+          echo "${{ secrets.DOT_ENV }}" > .env
+          
           docker compose -f docker-compose.blue.yml build
           docker compose -f docker-compose.blue.yml push
 
