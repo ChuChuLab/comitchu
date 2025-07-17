@@ -16,7 +16,7 @@ spring:
       mode: always
 
   datasource:
-    url: jdbc:mariadb://127.0.0.1:3306/comitchu
+    url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.mariadb.jdbc.Driver
@@ -47,3 +47,6 @@ app:
 jwt:
   secret: ${JWT_SECRET}
   auth-token-validity-seconds: ${JWT_AUTH_VALIDITY}
+
+github:
+  token: ${GITHUB_TOKEN}
