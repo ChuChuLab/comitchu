@@ -26,7 +26,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         // 1. CustomOAuth2UserService에서 반환한 UserPrincipal 정보를 가져옵니다.
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         Integer userId = userPrincipal.getId();
-        // UserType은 필요 시 DB에서 조회하거나 Principal에 포함시킬 수 있습니다.
 
         // 2. 우리 서비스의 AuthToken을 생성합니다.
         String authToken = jwtTokenProvider.createAuthToken(userId.toString());

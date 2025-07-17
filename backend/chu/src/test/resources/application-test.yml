@@ -1,0 +1,20 @@
+spring:
+  # 테스트 환경에서는 h2 데이터베이스를 사용하도록 설정
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  # 테스트 실행 시 JPA가 자동으로 테이블을 생성하도록 설정
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+
+  # 다른 secret 변수들도 임시 테스트 값을 넣어줍니다.
+jwt:
+  secret: test-secret-key-for-unit-tests
+  auth-token-validity-seconds: 86400

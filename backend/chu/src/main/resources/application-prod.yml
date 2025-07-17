@@ -1,0 +1,43 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
+            scope:
+              - user:email
+              - read:user
+
+app:
+  domain:
+    url: https://www.comitchu.shop
+    cors-origins: https://www.comitchu.shop, http://localhost:5173
+  is-local: false
+  cookie-domain: www.comitchu.shop
+
+jwt:
+  secret: ${JWT_SECRET}
+  auth-token-validity-seconds: ${JWT_AUTH_VALIDITY}
+
+github:
+  token: ${GITHUB_TOKEN}

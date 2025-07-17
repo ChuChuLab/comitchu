@@ -39,4 +39,4 @@ out/
 ### Secret ###
 application-secret.yml
 
-dev.env
+*.env

@@ -1,7 +1,10 @@
+server:
+  forward-headers-strategy: NATIVE
+
 spring:
   profiles:
-    include: secret
     active: local
 
   jpa:
     open-in-view: false
+
