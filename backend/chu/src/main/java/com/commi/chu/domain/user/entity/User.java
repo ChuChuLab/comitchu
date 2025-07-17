@@ -22,9 +22,6 @@ public class User extends BaseEntity {
     @Column(name = "gitgub_username", nullable = false, length = 50)
     private String githubUsername;
 
-    @Column(unique = true) // 이메일은 고유해야 합니다.
-    private String email;
-
     @Column(name = "avatar_url")
     private String avatarUrl;
 

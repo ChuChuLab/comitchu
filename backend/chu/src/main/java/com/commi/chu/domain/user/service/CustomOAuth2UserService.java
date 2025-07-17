@@ -33,16 +33,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest);
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
-        // 2. GitHub 사용자 정보를 추출합니다. (고유 ID, 닉네임, 이메일, 프로필사진)
+        // 2. GitHub 사용자 정보를 추출합니다. (고유 ID, 닉네임, 프로필사진)
         // githubId는 Long 타입일 수 있으므로, Number로 받고 longValue()로 변환합니다.
         Long githubId = ((Number) attributes.get("id")).longValue();
         String githubUsername = (String) attributes.get("login");
-        String email = (String) attributes.get("email");
-        //GitHub 사용자가 이메일을 비공개로 설정하면 정보를 못 가져올 수 있음.
-        if (email == null) {
-                log.warn("GitHub 응답에 이메일 정보가 없습니다. attributes={}", attributes);
-                throw new OAuth2AuthenticationException("GitHub에서 이메일을 반환하지 않습니다.");
-        }
         String avatarUrl = (String) attributes.get("avatar_url");
 
         // 3. githubId를 기준으로 우리 DB에 사용자가 있는지 조회하거나, 없으면 새로 생성합니다.
@@ -58,7 +52,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     User newUser = User.builder()
                             .githubId(githubId)
                             .githubUsername(githubUsername)
-                            .email(email)
                             .avatarUrl(avatarUrl)
                             .build();
 
