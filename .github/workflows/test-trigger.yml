@@ -1,0 +1,10 @@
+name: Simple Trigger Test
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print a message
+        run: echo "Workflow was triggered successfully!"
