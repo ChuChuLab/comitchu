@@ -25,6 +25,8 @@ public class UserController {
         // 2. 받아온 ID를 사용해서 응답 메시지를 만듭니다.
         String response = "인증 성공! 당신은 " + userId + "번 유저입니다. 고-수";
 
+        // 3. service는 차차..
+
         return CommonResponse.ok(response);
     }
 
