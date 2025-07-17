@@ -1,5 +1,6 @@
 services:
   springboot:
+    image: dmswldk/spring-chu:latest
     # 현재 디렉토리에서의 Dockerfile을 사용하여 Docker 이미지를 빌드
     build: .
     container_name: spring-chu-blue
