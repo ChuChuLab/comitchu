@@ -18,6 +18,7 @@ body {
   min-height: 100vh;
 }
 
+/* 버튼 전역 설정 필요시 수정 */
 button {
   cursor: pointer;
   border: none;
@@ -33,6 +34,7 @@ button:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* 입력창 전역 설정 필요시 수정 */
 input {
   border: 2px solid #e1e5e9;
   border-radius: 8px;

@@ -21,7 +21,7 @@ const Dashboard = () => {
         </div>
       ) : (
         <div className={styles.creatorSection}>
-          <h2 className={styles.subtitle}>Create Your CommitChu</h2>
+          <h2 className={styles.subtitle}>Create Your ComitChu</h2>
           <p className={styles.description}>Choose your perfect coding companion from the characters below!</p>
           <PetCreator />
         </div>
