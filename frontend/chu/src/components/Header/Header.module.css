@@ -95,6 +95,36 @@
   background: #ff5252;
 }
 
+/* 언어 토글 버튼 스타일 */
+.langToggle {
+  display: flex;
+  gap: 4px;
+  margin-left: 16px;
+}
+
+.langBtn {
+  background: #f5f7fa;
+  color: #4a90e2;
+  border: 1px solid #a8d8ea;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.langBtn:hover {
+  background: #e1e5e9;
+  color: #357abd;
+}
+
+.activeLang {
+  background: #4a90e2;
+  color: #fff;
+  border-color: #357abd;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 0 16px;

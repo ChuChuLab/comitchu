@@ -2,9 +2,11 @@ import { useUser } from "../../contexts/UserContext";
 import { Navigate } from "react-router-dom";
 import BadgePreview from "../../components/BadgePreview/BadgePreview";
 import styles from "./Landing.module.css";
+import { useTranslation } from "react-i18next";
 
 const Landing = () => {
   const { user, login } = useUser();
+  const { t } = useTranslation();
 
   if (user) {
     return <Navigate to="/dashboard" replace />;
@@ -25,16 +27,13 @@ const Landing = () => {
       <section className={styles.hero}>
         <div className={styles.heroContent}>
           <h1 className={styles.title}>
-            Meet Your Git Companion
-            <span className={styles.titleAccent}>ComitChu</span>
+            {t("landing.title")}
+            <span className={styles.titleAccent}>{t("landing.titleAccent")}</span>
           </h1>
-          <p className={styles.subtitle}>
-            A virtual pet that grows with your coding journey. The more you commit, the happier and stronger your
-            ComitChu becomes!
-          </p>
+          <p className={styles.subtitle}>{t("landing.subtitle")}</p>
           <button onClick={handleGitHubLogin} className={styles.loginBtn}>
             <span className={styles.githubIcon}>🐙</span>
-            Login with GitHub
+            {t("landing.login")}
           </button>
         </div>
         <div className={styles.heroVisual}>
@@ -42,7 +41,7 @@ const Landing = () => {
             <div className={styles.petCharacter}>🐱</div>
             <div className={styles.petStats}>
               <div className={styles.statBar}>
-                <span>Level 5</span>
+                <span>{t("landing.level", { level: 5 })}</span>
                 <div className={styles.xpBar}>
                   <div className={styles.xpFill} style={{ width: "70%" }}></div>
                 </div>
@@ -53,29 +52,29 @@ const Landing = () => {
       </section>
 
       <section className={styles.features}>
-        <h2 className={styles.sectionTitle}>How It Works</h2>
+        <h2 className={styles.sectionTitle}>{t("landing.howItWorks")}</h2>
         <div className={styles.featureGrid}>
           <div className={styles.featureCard}>
             <div className={styles.featureIcon}>🎨</div>
-            <h3>Choose Your Pet</h3>
-            <p>Select from various adorable characters to be your coding companion</p>
+            <h3>{t("landing.feature.choose.title")}</h3>
+            <p>{t("landing.feature.choose.desc")}</p>
           </div>
           <div className={styles.featureCard}>
             <div className={styles.featureIcon}>📈</div>
-            <h3>Grow Together</h3>
-            <p>Your pet gains XP and levels up as you make commits to your repositories</p>
+            <h3>{t("landing.feature.grow.title")}</h3>
+            <p>{t("landing.feature.grow.desc")}</p>
           </div>
           <div className={styles.featureCard}>
             <div className={styles.featureIcon}>🏆</div>
-            <h3>Show Off</h3>
-            <p>Display your pet's progress with beautiful SVG badges in your README</p>
+            <h3>{t("landing.feature.show.title")}</h3>
+            <p>{t("landing.feature.show.desc")}</p>
           </div>
         </div>
       </section>
 
       <section className={styles.preview}>
-        <h2 className={styles.sectionTitle}>Live Badge Preview</h2>
-        <p className={styles.previewDescription}>Here's what your ComitChu badge will look like in your repository:</p>
+        <h2 className={styles.sectionTitle}>{t("landing.preview.title")}</h2>
+        <p className={styles.previewDescription}>{t("landing.preview.description")}</p>
         <BadgePreview petName="Whiskers" level={5} character="🐱" mood="happy" />
       </section>
     </div>

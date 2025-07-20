@@ -1,0 +1,28 @@
+{
+  "landing": {
+    "title": "당신의 Git 친구를 만나보세요",
+    "titleAccent": "ComitChu",
+    "subtitle": "당신의 커밋 활동에 따라 성장하는 가상 펫입니다. 커밋을 많이 할수록 ComitChu는 더 행복하고 강해져요!",
+    "login": "GitHub로 로그인",
+    "level": "레벨 {{level}}",
+    "howItWorks": "서비스 이용 방법",
+    "feature": {
+      "choose": {
+        "title": "펫 선택",
+        "desc": "여러 귀여운 캐릭터 중 하나를 선택하여 나만의 코딩 친구로 삼아보세요"
+      },
+      "grow": {
+        "title": "함께 성장하기",
+        "desc": "커밋을 할 때마다 펫이 경험치를 얻고 레벨이 올라갑니다"
+      },
+      "show": {
+        "title": "자랑하기",
+        "desc": "당신의 README에 ComitChu의 성장 뱃지를 예쁘게 보여줄 수 있어요"
+      }
+    },
+    "preview": {
+      "title": "뱃지 미리보기",
+      "description": "ComitChu 뱃지가 리포지토리에서 어떻게 보일지 확인해보세요:"
+    }
+  }
+}
