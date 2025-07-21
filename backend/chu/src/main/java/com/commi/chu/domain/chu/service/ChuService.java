@@ -1,9 +1,13 @@
 package com.commi.chu.domain.chu.service;
 
+import com.commi.chu.domain.user.entity.User;
+import com.commi.chu.domain.user.repository.UserRepository;
 import com.commi.chu.global.exception.CustomException;
 import com.commi.chu.global.exception.code.ErrorCode;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -13,7 +17,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class ChuService {
+
+    private UserRepository userRepository;
 
     private static final String BASE_IMAGE_PATH = "images/c.png"; // 이미지 경로
 
@@ -23,6 +31,10 @@ public class ChuService {
      */
     public int getUserLevel(String githubUsername) {
         // 실제로는 DB에서 조회하거나 외부 API를 호출하는 로직이 들어갑니다.
+
+        User user = userRepository.findByGithubUsername(githubUsername)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "username", githubUsername));
+
         return 5000;
     }
 

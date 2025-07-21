@@ -6,10 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/chu")
@@ -24,8 +21,8 @@ public class ChuController {
      *
      * @return PNG 이미지 바이트 배열을 포함하는 ResponseEntity
      */
-    @GetMapping(value = "/test", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> getCommitchuLevelBadge(@RequestParam String githubUsername) {
+    @GetMapping(value = "/test/{githubUsername}", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> getCommitchuLevelBadge(@PathVariable String githubUsername) {
         byte[] imageBytes = chuService.generateCommitchuLevelBadge(githubUsername);
 
         // HTTP 응답 헤더 설정 및 이미지 반환
