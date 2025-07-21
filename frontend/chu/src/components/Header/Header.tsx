@@ -1,19 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
-import { useTranslation } from "react-i18next";
+import LanguageToggle from "../LanguageToggle/LanguageToggle";
 import styles from "./Header.module.css";
 
 const Header = () => {
   const { user, logout } = useUser();
   const location = useLocation();
-  const { i18n } = useTranslation();
-
   const handleLogout = () => {
     logout();
-  };
-
-  const changeLanguage = (lang: "en" | "ko") => {
-    i18n.changeLanguage(lang);
   };
 
   return (
@@ -52,20 +46,7 @@ const Header = () => {
               Home
             </Link>
           )}
-          <div className={styles.langToggle}>
-            <button
-              className={`${styles.langBtn} ${i18n.language === "en" ? styles.activeLang : ""}`}
-              onClick={() => changeLanguage("en")}
-            >
-              EN
-            </button>
-            <button
-              className={`${styles.langBtn} ${i18n.language === "ko" ? styles.activeLang : ""}`}
-              onClick={() => changeLanguage("ko")}
-            >
-              KO
-            </button>
-          </div>
+          <LanguageToggle />
         </nav>
       </div>
     </header>
