@@ -19,4 +19,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
                                                 and u.deletedAt is null
             """)
     List<User> findActiveGithubUsers();
+
+    Optional<User> findByGithubUsername(String githubUsername);
 }
