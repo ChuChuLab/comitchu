@@ -1,13 +1,14 @@
 package com.commi.chu.domain.github.dto.response.graphQL;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /*
 	contributionsCollection은 커밋, PR, 이슈, 리뷰 등의 기여 정보를 포함합니다.
  */
-@Getter
-@Setter
+@Data
 public class ContributionsCollection {
 
 	//전체 커밋 수
