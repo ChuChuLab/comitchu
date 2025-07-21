@@ -41,7 +41,7 @@ public class GithubStatScheduler {
                 log.info("GitHub 통계 업데이트 완료: user={}", user.getGithubUsername());
 
             } catch (Exception e) {
-                log.error("해당 유저의 github 통계 업데이트 실패: userGithubUsername={}", e.getMessage());
+                log.error("해당 유저의 github 통계 업데이트 실패: userGithubUsername={}", user.getGithubUsername());
             }
         }
     }
