@@ -1,0 +1,38 @@
+package com.commi.chu.domain.chu.controller;
+
+import com.commi.chu.domain.chu.service.ChuService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/chu")
+@RequiredArgsConstructor
+public class ChuController {
+
+    private final ChuService chuService;
+
+    /**
+     * 사용자 레벨이 표시된 커밋츄 뱃지 이미지를 반환합니다.
+     * 모든 로직과 CustomException 처리는 ChuService와 GlobalExceptionHandler에 위임됩니다.
+     *
+     * @return PNG 이미지 바이트 배열을 포함하는 ResponseEntity
+     */
+    @GetMapping(value = "/test", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> getCommitchuLevelBadge(@RequestParam String githubUsername) {
+        byte[] imageBytes = chuService.generateCommitchuLevelBadge(githubUsername);
+
+        // HTTP 응답 헤더 설정 및 이미지 반환
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG); // Content-Type을 PNG로 설정
+
+        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+    }
+
+}

@@ -19,7 +19,10 @@ public enum ErrorCode {
     INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "A001", "유효하지 않은 액세스 토큰입니다"),
 
     // User
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "U001", "사용자를 찾을 수 없습니다");
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "U001", "사용자를 찾을 수 없습니다"),
+
+    // Chu
+    CHU_GENERATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR,"H001", "이미지 생성에 실패했습니다.");
 
     private final HttpStatus status;
     private final String code;

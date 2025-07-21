@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     /**
-     * 1. 비즈니스 로직에서 발생하는 커스텀 예외 처리 (필수)
+     * 1. 비즈니스 로직에서 발생하는 커스텀 예외 처리
      */
     @ExceptionHandler(CustomException.class)
     protected ResponseEntity<CommonResponse<Object>> handleCustomException(CustomException e, HttpServletRequest request) {
@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 2. 처리되지 않은 모든 예외를 잡는 최후의 안전망 (필수)
+     * 2. 처리되지 않은 모든 예외를 잡는 최후의 안전망
      */
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<CommonResponse<Object>> handleException(Exception e, HttpServletRequest request) {
