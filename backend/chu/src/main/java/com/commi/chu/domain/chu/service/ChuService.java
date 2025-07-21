@@ -32,8 +32,9 @@ public class ChuService {
     public int getUserLevel(String githubUsername) {
         // 실제로는 DB에서 조회하거나 외부 API를 호출하는 로직이 들어갑니다.
 
-        User user = userRepository.findByGithubUsername(githubUsername)
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "username", githubUsername));
+        // 테스트 단계에서는 일단 주석처리
+//        User user = userRepository.findByGithubUsername(githubUsername)
+//                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "username", githubUsername));
 
         return 5000;
     }
