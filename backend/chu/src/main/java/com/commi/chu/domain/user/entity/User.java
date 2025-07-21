@@ -19,7 +19,7 @@ public class User extends BaseEntity {
     @Column(name = "github_id", unique = true, nullable = false)
     private Long githubId;
 
-    @Column(name = "gitgub_username", nullable = false, length = 50)
+    @Column(name = "github_username", nullable = false, length = 50)
     private String githubUsername;
 
     @Column(name = "avatar_url")

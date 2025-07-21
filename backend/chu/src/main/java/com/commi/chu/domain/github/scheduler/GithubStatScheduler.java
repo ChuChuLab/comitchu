@@ -26,7 +26,7 @@ public class GithubStatScheduler {
 	 */
 	@Scheduled(cron = "0 0 0 * * *")
 	public void updateAllGithubStats() {
-		List<User> users = userRepository.findByGithubUsernameIsNotNull();
+		List<User> users = userRepository.findActiveGithubUsers();
 
 		for (User user : users) {
 			try{
