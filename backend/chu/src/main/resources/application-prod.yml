@@ -38,3 +38,6 @@ app:
 jwt:
   secret: ${JWT_SECRET}
   auth-token-validity-seconds: ${JWT_AUTH_VALIDITY}
+
+github:
+  token: ${GITHUB_TOKEN}
