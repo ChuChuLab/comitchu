@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useUser } from "../../contexts/UserContext";
 import CharacterGridItem from "../CharacterGridItem/CharacterGridItem";
+import Button from "../common/Button";
+import Input from "../common/Input";
 import styles from "./PetCreator.module.css";
 
 const PetCreator = () => {
@@ -40,7 +42,7 @@ const PetCreator = () => {
             <label htmlFor="petName" className={styles.label}>
               Pet Name
             </label>
-            <input
+            <Input
               id="petName"
               type="text"
               value={petName}
@@ -51,9 +53,9 @@ const PetCreator = () => {
             />
           </div>
 
-          <button onClick={handleCreatePet} className={styles.createButton} disabled={!petName.trim()}>
+          <Button onClick={handleCreatePet} disabled={!petName.trim()}>
             Create My CommitChu
-          </button>
+          </Button>
         </div>
 
         <div className={styles.selection}>

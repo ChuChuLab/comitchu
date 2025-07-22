@@ -28,8 +28,8 @@ const Header = () => {
                 Dashboard
               </Link>
               <Link
-                to="/settings"
-                className={`${styles.navLink} ${location.pathname === "/settings" ? styles.active : ""}`}
+                to="/setting"
+                className={`${styles.navLink} ${location.pathname === "/setting" ? styles.active : ""}`}
               >
                 Settings
               </Link>

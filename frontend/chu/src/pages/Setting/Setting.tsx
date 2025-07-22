@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useUser } from "../../contexts/UserContext";
 import { Navigate } from "react-router-dom";
+import Button from "../../components/common/Button";
+import Input from "../../components/common/Input";
 import styles from "./Setting.module.css";
 
 const Setting = () => {
@@ -45,7 +47,7 @@ const Setting = () => {
             <label htmlFor="petName" className={styles.label}>
               Pet Name
             </label>
-            <input
+            <Input
               id="petName"
               type="text"
               value={petName}
@@ -71,9 +73,9 @@ const Setting = () => {
             </div>
           </div>
 
-          <button onClick={handleSave} className={styles.saveButton}>
+          <Button onClick={handleSave}>
             Save Changes
-          </button>
+          </Button>
         </div>
       </div>
     </div>

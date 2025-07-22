@@ -1,6 +1,7 @@
 import { useUser } from "../../contexts/UserContext";
 import { Navigate } from "react-router-dom";
 import BadgePreview from "../../components/BadgePreview/BadgePreview";
+import Button from "../../components/common/Button";
 import styles from "./Landing.module.css";
 import { useTranslation } from "react-i18next";
 
@@ -31,10 +32,10 @@ const Landing = () => {
             <span className={styles.titleAccent}>{t("landing.titleAccent")}</span>
           </h1>
           <p className={styles.subtitle}>{t("landing.subtitle")}</p>
-          <button onClick={handleGitHubLogin} className={styles.loginBtn}>
+          <Button onClick={handleGitHubLogin}>
             <span className={styles.githubIcon}>🐙</span>
             {t("landing.login")}
-          </button>
+          </Button>
         </div>
         <div className={styles.heroVisual}>
           <div className={styles.petPreview}>

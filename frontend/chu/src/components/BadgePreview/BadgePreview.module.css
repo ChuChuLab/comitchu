@@ -49,18 +49,7 @@
   border-radius: 4px;
 }
 
-.copyButton {
-  background: #4a90e2;
-  color: white;
-  font-size: 14px;
-  padding: 8px 16px;
-  border-radius: 6px;
-  transition: background-color 0.2s ease;
-}
 
-.copyButton:hover {
-  background: #357abd;
-}
 
 @media (max-width: 768px) {
   .badgePreview {
