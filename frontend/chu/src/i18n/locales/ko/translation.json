@@ -4,6 +4,7 @@
     "titleAccent": "ComitChu",
     "subtitle": "당신의 커밋 활동에 따라 성장하는 가상 펫입니다. 커밋을 많이 할수록 ComitChu는 더 행복하고 강해져요!",
     "login": "GitHub로 로그인",
+    "goToDashboard": "대시보드로 가기",
     "level": "레벨 {{level}}",
     "howItWorks": "서비스 이용 방법",
     "feature": {

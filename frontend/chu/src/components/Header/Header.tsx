@@ -20,7 +20,7 @@ const Header = () => {
         </Link>
 
         <nav className={styles.nav}>
-          {user ? (
+          {user && (
             <>
               <Link
                 to="/dashboard"
@@ -37,13 +37,11 @@ const Header = () => {
               <div className={styles.userInfo}>
                 <img src={user.avatarUrl || "/placeholder.svg"} alt={user.username} className={styles.avatar} />
                 <span className={styles.username}>{user.username}</span>
-                <Button onClick={handleLogout} variant="danger">Logout</Button>
+                <Button onClick={handleLogout} variant="danger">
+                  Logout
+                </Button>
               </div>
             </>
-          ) : (
-            <Link to="/" className={styles.navLink}>
-              Home
-            </Link>
           )}
           <LanguageToggle />
         </nav>

@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Setting from "./pages/Setting/Setting";
 import Error from "./pages/Error/Error";
 import styles from "./App.module.css";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 function App() {
   return (
@@ -13,8 +14,10 @@ function App() {
       <main className={styles.main} role="main">
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/setting" element={<Setting />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/setting" element={<Setting />} />
+          </Route>
           <Route path="*" element={<Error />} />
         </Routes>
       </main>
