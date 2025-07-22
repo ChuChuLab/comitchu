@@ -1,9 +1,6 @@
-package com.commi.chu.domain.github.dto.response.graphQL;
+package com.commi.chu.domain.github.dto.graphql;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 /*
 	Github GraphQL 응답 데이터를 받기 위한 최상위 DTO

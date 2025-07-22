@@ -1,12 +1,7 @@
 package com.commi.chu.domain.github.scheduler;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-import com.commi.chu.domain.github.dto.response.graphQL.GithubStat;
-import com.commi.chu.domain.github.dto.response.graphQL.GraphQlResponse;
-import com.commi.chu.domain.github.entity.ActivitySnapshot;
-import com.commi.chu.domain.github.repository.ActivitySnapshotRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +11,6 @@ import com.commi.chu.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Component
