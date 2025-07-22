@@ -16,6 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Base64;
 
 @Slf4j
 @Service
@@ -27,118 +28,99 @@ public class ChuService {
 
     private static final String BACKGROUND_IMAGE_BASE_PATH = "images/backgrounds/";
     private static final String CHARACTER_IMAGE_BASE_PATH = "images/chu/";
-    // 폰트 설정 상수화
-    private static final String DEFAULT_FONT_NAME = "Arial";
-    private static final int DEFAULT_FONT_STYLE = Font.BOLD;
-    private static final int DEFAULT_FONT_SIZE = 24; // 글씨 크기 기본값
-    private static final Color DEFAULT_TEXT_COLOR = Color.BLACK;
 
-    /**
-     * test를 위한 코드입니다.
-     * @return 5000 (만렙)
-     */
-    public int getUserLevel(String githubUsername) {
-        // 실제로는 DB에서 조회하거나 외부 API를 호출하는 로직이 들어갑니다.
+    // --- 애니메이션 관련 상수 ---
+    private static final String X_ANIMATION_DURATION = "4s"; // 좌우 왕복 애니메이션 주기 (좀 더 길게)
+    private static final String HOP_ANIMATION_DURATION = "1s"; // 폴짝거리는 애니메이션 주기
+    private static final String ANIMATION_REPEAT_COUNT = "indefinite"; // 무한 반복
+    private static final int CHARACTER_HORIZONTAL_MOVEMENT_PIXELS = 15; // 캐릭터가 최대로 좌우로 움직일 픽셀
+    private static final int CHARACTER_HOP_HEIGHT = 10; // 캐릭터가 위로 뛸 높이 픽셀
 
-        // 테스트 단계에서는 일단 주석처리
-//        User user = userRepository.findByGithubUsername(githubUsername)
-//                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "username", githubUsername));
+    public String generateCommitchuLevelBadge(String githubUsername, String backgroundName, String characterName) {
 
-        return 5000;
+        // 1. 이미지 Base64 인코딩
+        String base64BgImage = encodeImageToBase64(BACKGROUND_IMAGE_BASE_PATH + backgroundName, "image/png");
+        String base64CharImage = encodeImageToBase64(CHARACTER_IMAGE_BASE_PATH + characterName, "image/png");
+
+        if (base64BgImage == null || base64CharImage == null) {
+            throw new CustomException(ErrorCode.INVALID_INPUT_VALUE, "imageName", "Background or character image not found/loadable.");
+        }
+
+        int svgWidth = 200;
+        int svgHeight = 180;
+        int charWidth = 150;
+        int charHeight = 150;
+
+        // 캐릭터 초기 위치 (SVG 중앙 하단)
+        int initialCharX = (svgWidth - charWidth) / 2;
+        int initialCharY = (svgHeight - charHeight) - 10; // 하단에서 10픽셀 위
+
+        // SVG XML 구성 (StringBuilder 사용 권장)
+        StringBuilder svgBuilder = new StringBuilder();
+        svgBuilder.append("<svg width=\"").append(svgWidth).append("\" height=\"").append(svgHeight).append("\" ")
+                .append("xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n");
+
+        // 배경 이미지 삽입 (Base64 인코딩)
+        svgBuilder.append("  <image xlink:href=\"data:image/png;base64,").append(base64BgImage)
+                .append("\" x=\"0\" y=\"0\" width=\"").append(svgWidth).append("\" height=\"").append(svgHeight).append("\" />\n");
+
+        // 캐릭터 이미지 삽입 및 애니메이션 (Base64 인코딩)
+        svgBuilder.append("  <image xlink:href=\"data:image/png;base64,").append(base64CharImage)
+                .append("\" x=\"").append(initialCharX).append("\" y=\"").append(initialCharY)
+                .append("\" width=\"").append(charWidth).append("\" height=\"").append(charHeight).append("\">\n");
+
+        // SMIL 애니메이션 1: 좌우 왕복 움직임 (x 좌표 변경)
+        svgBuilder.append("    <animate attributeName=\"x\" values=\"")
+                .append(initialCharX).append(";") // 시작 위치
+                .append(initialCharX + CHARACTER_HORIZONTAL_MOVEMENT_PIXELS).append(";") // 오른쪽으로 이동
+                .append(initialCharX).append(";") // 다시 가운데
+                .append(initialCharX - CHARACTER_HORIZONTAL_MOVEMENT_PIXELS).append(";") // 왼쪽으로 이동
+                .append(initialCharX).append("\" ") // 다시 시작 위치
+                .append("keyTimes=\"0;0.25;0.5;0.75;1\" ") // 각 지점의 시간 비율
+                .append("dur=\"").append(X_ANIMATION_DURATION).append("\" ") // 좌우 움직임 주기
+                .append("repeatCount=\"").append(ANIMATION_REPEAT_COUNT).append("\"/>\n");
+
+        // SMIL 애니메이션 2: 폴짝폴짝 뛰는 움직임 (y 좌표 변경)
+        svgBuilder.append("    <animate attributeName=\"y\" values=\"")
+                .append(initialCharY).append(";") // 시작 (아래)
+                .append(initialCharY - CHARACTER_HOP_HEIGHT).append(";") // 위로 점프
+                .append(initialCharY).append("\" ") // 다시 아래
+                .append("keyTimes=\"0;0.5;1\" ") // 중간에 정점
+                .append("dur=\"").append(HOP_ANIMATION_DURATION).append("\" ") // 폴짝거리는 주기
+                .append("repeatCount=\"").append(ANIMATION_REPEAT_COUNT).append("\"/>\n");
+
+        svgBuilder.append("  </image>\n");
+
+        svgBuilder.append("</svg>");
+
+        return svgBuilder.toString();
     }
 
     /**
-     * 지정된 배경과 캐릭터를 사용하여 사용자 레벨이 표시된 커밋츄 뱃지 이미지를 생성하여 바이트 배열로 반환합니다.
-     *
-     * @param githubUsername 사용자 GitHub ID
-     * @param backgroundName 배경 이미지 파일명 (예: "forest.png")
-     * @param characterName 캐릭터 이미지 파일명 (예: "pikachu.png")
-     * @return 생성된 뱃지 이미지의 바이트 배열
-     * @throws CustomException 뱃지 생성 중 오류 발생 시
+     * 이미지 파일을 Base64 문자열로 인코딩합니다.
+     * @param path 이미지 리소스 경로
+     * @param mimeType 이미지 MIME 타입 (예: "image/png")
+     * @return Base64 인코딩된 문자열 또는 null (로딩 실패 시)
      */
-    public byte[] generateCommitchuLevelBadge(String githubUsername, String backgroundName, String characterName) {
-        int userLevel = getUserLevel(githubUsername); // 사용자 레벨 조회
-
-        // 1. 배경 이미지 로드
-        BufferedImage backgroundImage = loadImage(BACKGROUND_IMAGE_BASE_PATH + backgroundName);
-        if (backgroundImage == null) {
-            log.error("Background image not found or failed to load: {}", BACKGROUND_IMAGE_BASE_PATH + backgroundName);
-            throw new CustomException(ErrorCode.INVALID_INPUT_VALUE, "backgroundName", backgroundName);
-        }
-
-        // 2. 캐릭터 이미지 로드
-        BufferedImage characterImage = loadImage(CHARACTER_IMAGE_BASE_PATH + characterName);
-        if (characterImage == null) {
-            log.error("Character image not found or failed to load: {}", CHARACTER_IMAGE_BASE_PATH + characterName);
-            throw new CustomException(ErrorCode.INVALID_INPUT_VALUE, "characterName", characterName);
-        }
-
-        // 3. 합성할 이미지 생성 (배경 이미지 크기 기준, 투명도 지원)
-        BufferedImage combinedImage = new BufferedImage(
-                backgroundImage.getWidth(), backgroundImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = combinedImage.createGraphics();
-
-        // 앤티앨리어싱 설정 (이미지와 텍스트 모두 부드럽게)
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-        // 4. 배경 이미지 그리기
-        g2d.drawImage(backgroundImage, 0, 0, null);
-
-        // 5. 캐릭터 이미지 그리기 (배경 이미지 위에)
-        // 캐릭터의 위치와 크기를 조절해야 합니다. 여기서는 예시로 가운데 정렬
-        int charX = (backgroundImage.getWidth() - characterImage.getWidth()) / 2;
-        int charY = (backgroundImage.getHeight() - characterImage.getHeight()) / 2;
-        g2d.drawImage(characterImage, charX, charY, characterImage.getWidth(), characterImage.getHeight(), null);
-
-//        // 6. 레벨 텍스트 설정 및 그리기
-//        String levelText = "Lv." + userLevel;
-//        Font font = new Font(DEFAULT_FONT_NAME, DEFAULT_FONT_STYLE, DEFAULT_FONT_SIZE);
-//        g2d.setFont(font);
-//        g2d.setColor(DEFAULT_TEXT_COLOR);
-
-//        FontMetrics fm = g2d.getFontMetrics();
-//        int textWidth = fm.stringWidth(levelText);
-//        int textX = (combinedImage.getWidth() - textWidth) / 2;
-//        int textY = fm.getAscent() + 10;
-//
-//        g2d.drawString(levelText, textX, textY);
-
-        // 7. Graphics2D 자원 해제
-        g2d.dispose();
-
-        // 8. 완성된 이미지를 PNG 바이트 배열로 변환
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            ImageIO.write(combinedImage, "png", baos);
-            return baos.toByteArray();
-        } catch (IOException e) {
-            log.error("Error converting combined image to byte array: {}", e.getMessage(), e);
-            throw new CustomException(
-                    ErrorCode.CHU_GENERATION_FAILED,
-                    "reason", "Image conversion failed: " + e.getMessage()
-            );
-        }
-    }
-
-    /**
-     * 주어진 경로에서 이미지를 로드합니다. 실패 시 null 반환.
-     */
-    private BufferedImage loadImage(String path) {
+    private String encodeImageToBase64(String path, String mimeType) {
         try {
             ClassPathResource imageResource = new ClassPathResource(path);
             if (!imageResource.exists()) {
-                log.warn("Image file not found: {}", path);
+                log.warn("Image file not found for Base64 encoding: {}", path);
                 return null;
             }
-            try (InputStream inputStream = imageResource.getInputStream()) {
-                BufferedImage image = ImageIO.read(inputStream);
-                if (image == null) {
-                    log.error("Failed to read image content from: {}", path);
+            try (InputStream inputStream = imageResource.getInputStream();
+                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, len);
                 }
-                return image;
+                byte[] imageBytes = outputStream.toByteArray();
+                return Base64.getEncoder().encodeToString(imageBytes);
             }
         } catch (IOException e) {
-            log.error("IO error loading image {}: {}", path, e.getMessage());
+            log.error("IO error encoding image {} to Base64: {}", path, e.getMessage());
             return null;
         }
     }
