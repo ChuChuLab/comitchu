@@ -91,18 +91,18 @@ public class ChuService {
         int charY = (backgroundImage.getHeight() - characterImage.getHeight()) / 2;
         g2d.drawImage(characterImage, charX, charY, characterImage.getWidth(), characterImage.getHeight(), null);
 
-        // 6. 레벨 텍스트 설정 및 그리기
-        String levelText = "Lv." + userLevel;
-        Font font = new Font(DEFAULT_FONT_NAME, DEFAULT_FONT_STYLE, DEFAULT_FONT_SIZE);
-        g2d.setFont(font);
-        g2d.setColor(DEFAULT_TEXT_COLOR);
+//        // 6. 레벨 텍스트 설정 및 그리기
+//        String levelText = "Lv." + userLevel;
+//        Font font = new Font(DEFAULT_FONT_NAME, DEFAULT_FONT_STYLE, DEFAULT_FONT_SIZE);
+//        g2d.setFont(font);
+//        g2d.setColor(DEFAULT_TEXT_COLOR);
 
-        FontMetrics fm = g2d.getFontMetrics();
-        int textWidth = fm.stringWidth(levelText);
-        int textX = (combinedImage.getWidth() - textWidth) / 2;
-        int textY = fm.getAscent() + 10;
-
-        g2d.drawString(levelText, textX, textY);
+//        FontMetrics fm = g2d.getFontMetrics();
+//        int textWidth = fm.stringWidth(levelText);
+//        int textX = (combinedImage.getWidth() - textWidth) / 2;
+//        int textY = fm.getAscent() + 10;
+//
+//        g2d.drawString(levelText, textX, textY);
 
         // 7. Graphics2D 자원 해제
         g2d.dispose();
