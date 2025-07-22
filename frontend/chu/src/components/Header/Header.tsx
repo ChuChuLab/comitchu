@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
 import LanguageToggle from "../LanguageToggle/LanguageToggle";
 import styles from "./Header.module.css";
+import Button from "../common/Button";
 
 const Header = () => {
   const { user, logout } = useUser();
@@ -36,9 +37,7 @@ const Header = () => {
               <div className={styles.userInfo}>
                 <img src={user.avatarUrl || "/placeholder.svg"} alt={user.username} className={styles.avatar} />
                 <span className={styles.username}>{user.username}</span>
-                <button onClick={handleLogout} className={styles.logoutBtn}>
-                  Logout
-                </button>
+                <Button onClick={handleLogout} variant="danger">Logout</Button>
               </div>
             </>
           ) : (

@@ -25,3 +25,11 @@
   outline: 4px auto -webkit-focus-ring-color;
   outline-offset: 1px;
 }
+
+.danger {
+  background-color: #e74c3c; /* 빨간색 계열 */
+}
+
+.danger:hover {
+  background-color: #c0392b; /* 호버 시 약간 어둡게 */
+}
