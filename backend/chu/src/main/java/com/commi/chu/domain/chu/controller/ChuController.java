@@ -22,16 +22,17 @@ public class ChuController {
      * @return PNG 이미지 바이트 배열을 포함하는 ResponseEntity
      */
     @GetMapping(value = "/test/{githubUsername}", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> getCommitchuLevelBadge(@PathVariable String githubUsername,
-                                                         @RequestParam String background,
-                                                         @RequestParam String character) {
-        byte[] imageBytes = chuService.generateCommitchuLevelBadge(githubUsername, background, character);
-
-        // HTTP 응답 헤더 설정 및 이미지 반환
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_PNG); // Content-Type을 PNG로 설정
-
-        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+    public ResponseEntity<String> getCommitchuBadge( @PathVariable String githubUsername,
+                                                     @RequestParam String background,
+                                                     @RequestParam String character) {
+        try {
+            String svgString = chuService.generateCommitchuLevelBadge(githubUsername, background, character);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.valueOf("image/svg+xml")); // HTTP 헤더도 SVG 타입으로 설정
+            return new ResponseEntity<>(svgString, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
 }
