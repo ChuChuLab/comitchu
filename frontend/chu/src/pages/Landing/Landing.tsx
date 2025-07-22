@@ -14,11 +14,14 @@ const Landing = () => {
   }
 
   const handleGitHubLogin = () => {
-    // Simulate GitHub login
+    window.location.href = "https://www.comitchu.shop/oauth2/authorization/github";
+
+    // 개발 환경에서 Mock 로그인 기능
+    // api 나오면 axios 만들고 구현하기
     const mockUser = {
-      id: "user123",
-      username: "developer",
-      avatarUrl: "https://github.com/github.png",
+      id: "test-user",
+      username: "mini-suyo",
+      avatarUrl: "https://avatars.githubusercontent.com/u/175273485?v=4",
     };
     login(mockUser);
   };
@@ -32,10 +35,7 @@ const Landing = () => {
             <span className={styles.titleAccent}>{t("landing.titleAccent")}</span>
           </h1>
           <p className={styles.subtitle}>{t("landing.subtitle")}</p>
-          <Button onClick={handleGitHubLogin}>
-            <span className={styles.githubIcon}>🐙</span>
-            {t("landing.login")}
-          </Button>
+          <Button onClick={handleGitHubLogin}>{t("landing.login")}</Button>
         </div>
         <div className={styles.heroVisual}>
           <div className={styles.petPreview}>
