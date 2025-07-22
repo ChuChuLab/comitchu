@@ -3,7 +3,7 @@ name: Test Backend
 on:
   push:
     branches:
-      - 'main'
+      - 'backend'
 
 # 실행될 잡(job) 정의
 jobs:
