@@ -1,6 +1,5 @@
 package com.commi.chu.domain.github.dto.statistics;
 
-import com.commi.chu.domain.github.dto.graphql.UserData;
 import lombok.Data;
 
 /*
