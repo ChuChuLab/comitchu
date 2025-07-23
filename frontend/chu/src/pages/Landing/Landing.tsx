@@ -10,7 +10,7 @@ const Landing = () => {
   const { t } = useTranslation();
 
   const handleGitHubLogin = () => {
-    // window.location.href = "https://www.comitchu.shop/oauth2/authorization/github";
+    window.location.href = "https://www.comitchu.shop/oauth2/authorization/github";
 
     // 개발 환경에서 Mock 로그인 기능
     // api 나오면 axios 만들고 구현하기
