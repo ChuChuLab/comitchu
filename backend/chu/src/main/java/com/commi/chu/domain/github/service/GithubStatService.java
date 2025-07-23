@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 
-import com.commi.chu.domain.github.dto.response.graphQL.GithubStat;
-import com.commi.chu.domain.github.dto.response.graphQL.GraphQlResponse;
+import com.commi.chu.domain.github.dto.statistics.GithubStat;
+import com.commi.chu.domain.github.dto.graphql.GraphQlResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +26,12 @@ public class GithubStatService {
     private final RestClient githubRestClient;
     private final ActivitySnapshotRepository activitySnapshotRepository;
 
-    //github GraphQL에 user의 통계 정보 요청하는 로직
+    /***
+     *
+     * user의 1년 단위의 전체 커밋 수, pr 수, 이슈 수, 리뷰 수를 가져오는 통계 api입니다.
+     * @param username
+     * @return
+     */
     public GraphQlResponse<GithubStat> fetchStats(String username) {
         String query = """
                 	query {
@@ -50,7 +55,11 @@ public class GithubStatService {
     }
 
 
-    // 한 유저 처리할 때마다 새 트랜잭션 열기
+    /***
+     *
+     * user의 github 통계를 업데이트하는 함수입니다.
+     * @param user
+     */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateUserStat(User user) {
         GraphQlResponse<GithubStat> stat = fetchStats(user.getGithubUsername());
