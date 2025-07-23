@@ -1,14 +1,15 @@
 package com.commi.chu.domain.github.controller;
 
+import com.commi.chu.domain.github.dto.language.LanguageStatListResponse;
 import com.commi.chu.domain.github.dto.language.LanguageStatsDto;
 import com.commi.chu.domain.github.service.GithubLanguageService;
+import com.commi.chu.global.common.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,7 +24,9 @@ public class GithubController {
      * @return Top10 언어,바이트수,비율 정보를 보여줌
      */
     @GetMapping("/{username}/languages")
-    public List<LanguageStatsDto> getLangs(@PathVariable String username) {
-        return langService.fetchLanguagePercentages(username);
+    public ResponseEntity<CommonResponse<LanguageStatListResponse>> getLangs(@PathVariable String username) {
+        LanguageStatListResponse result = langService.fetchLanguagePercentages(username);
+
+        return CommonResponse.ok(result);
     }
 }
