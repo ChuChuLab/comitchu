@@ -113,7 +113,7 @@ jobs:
   # 3. 프론트엔드 배포 잡
   deploy-frontend:
     needs: changes # 'changes' 잡이 먼저 실행되어야 함
-    if: needs.changes.outputs.frontend == 'true' # 'frontend' 폴더에 변경이 있을 때만 실행
+    if: needs.changes.outputs.frontend == 'false' # 'frontend' 폴더에 변경이 있을 때만 실행
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -141,19 +141,24 @@ jobs:
         working-directory: ./frontend/chu
         run: npm run build
 
-      # 프론트엔드 파일 전송 및 Nginx 재시작
-      - name: Transfer frontend files and Restart Nginx
+      # 빌드된 프론트엔드 파일을 서버로 전송
+      - name: Transfer frontend files
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "frontend/chu/dist/"
+          target: "./nginx/html/"
+          strip_components: 1
+
+      # Nginx 컨테이너 재시작
+      - name: Restart Nginx Container
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          # Source와 Target을 사용하여 로컬 파일을 원격 서버로 전송합니다.
-          source: "./frontend/chu/dist/*" # 빌드 결과물이 실제로 있는 GitHub Actions 러너의 경로
-          target: "./nginx/html/" # 원격 서버의 대상 경로
-          
-          # 파일 전송 후 실행할 스크립트
-          # 'target'이 디렉토리로 끝나면, source의 내용물이 target 디렉토리 안으로 복사됩니다.
           script: |
             cd /home/ubuntu/docker-project
             docker compose restart nginx
