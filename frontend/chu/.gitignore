@@ -1,0 +1,40 @@
+# node_modules
+node_modules/
+
+# 환경변수 파일
+.env
+.env.local
+.env.*.local
+
+# Vite build output
+dist/
+
+# IDE / Editor 설정
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# 로그파일
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# TypeScript 컴파일 결과
+*.tsbuildinfo
+
+# ESLint 캐시
+.eslintcache
+
+# local 설정/캐시
+*.local
+.cache/
+pnpm-lock.yaml
+package-lock.json
+
+# 테스트 결과
+coverage/
+
+# Optional: OS 및 CI 환경 파일
+Thumbs.db

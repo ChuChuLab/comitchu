@@ -1,0 +1,29 @@
+{
+  "landing": {
+    "title": "Meet Your Git Companion",
+    "titleAccent": "ComitChu",
+    "subtitle": "A virtual pet that grows with your coding journey. The more you commit, the happier and stronger your ComitChu becomes!",
+    "login": "Login with GitHub",
+    "goToDashboard": "Go to Dashboard",
+    "level": "Level {{level}}",
+    "howItWorks": "How It Works",
+    "feature": {
+      "choose": {
+        "title": "Choose Your Pet",
+        "desc": "Select from various adorable characters to be your coding companion"
+      },
+      "grow": {
+        "title": "Grow Together",
+        "desc": "Your pet gains XP and levels up as you make commits to your repositories"
+      },
+      "show": {
+        "title": "Show Off",
+        "desc": "Display your pet's progress with beautiful SVG badges in your README"
+      }
+    },
+    "preview": {
+      "title": "Live Badge Preview",
+      "description": "Here's what your ComitChu badge will look like in your repository:"
+    }
+  }
+}
