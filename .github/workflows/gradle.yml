@@ -149,7 +149,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           source: "frontend/chu/dist/"
-          target: "./nginx/html/"
+          target: "./docker-project/nginx/html/"
           strip_components: 1
 
       # Nginx 컨테이너 재시작
