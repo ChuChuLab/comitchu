@@ -1,14 +1,35 @@
-name: Test Backend
+name: ComitChu CI/CD
 
 on:
   push:
     branches:
-      - 'test'
+      - 'main'
 
-# 실행될 잡(job) 정의
 jobs:
-  # 백엔드 배포 잡
+  # 1. 변경된 경로를 감지하는 잡
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+      backend: ${{ steps.filter.outputs.backend }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for changed files
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+            backend:
+              - 'backend/**'
+
+  # 2. 백엔드 배포 잡
   deploy-backend:
+    needs: changes # 'changes' 잡이 먼저 실행되어야 함
+    if: needs.changes.outputs.backend == 'true' # 'backend' 폴더에 변경이 있을 때만 실행
     runs-on: ubuntu-latest
     steps:
       # 1. 저장소 코드 내려받기
@@ -88,3 +109,51 @@ jobs:
             
             # 사용하지 않는 이전 이미지 정리
             docker image prune -f
+
+  # 3. 프론트엔드 배포 잡
+  deploy-frontend:
+    needs: changes # 'changes' 잡이 먼저 실행되어야 함
+    if: needs.changes.outputs.frontend == 'true' # 'frontend' 폴더에 변경이 있을 때만 실행
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      # 프론트엔드 의존성 캐싱
+      - name: Cache frontend dependencies
+        uses: actions/cache@v4
+        with:
+          path: frontend/chu/node_modules
+          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/chu/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-frontend-node-
+
+      - name: Install dependencies
+        working-directory: ./frontend/chu
+        run: npm install
+
+      - name: Build frontend
+        working-directory: ./frontend/chu
+        run: npm run build
+
+      # 프론트엔드 파일 전송 및 Nginx 재시작
+      - name: Transfer frontend files and Restart Nginx
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          # Source와 Target을 사용하여 로컬 파일을 원격 서버로 전송합니다.
+          source: "./frontend/chu/dist/*" # 빌드 결과물이 실제로 있는 GitHub Actions 러너의 경로
+          target: "./nginx/html/" # 원격 서버의 대상 경로
+          
+          # 파일 전송 후 실행할 스크립트
+          # 'target'이 디렉토리로 끝나면, source의 내용물이 target 디렉토리 안으로 복사됩니다.
+          script: |
+            cd /home/ubuntu/docker-project
+            docker compose restart nginx
