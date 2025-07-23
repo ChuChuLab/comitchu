@@ -1,5 +1,6 @@
 import type React from "react";
 
+import Button from "../common/Button";
 import styles from "./BadgePreview.module.css";
 
 interface BadgePreviewProps {
@@ -51,9 +52,9 @@ const BadgePreview: React.FC<BadgePreviewProps> = ({ petName, level, character, 
       <div className={styles.codeBlock}>
         <h4 className={styles.codeTitle}>Markdown Code:</h4>
         <code className={styles.code}>{`![CommitChu](${dataUri})`}</code>
-        <button onClick={() => navigator.clipboard.writeText(`![CommitChu](${dataUri})`)} className={styles.copyButton}>
+        <Button onClick={() => navigator.clipboard.writeText(`![CommitChu](${dataUri})`)}>
           Copy to Clipboard
-        </button>
+        </Button>
       </div>
     </div>
   );

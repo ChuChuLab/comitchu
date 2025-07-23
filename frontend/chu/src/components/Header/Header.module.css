@@ -83,18 +83,6 @@
   color: #333;
 }
 
-.logoutBtn {
-  background: #ff6b6b;
-  color: white;
-  padding: 6px 12px;
-  font-size: 14px;
-  border-radius: 6px;
-}
-
-.logoutBtn:hover {
-  background: #ff5252;
-}
-
 @media (max-width: 768px) {
   .container {
     padding: 0 16px;

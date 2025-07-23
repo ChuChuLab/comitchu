@@ -1,6 +1,7 @@
 import { useUser } from "../../contexts/UserContext";
-import { Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import BadgePreview from "../../components/BadgePreview/BadgePreview";
+import Button from "../../components/common/Button";
 import styles from "./Landing.module.css";
 import { useTranslation } from "react-i18next";
 
@@ -8,16 +9,15 @@ const Landing = () => {
   const { user, login } = useUser();
   const { t } = useTranslation();
 
-  if (user) {
-    return <Navigate to="/dashboard" replace />;
-  }
-
   const handleGitHubLogin = () => {
-    // Simulate GitHub login
+    // window.location.href = "https://www.comitchu.shop/oauth2/authorization/github";
+
+    // 개발 환경에서 Mock 로그인 기능
+    // api 나오면 axios 만들고 구현하기
     const mockUser = {
-      id: "user123",
-      username: "developer",
-      avatarUrl: "https://github.com/github.png",
+      id: "mockUser123",
+      username: "mini-suyo",
+      avatarUrl: "https://avatars.githubusercontent.com/u/175273485?v=4",
     };
     login(mockUser);
   };
@@ -31,10 +31,13 @@ const Landing = () => {
             <span className={styles.titleAccent}>{t("landing.titleAccent")}</span>
           </h1>
           <p className={styles.subtitle}>{t("landing.subtitle")}</p>
-          <button onClick={handleGitHubLogin} className={styles.loginBtn}>
-            <span className={styles.githubIcon}>🐙</span>
-            {t("landing.login")}
-          </button>
+          {user ? (
+            <Link to="/dashboard">
+              <Button>{t("landing.goToDashboard")}</Button>
+            </Link>
+          ) : (
+            <Button onClick={handleGitHubLogin}>{t("landing.login")}</Button>
+          )}
         </div>
         <div className={styles.heroVisual}>
           <div className={styles.petPreview}>
@@ -73,7 +76,8 @@ const Landing = () => {
       </section>
 
       <section className={styles.preview}>
-        <h2 className={styles.sectionTitle}>{t("landing.preview.title")}</h2>
+        <h2 className={styles.sectionTitle}>{t("landing.preview.title")}
+        </h2>
         <p className={styles.previewDescription}>{t("landing.preview.description")}</p>
         <BadgePreview petName="Whiskers" level={5} character="🐱" mood="happy" />
       </section>

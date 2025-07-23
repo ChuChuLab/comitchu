@@ -4,6 +4,7 @@
     "titleAccent": "ComitChu",
     "subtitle": "A virtual pet that grows with your coding journey. The more you commit, the happier and stronger your ComitChu becomes!",
     "login": "Login with GitHub",
+    "goToDashboard": "Go to Dashboard",
     "level": "Level {{level}}",
     "howItWorks": "How It Works",
     "feature": {
