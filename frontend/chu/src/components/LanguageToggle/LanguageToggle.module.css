@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  padding: 8px 16px;
 }
 
 .toggleBtn {
@@ -12,13 +13,12 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 600;
   gap: 0.2rem;
   color: #fff;
   padding: 0;
 }
-
 .globeIcon {
   display: flex;
   align-items: center;
@@ -35,12 +35,11 @@
 }
 
 .langText {
-  color: #333;
   font-weight: 600;
 }
 
 .langTextInactive {
-  color: #aaa;
+  color: #383838;
   font-weight: 600;
 }
 
@@ -55,8 +54,10 @@
 }
 
 .langDivider {
-  color: #aaa;
+  position: relative;
+  top: -2px;
+  color: #383838;
   margin: 0 0.2rem;
-  font-size: 18px;
+  font-size: 26px;
   font-weight: 600;
 }
