@@ -2,10 +2,15 @@ package com.commi.chu.domain.github.service;
 
 import com.commi.chu.domain.github.dto.graphql.GraphQlResponse;
 import com.commi.chu.domain.github.dto.language.*;
+import com.commi.chu.domain.user.entity.User;
+import com.commi.chu.domain.user.repository.UserRepository;
+import com.commi.chu.global.exception.CustomException;
+import com.commi.chu.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -60,15 +65,21 @@ public class GithubLanguageService {
 
 
     private final RestClient restClient;
+    private final UserRepository userRepository;
 
     /**
      * 특정 사용자의 저장소 전체에서 언어별 사용량을 집계하고,
      * 전체 대비 비율을 계산하여 DTO 목록으로 반환합니다.
      *
-     * @param username GitHub 사용자 로그인 ID
+     * @param userId GitHub 사용자 로그인 ID
      * @return 언어별 바이트 수와 비율 정보가 담긴 LanguageStatsDto 리스트(바이트 수 내림차순)
      */
-    public LanguageStatListResponse fetchLanguagePercentages(String username) {
+    public LanguageStatListResponse fetchLanguagePercentages(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "userId", userId));
+
+        String githubUsername = user.getGithubUsername();
+
         // 언어별 누적 바이트 수를 저장하는 맵
         Map<String, Long> bytesByLang = new HashMap<>();
         String cursor = null;   // 페이지네이션 커서(null이면 첫 페이지)
@@ -78,7 +89,7 @@ public class GithubLanguageService {
         while (hasNext) {
             // GraphQL 변수 생성
             Map<String, Object> variables = new HashMap<>();
-            variables.put("login", username);
+            variables.put("login", githubUsername);
             if (cursor != null) {
                 // 이전 응답의 endCursor를 커서에 설정
                 variables.put("after", cursor);
@@ -90,11 +101,29 @@ public class GithubLanguageService {
             body.put("variables", variables);
 
             // GraphQL API 호출 및 응답 수신
-            GraphQlResponse<LanguageDataWrapper> resp = restClient.post()
-                    .body(body)
-                    .retrieve()
-                    .body(new ParameterizedTypeReference<>() {
-                    });
+            GraphQlResponse<LanguageDataWrapper> resp;
+            try{
+                resp = restClient.post()
+                        .body(body)
+                        .retrieve()
+                        .body(new ParameterizedTypeReference<>() {
+                        });
+            } catch(RestClientException ex){
+                throw new CustomException(ErrorCode.GITHUB_GRAPHQL_FAILED, "username", githubUsername);
+            }
+
+            if (resp.getErrors() != null && !resp.getErrors().isEmpty()) {
+                throw new CustomException(
+                        ErrorCode.GITHUB_GRAPHQL_FAILED,
+                        "errors", resp.getErrors()
+                );
+            }
+            if (resp.getData() == null || resp.getData().getUser() == null) {
+                throw new CustomException(
+                        ErrorCode.GITHUB_GRAPHQL_FAILED,
+                        "message", "응답 데이터가 누락되었습니다"
+                );
+            }
 
             // 응답에서 저장소 연결 정보 추출
             RepoConnection repoConn = resp.getData()
