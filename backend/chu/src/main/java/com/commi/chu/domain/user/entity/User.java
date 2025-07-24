@@ -1,5 +1,6 @@
 package com.commi.chu.domain.user.entity;
 
+import com.commi.chu.domain.chu.entity.UserLang;
 import com.commi.chu.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,6 +8,8 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -31,6 +34,10 @@ public class User extends BaseEntity {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user_lang", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserLang> userLangs = new ArrayList<>();
 
     public void updateProfile(String githubUsername, String avatarUrl) {
         this.githubUsername = githubUsername;
