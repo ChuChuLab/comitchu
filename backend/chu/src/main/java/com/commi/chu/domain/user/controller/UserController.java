@@ -1,6 +1,7 @@
 package com.commi.chu.domain.user.controller;
 
 import com.commi.chu.domain.user.dto.response.TestResponse;
+import com.commi.chu.domain.user.dto.response.UserResponse;
 import com.commi.chu.domain.user.service.UserService;
 import com.commi.chu.global.common.response.CommonResponse;
 import com.commi.chu.global.security.auth.UserPrincipal;
@@ -40,5 +41,15 @@ public class UserController {
 
         return CommonResponse.okWithCookie(deletedAuthCookie);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<CommonResponse<UserResponse>> getUserInfo(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+
+        Integer userId =  authenticationUtil.getCurrentUserId(userPrincipal);
+
+        return CommonResponse.ok(userService.getUserInfo(userId));
+    }
+
 
 }
