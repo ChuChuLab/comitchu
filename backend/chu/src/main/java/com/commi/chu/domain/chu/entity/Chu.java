@@ -35,10 +35,14 @@ public class Chu extends BaseEntity {
     private Integer exp;
 
     @Column(name = "status", nullable = false, length = 20)
+    @Enumerated(EnumType.STRING)
     private ChuStatus status; // e.g., "NORMAL", "HUNGRY", "HAPPY"
 
-    @Column(name = "is_main",nullable = false)
-    private boolean isMain;
+    @Column(name = "lang",nullable = false, length = 50)
+    private String lang;
+
+    @Column(name = "background",nullable = false, length = 50)
+    private String background;
 
     @Column(name="last_status_updated_at", nullable = false)
     @LastModifiedDate
