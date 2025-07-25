@@ -2,17 +2,18 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "DungGeonMo";
-  background-color: #5f625b;
-  color: #1d1d1b;
 }
 
 body {
   font-weight: 600;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  word-break: keep-all;
+  font-family: "DungGeonMo";
+  background-color: #0d1116;
+  color: #f0f6fc;
   min-height: 100vh;
-  color: #5f625b;
+  scrollbar-gutter: stable; /* 이동할때만 스크롤바가 보이도록 설정 */
 }
 
 #root {

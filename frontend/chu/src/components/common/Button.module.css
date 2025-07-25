@@ -1,35 +1,26 @@
 .button {
   cursor: pointer;
-  border: none;
-  border-radius: 8px;
+  background-color: #212830;
+  border: 1px solid #3d444d;
+  border-radius: 6px;
   padding: 12px 24px;
-  font-size: 16px;
-  font-weight: 600; /* 기존 index.css의 body font-weight와 통일성을 위해 500 -> 600으로 조정 */
+  font-size: 18px;
+  font-weight: 600;
   font-family: inherit;
-  background-color: #4a90e2; /* 의미 있는 기본 색상으로 변경 */
   color: white;
   transition: all 0.2s ease;
+  width: 100%;
+  height: auto;
 }
 
 .button:hover {
-  background-color: #357abd; /* 호버 시 약간 어둡게 */
-}
-
-.button:disabled {
-  background-color: #a0a0a0;
-  cursor: not-allowed;
-}
-
-.button:focus,
-.button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-  outline-offset: 1px;
+  background-color: #262c36;
 }
 
 .danger {
-  background-color: #e74c3c; /* 빨간색 계열 */
+  background-color: #e74c3c;
 }
 
 .danger:hover {
-  background-color: #c0392b; /* 호버 시 약간 어둡게 */
+  background-color: #c0392b;
 }

@@ -1,6 +1,6 @@
 .header {
-  background-color: transparent;
-  border-bottom: 1px solid #333;
+  background-color: #02040a;
+  border-bottom: 1px solid #3d444d;
   position: relative;
   justify-content: center;
   top: 0;
@@ -23,6 +23,7 @@
   font-size: 40px;
   font-weight: 700;
   text-decoration: none;
+  color: #f0f6fc;
 }
 
 .nav {
@@ -38,18 +39,16 @@
   padding: 8px 16px;
   border-radius: 24px;
   transition: all 0.2s ease;
+  color: #f0f6fc;
 }
 
 .navLink:hover {
-  background: #d3d3d3;
-  transition: all 0.2s ease;
+  background: #262c36;
+  transition: ease-in-out 0.2s;
 }
 
 .navLink.active {
-  background: #d1dbef;
-}
-
-.navLink:active {
+  background: #313946;
   transform: scale(0.95);
 }
 
@@ -72,6 +71,7 @@
 }
 
 .logoutButton {
+  color: #f0f6fc;
   background: none;
   border: none;
   cursor: pointer;
