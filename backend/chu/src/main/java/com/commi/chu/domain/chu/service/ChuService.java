@@ -1,5 +1,7 @@
 package com.commi.chu.domain.chu.service;
 
+import com.commi.chu.domain.chu.entity.Chu;
+import com.commi.chu.domain.chu.repository.ChuRepository;
 import com.commi.chu.domain.user.entity.User;
 import com.commi.chu.domain.user.repository.UserRepository;
 import com.commi.chu.global.exception.CustomException;
@@ -10,9 +12,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +23,9 @@ import java.util.Base64;
 @RequiredArgsConstructor
 public class ChuService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final ChuRepository chuRepository;
+    private final BadgeGeneratorService badgeGeneratorService;
 
     private static final String BACKGROUND_IMAGE_BASE_PATH = "images/backgrounds/";
     private static final String CHARACTER_IMAGE_BASE_PATH = "images/chu/";
@@ -36,7 +37,20 @@ public class ChuService {
     private static final int CHARACTER_HORIZONTAL_MOVEMENT_PIXELS = 15; // 캐릭터가 최대로 좌우로 움직일 픽셀
     private static final int CHARACTER_HOP_HEIGHT = 10; // 캐릭터가 위로 뛸 높이 픽셀
 
-    public String generateCommitchuLevelBadge(String githubUsername, String backgroundName, String characterName) {
+    public String generateCommitchuLevelBadge(String githubUsername) {
+
+        User user = userRepository.findByGithubUsername(githubUsername)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "githubUsername", githubUsername));
+        Chu chu = chuRepository.findByUser(user)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHU_NOT_FOUND));
+
+        String backgroundName = chu.getBackground();
+        String lang = chu.getLang();
+
+        return badgeGeneratorService.generateSvgBadge(githubUsername, backgroundName, lang);
+    }
+
+    public String generateTestCommitchuLevelBadge(String githubUsername, String backgroundName, String characterName) {
 
         // 1. 이미지 Base64 인코딩
         String base64BgImage = encodeImageToBase64(BACKGROUND_IMAGE_BASE_PATH + backgroundName, "image/png");

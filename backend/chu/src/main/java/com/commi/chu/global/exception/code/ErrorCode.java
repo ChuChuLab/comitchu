@@ -23,6 +23,7 @@ public enum ErrorCode {
 
     // Chu
     CHU_GENERATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR,"H001", "이미지 생성에 실패했습니다."),
+    CHU_NOT_FOUND(HttpStatus.NOT_FOUND, "H002", "츄 정보를 찾을 수 없습니다"),
 
     // Github
     GITHUB_GRAPHQL_FAILED(HttpStatus.INTERNAL_SERVER_ERROR,"G001","GitHub GraphQL API 요청에 실패했습니다");
