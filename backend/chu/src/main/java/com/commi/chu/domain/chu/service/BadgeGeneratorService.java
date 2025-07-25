@@ -26,11 +26,9 @@ public class BadgeGeneratorService {
     private static final String CHARACTER_IMAGE_BASE_PATH = "images/chu/";
 
     // --- 애니메이션 관련 상수 ---
-    private static final String X_ANIMATION_DURATION = "4s";
-    private static final String HOP_ANIMATION_DURATION = "1s";
+    private static final String X_ANIMATION_DURATION = "6s";
     private static final String ANIMATION_REPEAT_COUNT = "indefinite";
     private static final int CHARACTER_HORIZONTAL_MOVEMENT_PIXELS = 15;
-    private static final int CHARACTER_HOP_HEIGHT = 10;
 
     @Cacheable(value = "badgeSvg", key = "#githubUsername + '_' + #backgroundName + '_' + #lang")
     public String generateSvgBadge(String githubUsername, String backgroundName, String lang) {
@@ -43,14 +41,14 @@ public class BadgeGeneratorService {
             throw new CustomException(ErrorCode.INVALID_INPUT_VALUE, "imageName", "Background or character image not found/loadable.");
         }
 
-        int svgWidth = 200;
-        int svgHeight = 180;
-        int charWidth = 150;
-        int charHeight = 150;
+        int svgWidth = 150;
+        int svgHeight = 100;
+        int charWidth = 60;
+        int charHeight = 60;
 
         // 캐릭터 초기 위치 (SVG 중앙 하단)
         int initialCharX = (svgWidth - charWidth) / 2;
-        int initialCharY = (svgHeight - charHeight) - 10; // 하단에서 10픽셀 위
+        int initialCharY = (svgHeight - charHeight) - 10;
 
         // SVG XML 구성
         StringBuilder svgBuilder = new StringBuilder();
@@ -66,25 +64,21 @@ public class BadgeGeneratorService {
                 .append("\" x=\"").append(initialCharX).append("\" y=\"").append(initialCharY)
                 .append("\" width=\"").append(charWidth).append("\" height=\"").append(charHeight).append("\">\n");
 
-        // SMIL 애니메이션 1: 좌우 왕복 움직임 (x 좌표 변경)
-        svgBuilder.append("    <animate attributeName=\"x\" values=\"")
-                .append(initialCharX).append(";")
+        // SMIL 애니메이션: 좌우 왕복 움직임 (x 좌표 변경) - 뚝뚝 끊기게 이동하도록 calcMode="discrete" 추가
+        svgBuilder.append("<animate attributeName=\"x\" values=\"")
+                .append(initialCharX).append(";") // 0초: 중앙 (시작)
+                .append(initialCharX - CHARACTER_HORIZONTAL_MOVEMENT_PIXELS).append(";") // 0.1초: 왼쪽 1
+                .append(initialCharX - CHARACTER_HORIZONTAL_MOVEMENT_PIXELS * 2).append(";") // 0.2초: 왼쪽 2
+                .append(initialCharX - CHARACTER_HORIZONTAL_MOVEMENT_PIXELS).append(";") // 0.3초:
+                .append(initialCharX).append(";") // 0.4초: 중앙 (오른쪽으로 이동 중 중앙 지점)
+                .append(initialCharX + CHARACTER_HORIZONTAL_MOVEMENT_PIXELS).append(";") // 0.5초: 오른쪽 1
+                .append(initialCharX + CHARACTER_HORIZONTAL_MOVEMENT_PIXELS * 2).append(";") // 0.6초: 오른쪽 2
                 .append(initialCharX + CHARACTER_HORIZONTAL_MOVEMENT_PIXELS).append(";")
-                .append(initialCharX).append(";")
-                .append(initialCharX - CHARACTER_HORIZONTAL_MOVEMENT_PIXELS).append(";")
-                .append(initialCharX).append("\" ")
-                .append("keyTimes=\"0;0.25;0.5;0.75;1\" ")
-                .append("dur=\"").append(X_ANIMATION_DURATION).append("\" ")
-                .append("repeatCount=\"").append(ANIMATION_REPEAT_COUNT).append("\"/>\n");
-
-        // SMIL 애니메이션 2: 폴짝폴짝 뛰는 움직임 (y 좌표 변경)
-        svgBuilder.append("    <animate attributeName=\"y\" values=\"")
-                .append(initialCharY).append(";")
-                .append(initialCharY - CHARACTER_HOP_HEIGHT).append(";")
-                .append(initialCharY).append("\" ")
-                .append("keyTimes=\"0;0.5;1\" ")
-                .append("dur=\"").append(HOP_ANIMATION_DURATION).append("\" ")
-                .append("repeatCount=\"").append(ANIMATION_REPEAT_COUNT).append("\"/>\n");
+                .append(initialCharX).append("\"") // 0.8초: 중앙 (왼쪽으로 이동 중 중앙 지점, 애니메이션 사이클 종료)
+                .append(" keyTimes=\"0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8\"") // 키타임 조정 (총 9개 값, 0.1초 간격으로 설정)
+                .append(" dur=\"").append(X_ANIMATION_DURATION).append("\"") // 전체 애니메이션 지속 시간 (4초 유지)
+                .append(" repeatCount=\"").append(ANIMATION_REPEAT_COUNT).append("\"")
+                .append(" calcMode=\"discrete\"/>");
 
         svgBuilder.append("  </image>\n");
 
