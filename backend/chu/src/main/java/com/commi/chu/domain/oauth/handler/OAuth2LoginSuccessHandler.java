@@ -33,6 +33,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         // 3. 토큰을 쿠키에 담아 프론트엔드로 리디렉션 시킵니다.
         ResponseCookie authCookie = CookieUtil.makeAuthCookie(authToken);
         response.addHeader(HttpHeaders.SET_COOKIE, authCookie.toString());
-        response.sendRedirect("http://localhost:5173");
+        response.sendRedirect("https://www.comitchu.shop");
     }
 }
