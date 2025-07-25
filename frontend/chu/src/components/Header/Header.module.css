@@ -1,103 +1,82 @@
 .header {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 16px 0;
-  position: sticky;
+  background-color: #02040a;
+  border-bottom: 1px solid #3d444d;
+  position: relative;
+  justify-content: center;
   top: 0;
+  height: 80px;
   z-index: 100;
 }
 
 .container {
-  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 100%;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 24px;
+  font-size: 40px;
   font-weight: 700;
-  color: #4a90e2;
   text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.logo:hover {
-  color: #357abd;
-}
-
-.logoIcon {
-  font-size: 28px;
+  color: #f0f6fc;
 }
 
 .nav {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 12px;
 }
 
 .navLink {
-  color: #666;
   text-decoration: none;
-  font-weight: 500;
+  font-size: 24px;
+  font-weight: 600;
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: 24px;
   transition: all 0.2s ease;
+  color: #f0f6fc;
 }
 
 .navLink:hover {
-  color: #4a90e2;
-  background: rgba(74, 144, 226, 0.1);
+  background: #262c36;
+  transition: ease-in-out 0.2s;
 }
 
 .navLink.active {
-  color: #4a90e2;
-  background: rgba(74, 144, 226, 0.15);
+  background: #313946;
+  transform: scale(0.95);
 }
 
 .userInfo {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 2px solid #a8d8ea;
+  border: 2px solid #333;
 }
 
 .username {
-  font-weight: 500;
-  color: #333;
+  font-size: 24px;
+  font-weight: 600;
 }
 
-@media (max-width: 768px) {
-  .container {
-    padding: 0 16px;
-  }
-
-  .nav {
-    gap: 16px;
-  }
-
-  .userInfo {
-    gap: 8px;
-    padding: 6px 12px;
-  }
-
-  .username {
-    display: none;
-  }
+.logoutButton {
+  color: #f0f6fc;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

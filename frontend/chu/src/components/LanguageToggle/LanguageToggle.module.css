@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  padding: 8px 16px;
 }
 
 .toggleBtn {
@@ -12,13 +13,11 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 600;
   gap: 0.2rem;
-  color: #fff;
   padding: 0;
 }
-
 .globeIcon {
   display: flex;
   align-items: center;
@@ -32,15 +31,16 @@
   text-align: center;
   position: relative;
   transition: opacity 0.25s, transform 0.25s;
+  font-family: "DungGeonMo";
+  color: #f0f6fc;
 }
 
 .langText {
-  color: #333;
   font-weight: 600;
 }
 
 .langTextInactive {
-  color: #aaa;
+  color: #3d444d;
   font-weight: 600;
 }
 
@@ -55,8 +55,10 @@
 }
 
 .langDivider {
-  color: #aaa;
+  position: relative;
+  top: -2px;
+  color: #3d444d;
   margin: 0 0.2rem;
-  font-size: 18px;
+  font-size: 26px;
   font-weight: 600;
 }

@@ -5,13 +5,15 @@
 }
 
 body {
-  font-family: "Pretendard";
   font-weight: 600;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  word-break: keep-all;
+  font-family: "DungGeonMo";
+  background-color: #0d1116;
+  color: #f0f6fc;
   min-height: 100vh;
-  color: #333;
+  scrollbar-gutter: stable; /* 이동할때만 스크롤바가 보이도록 설정 */
 }
 
 #root {
@@ -19,8 +21,8 @@ body {
 }
 
 @font-face {
-  font-family: "Pretendard";
-  src: url("/src/assets/fonts/PretendardVariable.woff2") format("woff2");
+  font-family: "DungGeonMo";
+  src: url("/src/assets/fonts/DungGeunMo.woff2") format("woff2");
   font-weight: 100 900;
   font-display: swap;
   font-style: normal;

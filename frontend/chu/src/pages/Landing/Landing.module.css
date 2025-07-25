@@ -1,210 +1,43 @@
 .landing {
-  max-width: 1000px;
+  max-width: 1024px;
   margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 100px;
 }
 
-.hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: center;
-  padding: 60px 0;
-  min-height: 500px;
-}
+/* 미디어쿼리 넣어서 반응형 디자인 적용 */
+/* landing 클래스를 display block으로 변경 */
 
 .heroContent {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  max-width: 400px;
+  min-width: 350px;
 }
 
 .title {
   font-size: 48px;
   font-weight: 700;
   line-height: 1.2;
-  color: #2c3e50;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.titleAccent {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 .subtitle {
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.6;
-  color: #666;
-}
-
-
-
-.githubIcon {
-  font-size: 24px;
 }
 
 .heroVisual {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.petPreview {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 20px;
-  padding: 40px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  border: 2px solid rgba(168, 216, 234, 0.3);
-}
-
-.petCharacter {
-  font-size: 80px;
-  margin-bottom: 20px;
-  animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-10px);
-  }
-  60% {
-    transform: translateY(-5px);
-  }
-}
-
-.petStats {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.statBar {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-weight: 500;
-  color: #4a90e2;
-}
-
-.xpBar {
-  width: 200px;
-  height: 8px;
-  background: #e1e5e9;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.xpFill {
-  height: 100%;
-  background: linear-gradient(90deg, #a8d8ea, #4a90e2);
-  border-radius: 4px;
-  transition: width 0.3s ease;
-}
-
-.features {
-  padding: 80px 0;
-  text-align: center;
-}
-
-.sectionTitle {
-  font-size: 36px;
-  font-weight: 700;
-  color: #2c3e50;
-  margin-bottom: 48px;
-}
-
-.featureGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 32px;
-}
-
-.featureCard {
-  background: rgba(255, 255, 255, 0.8);
-  padding: 32px 24px;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: transform 0.2s ease;
-}
-
-.featureCard:hover {
-  transform: translateY(-4px);
-}
-
-.featureIcon {
-  font-size: 48px;
-  margin-bottom: 16px;
-}
-
-.featureCard h3 {
-  font-size: 24px;
-  font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 12px;
-}
-
-.featureCard p {
-  color: #666;
-  line-height: 1.6;
-}
-
-.preview {
-  padding: 80px 0;
-  text-align: center;
-}
-
-.previewDescription {
-  font-size: 18px;
-  color: #666;
-  margin-bottom: 32px;
-}
-
-@media (max-width: 768px) {
-  .hero {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    padding: 40px 0;
-    text-align: center;
-  }
-
-  .title {
-    font-size: 36px;
-  }
-
-  .subtitle {
-    font-size: 18px;
-  }
-
-  .petCharacter {
-    font-size: 60px;
-  }
-
-  .xpBar {
-    width: 150px;
-  }
-
-  .features {
-    padding: 60px 0;
-  }
-
-  .sectionTitle {
-    font-size: 28px;
-  }
-
-  .featureGrid {
-    gap: 24px;
-  }
+  object-fit: cover;
+  width: 50%;
+  border: 1px solid #3d444d;
+  border-radius: 8px;
 }

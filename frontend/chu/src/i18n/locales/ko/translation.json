@@ -1,8 +1,7 @@
 {
   "landing": {
-    "title": "당신의 Git 친구를 만나보세요",
-    "titleAccent": "ComitChu",
-    "subtitle": "당신의 커밋 활동에 따라 성장하는 가상 펫입니다. 커밋을 많이 할수록 ComitChu는 더 행복하고 강해져요!",
+    "title": "당신의 커밋이 키우는 캐릭터",
+    "subtitle": "ComitChu는 GitHub 활동을 기반으로 성장하는 캐릭터를 보여주는 개발자 맞춤형 서비스입니다. 커밋을 할수록 캐릭터가 진화하고, 뱃지를 획득하며 나만의 개발 히스토리를 시각적으로 기록할 수 있어요.",
     "login": "GitHub로 로그인",
     "goToDashboard": "대시보드로 가기",
     "level": "레벨 {{level}}",
