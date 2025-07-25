@@ -36,7 +36,7 @@ public class User extends BaseEntity {
     private LocalDateTime updatedAt;
 
     @Builder.Default
-    @OneToMany(mappedBy = "user_lang", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserLang> userLangs = new ArrayList<>();
 
     public void updateProfile(String githubUsername, String avatarUrl) {
