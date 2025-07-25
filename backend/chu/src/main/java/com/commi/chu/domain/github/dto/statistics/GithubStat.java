@@ -1,4 +1,4 @@
-package com.commi.chu.domain.github.dto.response.graphQL;
+package com.commi.chu.domain.github.dto.statistics;
 
 import lombok.Data;
 

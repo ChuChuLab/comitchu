@@ -1,9 +1,6 @@
-package com.commi.chu.domain.github.dto.response.graphQL;
+package com.commi.chu.domain.github.dto.statistics;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 /*
 	contributionsCollection은 커밋, PR, 이슈, 리뷰 등의 기여 정보를 포함합니다.
