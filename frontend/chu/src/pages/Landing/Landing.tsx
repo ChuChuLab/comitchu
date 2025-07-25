@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Button from "../../components/common/Button";
 import styles from "./Landing.module.css";
 import { useTranslation } from "react-i18next";
+import heroVisual from "../../assets/img/cave.svg";
 
 const Landing = () => {
   const { user, login } = useUser();
@@ -37,7 +38,7 @@ const Landing = () => {
       </div>
 
       {/* 우측영역 */}
-      <img src="/src/assets/img/cave.svg" alt="Hero Image" className={styles.heroVisual} />
+      <img src={heroVisual} alt="Hero Image" className={styles.heroVisual} />
     </div>
   );
 };
