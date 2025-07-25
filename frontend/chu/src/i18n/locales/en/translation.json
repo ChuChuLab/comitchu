@@ -1,8 +1,7 @@
 {
   "landing": {
     "title": "Meet Your Git Companion",
-    "titleAccent": "ComitChu",
-    "subtitle": "A virtual pet that grows with your coding journey. The more you commit, the happier and stronger your ComitChu becomes!",
+    "subtitle": "ComitChu is a developer-focused service that turns your GitHub activity into a growing character.As you make more commits, your character evolves and collects badges, turning your coding journey into a visual experience.",
     "login": "Login with GitHub",
     "goToDashboard": "Go to Dashboard",
     "level": "Level {{level}}",

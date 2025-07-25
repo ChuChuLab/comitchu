@@ -25,10 +25,7 @@ const Landing = () => {
     <div className={styles.landing}>
       {/* 좌측영역 */}
       <div className={styles.heroContent}>
-        <h1 className={styles.title}>
-          {t("landing.title")}
-          <span className={styles.titleAccent}>{t("landing.titleAccent")}</span>
-        </h1>
+        <h1 className={styles.title}>{t("landing.title")}</h1>
         <p className={styles.subtitle}>{t("landing.subtitle")}</p>
         {user ? (
           <Link to="/dashboard">
@@ -40,7 +37,7 @@ const Landing = () => {
       </div>
 
       {/* 우측영역 */}
-      <img src="/src/assets/img/heroImg.svg" alt="Hero Image" className={styles.heroVisual} />
+      <img src="/src/assets/img/cave.svg" alt="Hero Image" className={styles.heroVisual} />
     </div>
   );
 };

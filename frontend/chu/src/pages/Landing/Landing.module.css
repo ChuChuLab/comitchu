@@ -3,9 +3,12 @@
   margin: 0 auto;
   display: flex;
   justify-content: center;
-  padding: 40px;
-  gap: 56px;
+  width: 100%;
+  gap: 100px;
 }
+
+/* 미디어쿼리 넣어서 반응형 디자인 적용 */
+/* landing 클래스를 display block으로 변경 */
 
 .heroContent {
   display: flex;
@@ -24,11 +27,8 @@
   gap: 8px;
 }
 
-.titleAccent {
-}
-
 .subtitle {
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.6;
 }
 
@@ -38,5 +38,6 @@
   align-items: center;
   object-fit: cover;
   width: 50%;
-  border: 2px solid #ccc;
+  border: 1px solid #3d444d;
+  border-radius: 8px;
 }
