@@ -64,7 +64,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                             .level(1)
                             .exp(0)
                             .status(ChuStatus.NORMAL) //츄의 상태는 기본값 NORAML
-                            .isMain(true) //첫번쨰 츄는 대표캐릭터
+                            .lang("comit") //첫번째 츄는 대표캐릭터
+                            .background("flower")
                             .build();
 
                     chuRepository.save(newChu);
