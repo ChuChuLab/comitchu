@@ -57,8 +57,10 @@ const useUserStore = create<UserState>((set) => ({
           avatarUrl,
         };
         set({ user: userData });
+        console.log("Fetched user data:", userData);
       } else {
         set({ user: null });
+        console.log("Failed to fetch user data or user data is empty.");
       }
     } catch (error) {
       console.error("Failed to fetch user:", error);
