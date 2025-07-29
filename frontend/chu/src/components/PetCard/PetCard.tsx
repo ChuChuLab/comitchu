@@ -1,40 +1,40 @@
-import type React from "react"
-import type { Pet } from "../../contexts/UserContext"
-import styles from "./PetCard.module.css"
+import type React from "react";
+import type { Pet } from "../../store/userStore";
+import styles from "./PetCard.module.css";
 
 interface PetCardProps {
-  pet: Pet
+  pet: Pet;
 }
 
 const PetCard: React.FC<PetCardProps> = ({ pet }) => {
-  const xpToNextLevel = pet.level * 100 - pet.xp
-  const xpProgress = ((pet.xp % 100) / 100) * 100
+  const xpToNextLevel = pet.level * 100 - pet.xp;
+  const xpProgress = ((pet.xp % 100) / 100) * 100;
 
   const getMoodColor = (mood: Pet["mood"]) => {
     switch (mood) {
       case "happy":
-        return "#4CAF50"
+        return "#4CAF50";
       case "neutral":
-        return "#FF9800"
+        return "#FF9800";
       case "sad":
-        return "#F44336"
+        return "#F44336";
       default:
-        return "#9E9E9E"
+        return "#9E9E9E";
     }
-  }
+  };
 
   const getMoodEmoji = (mood: Pet["mood"]) => {
     switch (mood) {
       case "happy":
-        return "😊"
+        return "😊";
       case "neutral":
-        return "😐"
+        return "😐";
       case "sad":
-        return "😢"
+        return "😢";
       default:
-        return "😐"
+        return "😐";
     }
-  }
+  };
 
   return (
     <div className={styles.petCard}>
@@ -67,7 +67,7 @@ const PetCard: React.FC<PetCardProps> = ({ pet }) => {
 
       <div className={styles.petAge}>Created {new Date(pet.createdAt).toLocaleDateString()}</div>
     </div>
-  )
-}
+  );
+};
 
-export default PetCard
+export default PetCard;
