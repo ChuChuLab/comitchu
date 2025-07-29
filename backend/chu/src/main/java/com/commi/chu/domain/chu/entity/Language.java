@@ -2,7 +2,6 @@ package com.commi.chu.domain.chu.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "language")
