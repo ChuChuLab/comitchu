@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Landing from "./pages/Landing/Landing";
@@ -6,8 +7,15 @@ import Setting from "./pages/Setting/Setting";
 import Error from "./pages/Error/Error";
 import styles from "./App.module.css";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import useUserStore from "./store/userStore";
 
 function App() {
+  const { fetchUser } = useUserStore();
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
   return (
     <div className={styles.app}>
       <Header />
