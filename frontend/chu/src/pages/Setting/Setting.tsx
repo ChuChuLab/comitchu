@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useUser } from "../../contexts/UserContext";
+import useUserStore from "../../store/userStore";
 import { Navigate } from "react-router-dom";
 import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
 import styles from "./Setting.module.css";
 
 const Setting = () => {
-  const { user, updatePet } = useUser();
+  const { user, updatePet } = useUserStore();
   const [petName, setPetName] = useState(user?.pet?.name || "");
   const [selectedCharacter, setSelectedCharacter] = useState(user?.pet?.character || "🐱");
 

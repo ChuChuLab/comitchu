@@ -1,11 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
-import { useUser } from "../../contexts/UserContext";
+import useUserStore from "../../store/userStore";
 import LanguageToggle from "../LanguageToggle/LanguageToggle";
 import styles from "./Header.module.css";
 import { LogoutIcon } from "./LogoutIcon";
 
 const Header = () => {
-  const { user, logout } = useUser();
+  const { user, logout } = useUserStore();
   const location = useLocation();
   const handleLogout = () => {
     logout();

@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useUser } from "../../contexts/UserContext";
+import useUserStore from "../../store/userStore";
 import CharacterGridItem from "../CharacterGridItem/CharacterGridItem";
 import Button from "../common/Button";
 import Input from "../common/Input";
 import styles from "./PetCreator.module.css";
 
 const PetCreator = () => {
-  const { createPet } = useUser();
+  const { createPet } = useUserStore();
   const [selectedCharacter, setSelectedCharacter] = useState("🐱");
   const [petName, setPetName] = useState("");
 

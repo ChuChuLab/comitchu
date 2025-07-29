@@ -1,11 +1,11 @@
-import { useUser } from "../../contexts/UserContext";
+import useUserStore from "../../store/userStore";
 import { Navigate } from "react-router-dom";
 import PetCard from "../../components/PetCard/PetCard";
 import PetCreator from "../../components/PetCreator/PetCreator";
 import styles from "./Dashboard.module.css";
 
 const Dashboard = () => {
-  const { user } = useUser();
+  const { user } = useUserStore();
 
   if (!user) {
     return <Navigate to="/" replace />;

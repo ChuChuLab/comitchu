@@ -1,4 +1,4 @@
-import { useUser } from "../../contexts/UserContext";
+import useUserStore from "../../store/userStore";
 import { Link } from "react-router-dom";
 import Button from "../../components/common/Button";
 import styles from "./Landing.module.css";
@@ -6,20 +6,11 @@ import { useTranslation } from "react-i18next";
 import heroVisual from "../../assets/img/cave.svg";
 
 const Landing = () => {
-  const { user, login } = useUser();
+  const { user } = useUserStore();
   const { t } = useTranslation();
 
   const handleGitHubLogin = () => {
-    // window.location.href = "https://www.comitchu.shop/oauth2/authorization/github";
-
-    // 개발 환경에서 Mock 로그인 기능
-    // api 나오면 axios 만들고 구현하기
-    const mockUser = {
-      id: "mockUser123",
-      username: "mini-suyo",
-      avatarUrl: "https://avatars.githubusercontent.com/u/175273485?v=4",
-    };
-    login(mockUser);
+    window.location.href = "https://www.comitchu.shop/oauth2/authorization/github";
   };
 
   return (
