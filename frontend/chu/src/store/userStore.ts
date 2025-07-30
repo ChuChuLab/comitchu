@@ -1,20 +1,22 @@
 import { create } from "zustand";
 import apiClient from "../api";
 
-// API 응답에 따른 타입 정의
-interface UserData {
-  userName: string;
-  avatarUrl: string;
-}
-
-interface ApiResponse {
+// 제네릭을 사용한 공통 API 응답 인터페이스
+interface ApiResponse<T> {
   success: boolean;
-  data: UserData | Record<string, never>; // 성공 시 UserData, 실패 시 빈 객체
+  data: T;
+  // 선택적 프로퍼티 필드 (에러 코드와 메시지)
   error?: {
     code: string;
     message: string;
   };
   timestamp: string;
+}
+
+// fetchUser API가 반환하는 data의 타입
+interface UserData {
+  userName: string;
+  avatarUrl: string;
 }
 
 // 프론트엔드에서 사용할 User 타입
@@ -37,6 +39,7 @@ export interface User {
 
 interface UserState {
   user: User | null;
+  isLoggedIn: boolean;
   fetchUser: () => Promise<void>;
   logout: () => Promise<void>;
   setUser: (user: User | null) => void;
@@ -46,40 +49,50 @@ interface UserState {
 
 const useUserStore = create<UserState>((set) => ({
   user: null,
+  isLoggedIn: false,
   fetchUser: async () => {
     try {
-      const response = await apiClient.get<ApiResponse>("/user/me");
-      if (response.data.success && "userName" in response.data.data) {
+      const response = await apiClient.get<ApiResponse<UserData>>("/user/me");
+      if (response.data.success) {
         const { userName, avatarUrl } = response.data.data;
         const userData: User = {
           id: userName, // id 필드를 userName으로 설정
           username: userName,
           avatarUrl,
         };
-        set({ user: userData });
-        console.log("Fetched user data:", userData);
+        set({ user: userData, isLoggedIn: true });
       } else {
-        set({ user: null });
-        console.log("Failed to fetch user data or user data is empty.");
+        set({ user: null, isLoggedIn: false });
+        console.error("API request failed:", response.data.error?.message);
       }
     } catch (error) {
       console.error("Failed to fetch user:", error);
-      set({ user: null });
+      set({ user: null, isLoggedIn: false });
     }
   },
   logout: async () => {
     try {
-      // 로그아웃 API 명세가 따로 없다면 이 부분은 백엔드에 확인이 필요합니다.
-      // 우선 일반적인 logout 경로로 요청합니다.
-      await apiClient.post("/user/logout");
-      set({ user: null });
+      await apiClient.post<ApiResponse<Record<string, never>>>("/user/logout");
+      set({ user: null, isLoggedIn: false });
     } catch (error) {
-      console.error("Logout failed:", error);
-      // 로그아웃 실패 시에도 클라이언트 상태는 초기화
-      set({ user: null });
+      // API 명세에 따라 에러가 발생해도 로그아웃 처리
+      const anyError = error as any;
+      if (anyError.response && anyError.response.data && !anyError.response.data.success) {
+        const errorCode = anyError.response.data.error?.code;
+        if (errorCode === "UNAUTHORIZED" || errorCode === "FORBIDDEN") {
+          set({ user: null, isLoggedIn: false });
+        } else {
+          // 그 외 서버 에러(INTERNAL_ERROR) 등은 콘솔에만 기록합니다.
+          console.error(`Logout API Error: ${errorCode}`, anyError.response.data.error?.message);
+        }
+      } else {
+        // 네트워크 에러 등 응답이 없는 경우에도 로그아웃 처리
+        console.error("Logout failed due to network or unexpected error:", error);
+        set({ user: null, isLoggedIn: false });
+      }
     }
   },
-  setUser: (user) => set({ user }),
+  setUser: (user) => set({ user, isLoggedIn: !!user }),
   createPet: (petData) =>
     set((state) => {
       if (!state.user) return state;
