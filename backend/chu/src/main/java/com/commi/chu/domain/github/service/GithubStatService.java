@@ -10,6 +10,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.commi.chu.domain.chu.entity.Chu;
+import com.commi.chu.domain.chu.repository.ChuRepository;
+import com.commi.chu.domain.chu.service.ChuService;
 import com.commi.chu.domain.github.entity.ActivitySnapshot;
 import com.commi.chu.domain.github.entity.ActivitySnapshotLog;
 import com.commi.chu.domain.github.repository.ActivitySnapshotRepository;
@@ -24,6 +27,8 @@ import org.springframework.web.client.RestClient;
 
 import com.commi.chu.domain.github.dto.statistics.GithubStat;
 import com.commi.chu.domain.github.dto.graphql.GraphQlResponse;
+import com.commi.chu.global.exception.CustomException;
+import com.commi.chu.global.exception.code.ErrorCode;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,10 +39,12 @@ public class GithubStatService {
 
     private final RestClient githubRestClient;
     private final LogRepository logRepository;
+    private final ChuService chuService;
+    private final ChuRepository chuRepository;
     private final ActivitySnapshotRepository activitySnapshotRepository;
 
     /***
-     * user의 1년 단위의 전체 커밋 수, pr 수, 이슈 수, 리뷰 수를 가져오는 통계 api입니다.
+     * user의 오늘 하루 단위의 전체 커밋 수, pr 수, 이슈 수, 리뷰 수를 가져오는 통계 api입니다.
      * @param username github 유저 네임
      * @return github GraphQL로 통계 데이터를 받아옵니다.
      */
@@ -130,6 +137,13 @@ public class GithubStatService {
 
                     return activitySnapshotRepository.save(newStat);
                 });
-        log.info("업데이트 완료: {} → {}", user.getGithubUsername(), githubStat);
+
+        //user의 chu 정보를 불러와서 chu 상태를 업데이트함.
+        Chu chu = chuRepository.findByUser(user)
+            .orElseThrow(() -> new CustomException(ErrorCode.CHU_NOT_FOUND));
+
+        chuService.updateChuStatus(user, chu);
+
+        log.info("업데이트 완료: {} → chu 상태 : {}", user.getGithubUsername(), chu.getStatus());
     }
 }
