@@ -1,4 +1,8 @@
 package com.commi.chu.domain.github.repository;
 
-public interface LogRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.commi.chu.domain.github.entity.ActivitySnapshotLog;
+
+public interface LogRepository extends JpaRepository<ActivitySnapshotLog, Integer> {
 }

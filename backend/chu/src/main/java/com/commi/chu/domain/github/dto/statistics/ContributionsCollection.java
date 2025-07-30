@@ -9,14 +9,14 @@ import lombok.Data;
 public class ContributionsCollection {
 
 	//전체 커밋 수
-	private ContributionCalendar contributionCalendar;
-
-	//전체 pr 수
-	private CountWrapper pullRequestContributions;
+	private int totalCommitContributions;
 
 	//전체 이슈 수
-	private CountWrapper issueContributions;
+	private int totalIssueContributions;
+
+	//전체 pr 수
+	private int totalPullRequestContributions;
 
 	//전제 pr 리뷰 수
-	private CountWrapper pullRequestReviewContributions;
+	private int totalPullRequestReviewContributions;
 }
