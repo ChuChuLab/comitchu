@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import apiClient from "../api";
+import type { User, Chu } from "../types/model";
 
 // 제네릭을 사용한 공통 API 응답 인터페이스
 interface ApiResponse<T> {
@@ -19,96 +20,71 @@ interface UserData {
   avatarUrl: string;
 }
 
-// 프론트엔드에서 사용할 User 타입
-export interface Pet {
-  id: string;
-  name: string;
-  character: string;
-  level: number;
-  xp: number;
-  mood: "happy" | "neutral" | "sad";
-  createdAt: string;
-}
-
-export interface User {
-  id: string; // userName을 id로 사용
-  username: string;
-  avatarUrl: string;
-  pet?: Pet;
-}
-
+// 각 api를 호출하면서 만들 메서드 이름을 여기에 정리하기
+// 후에 기능 완료 후 필요없는 기능은 날려야댐
+// pet -> chu로 필드명 변경
 interface UserState {
   user: User | null;
   isLoggedIn: boolean;
+  isLoading: boolean;
+  error: string | null;
   fetchUser: () => Promise<void>;
   logout: () => Promise<void>;
   setUser: (user: User | null) => void;
-  createPet: (petData: Omit<Pet, "id" | "createdAt">) => void;
-  updatePet: (petData: Partial<Pet>) => void;
 }
 
 const useUserStore = create<UserState>((set) => ({
   user: null,
   isLoggedIn: false,
+  isLoading: false,
+  error: null,
   fetchUser: async () => {
+    set({ isLoading: true, error: null });
     try {
       const response = await apiClient.get<ApiResponse<UserData>>("/user/me");
       if (response.data.success) {
         const { userName, avatarUrl } = response.data.data;
         const userData: User = {
-          id: userName, // id 필드를 userName으로 설정
-          username: userName,
+          userName,
           avatarUrl,
         };
-        set({ user: userData, isLoggedIn: true });
+        set({ user: userData, isLoggedIn: true, isLoading: false });
       } else {
-        set({ user: null, isLoggedIn: false });
-        console.error("API request failed:", response.data.error?.message);
+        set({
+          user: null,
+          isLoggedIn: false,
+          isLoading: false,
+          error: response.data.error?.message || "사용자 정보를 불러오는데 실패했습니다.",
+        });
       }
     } catch (error) {
-      console.error("Failed to fetch user:", error);
-      set({ user: null, isLoggedIn: false });
+      set({
+        user: null,
+        isLoggedIn: false,
+        isLoading: false,
+        error: "네트워크 오류가 발생했습니다. 다시 시도해주세요.",
+      });
     }
   },
   logout: async () => {
+    set({ isLoading: true, error: null });
     try {
       await apiClient.post<ApiResponse<Record<string, never>>>("/user/logout");
-      set({ user: null, isLoggedIn: false });
+      set({ user: null, isLoggedIn: false, isLoading: false });
     } catch (error) {
-      // API 명세에 따라 에러가 발생해도 로그아웃 처리
+      // API 에러가 발생하더라도 로그아웃은 처리되어야 합니다.
+      // 사용자 경험을 위해 에러 메시지는 상태에 저장합니다.
       const anyError = error as any;
-      if (anyError.response && anyError.response.data && !anyError.response.data.success) {
-        const errorCode = anyError.response.data.error?.code;
-        if (errorCode === "UNAUTHORIZED" || errorCode === "FORBIDDEN") {
-          set({ user: null, isLoggedIn: false });
-        } else {
-          // 그 외 서버 에러(INTERNAL_ERROR) 등은 콘솔에만 기록합니다.
-          console.error(`Logout API Error: ${errorCode}`, anyError.response.data.error?.message);
-        }
-      } else {
-        // 네트워크 에러 등 응답이 없는 경우에도 로그아웃 처리
-        console.error("Logout failed due to network or unexpected error:", error);
-        set({ user: null, isLoggedIn: false });
+      let errorMessage = "로그아웃 중 오류가 발생했습니다.";
+      if (anyError.response && anyError.response.data && anyError.response.data.error) {
+        errorMessage = anyError.response.data.error.message;
       }
+      set({ user: null, isLoggedIn: false, isLoading: false, error: errorMessage });
     }
   },
+  // setUser는 api를 호출하지 않고 사용자 정보를 불러올 때 쓴다
+  // ex) 다른 api를 통해 user값이 바뀌었을 때, 사용자 정보 업데이트 할 때
   setUser: (user) => set({ user, isLoggedIn: !!user }),
-  createPet: (petData) =>
-    set((state) => {
-      if (!state.user) return state;
-      const newPet: Pet = {
-        ...petData,
-        id: Date.now().toString(),
-        createdAt: new Date().toISOString(),
-      };
-      return { user: { ...state.user, pet: newPet } };
-    }),
-  updatePet: (petData) =>
-    set((state) => {
-      if (!state.user || !state.user.pet) return state;
-      const updatedPet = { ...state.user.pet, ...petData };
-      return { user: { ...state.user, pet: updatedPet } };
-    }),
 }));
 
 export default useUserStore;
