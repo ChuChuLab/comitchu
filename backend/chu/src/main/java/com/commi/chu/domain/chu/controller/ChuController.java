@@ -1,11 +1,17 @@
 package com.commi.chu.domain.chu.controller;
 
+import com.commi.chu.domain.chu.dto.MainChuResponseDto;
 import com.commi.chu.domain.chu.service.ChuService;
+import com.commi.chu.global.common.response.CommonResponse;
+import com.commi.chu.global.security.auth.UserPrincipal;
+import com.commi.chu.global.util.AuthenticationUtil;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class ChuController {
 
     private final ChuService chuService;
+    private final AuthenticationUtil authenticationUtil;
 
     /**
      * 사용자 레벨이 표시된 커밋츄 뱃지 이미지를 반환합니다.
@@ -50,6 +57,21 @@ public class ChuController {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    /***
+     * 사용자의 대표 chu 정보를 반환합니다.
+     *
+     * @param userPrincipal 요청한 사용자 정보
+     * @return 사용자의 대표 chu 정보를 포함한 ResponseEntity
+     */
+    @GetMapping("/main")
+    public ResponseEntity<CommonResponse<MainChuResponseDto>> getMainChu(
+        @AuthenticationPrincipal UserPrincipal userPrincipal
+    ) {
+        Integer userId = authenticationUtil.getCurrentUserId(userPrincipal);
+
+        return CommonResponse.ok(chuService.getMainChu(userId));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.commi.chu.domain.chu.service;
 
+import com.commi.chu.domain.chu.dto.MainChuResponseDto;
 import com.commi.chu.domain.chu.entity.Chu;
 import com.commi.chu.domain.chu.entity.ChuStatus;
 import com.commi.chu.domain.chu.repository.ChuRepository;
@@ -166,5 +167,30 @@ public class ChuService {
         }
 
         chu.updateStatus(chuStatus);
+    }
+
+    /***
+     * 사용쟈의 대표 chu 정보를 반환하는 메서드
+     *
+     * @param userId 사용자 id
+     * @return 사용자 대표 chu 정보를 반환
+     */
+    public MainChuResponseDto getMainChu(Integer userId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "userId", userId));
+
+        Chu mainChu = chuRepository.findByUser(user)
+            .orElseThrow(() -> new CustomException(ErrorCode.CHU_NOT_FOUND));
+
+        ChuStatus mainChuStatus = mainChu.getStatus();
+
+        return MainChuResponseDto.builder()
+            .nickname(mainChu.getName())
+            .level(mainChu.getLevel())
+            .exp(mainChu.getExp())
+            .status(mainChuStatus.toString())
+            .lang(mainChu.getLang())
+            .background(mainChu.getBackground())
+            .build();
     }
 }
