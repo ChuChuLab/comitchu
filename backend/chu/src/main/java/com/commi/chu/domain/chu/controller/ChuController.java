@@ -1,5 +1,8 @@
 package com.commi.chu.domain.chu.controller;
 
+import java.util.List;
+
+import com.commi.chu.domain.chu.dto.ChuSkinListResponseDto;
 import com.commi.chu.domain.chu.dto.MainChuResponseDto;
 import com.commi.chu.domain.chu.service.ChuService;
 import com.commi.chu.global.common.response.CommonResponse;
@@ -72,6 +75,21 @@ public class ChuController {
         Integer userId = authenticationUtil.getCurrentUserId(userPrincipal);
 
         return CommonResponse.ok(chuService.getMainChu(userId));
+    }
+
+    /***
+     * 사용자가 가진 chu 스킨 목록을 조회하는 메서드
+     *
+     * @param userPrincipal 요청한 사용자 정보
+     * @return 사용자가 가진 chu 스킨 목록을 가진 ResponseEntity
+     */
+    @GetMapping("/list")
+    public ResponseEntity<CommonResponse<List<ChuSkinListResponseDto>>> getChuSkinList(
+        @AuthenticationPrincipal UserPrincipal userPrincipal
+    ){
+        Integer userId = authenticationUtil.getCurrentUserId(userPrincipal);
+
+        return CommonResponse.ok(chuService.getUserChuSkins(userId));
     }
 
 }
