@@ -2,8 +2,6 @@ import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import useUserStore from "../../store/userStore";
 import useChuStore from "../../store/chuStore";
-import PetCard from "../../components/PetCard/PetCard";
-import PetCreator from "../../components/PetCreator/PetCreator";
 import styles from "./Dashboard.module.css";
 
 const Dashboard = () => {
@@ -35,7 +33,6 @@ const Dashboard = () => {
         <div className={styles.petSection}>
           {/* PetCard가 Chu 타입을 받을 수 있도록 수정이 필요할 수 있습니다. */}
           {/* 우선 chu 객체를 pet prop으로 넘겨봅니다. */}
-          <PetCard pet={mainChu} />
         </div>
       );
     }
@@ -44,7 +41,6 @@ const Dashboard = () => {
       <div className={styles.creatorSection}>
         <h2 className={styles.subtitle}>Create Your ComitChu</h2>
         <p className={styles.description}>Choose your perfect coding companion from the characters below!</p>
-        <PetCreator />
       </div>
     );
   };
