@@ -47,4 +47,10 @@ public class Chu extends BaseEntity {
     @Column(name="last_status_updated_at", nullable = false)
     @LastModifiedDate
     private LocalDateTime lastStatusUpdatedAt;
+
+    public void updateStatus(ChuStatus newStatus) {
+        this.status = newStatus;
+        this.lastStatusUpdatedAt = LocalDateTime.now();
+    }
+
 }
