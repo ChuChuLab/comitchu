@@ -2,7 +2,6 @@ package com.commi.chu.domain.github.scheduler;
 
 import java.util.List;
 
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-@EnableScheduling
 @RequiredArgsConstructor
 public class GithubStatScheduler {
 
@@ -26,7 +24,7 @@ public class GithubStatScheduler {
     /*
         매일 밤 00시 마다 user들의 github 통계를 업데이트
      */
-    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 55 15 * * *", zone = "Asia/Seoul")
     public void updateAllGithubStats() {
         List<User> users = userRepository.findActiveGithubUsers();
 

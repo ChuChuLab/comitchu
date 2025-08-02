@@ -1,7 +1,16 @@
 package com.commi.chu.domain.chu.service;
 
+import com.commi.chu.domain.chu.dto.ChuSkinListResponseDto;
+import com.commi.chu.domain.chu.dto.MainChuResponseDto;
 import com.commi.chu.domain.chu.entity.Chu;
+import com.commi.chu.domain.chu.entity.ChuStatus;
+import com.commi.chu.domain.chu.entity.Language;
+import com.commi.chu.domain.chu.entity.UserLang;
 import com.commi.chu.domain.chu.repository.ChuRepository;
+import com.commi.chu.domain.chu.repository.LanguageRepository;
+import com.commi.chu.domain.chu.repository.UserLangRepository;
+import com.commi.chu.domain.github.entity.ActivitySnapshotLog;
+import com.commi.chu.domain.github.repository.LogRepository;
 import com.commi.chu.domain.user.entity.User;
 import com.commi.chu.domain.user.repository.UserRepository;
 import com.commi.chu.global.exception.CustomException;
@@ -15,7 +24,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -26,6 +40,9 @@ public class ChuService {
     private final UserRepository userRepository;
     private final ChuRepository chuRepository;
     private final BadgeGeneratorService badgeGeneratorService;
+    private final LogRepository logRepository;
+    private final UserLangRepository userLangRepository;
+    private final LanguageRepository languageRepository;
 
     private static final String BACKGROUND_IMAGE_BASE_PATH = "images/backgrounds/";
     private static final String CHARACTER_IMAGE_BASE_PATH = "images/chu/";
@@ -139,4 +156,83 @@ public class ChuService {
         }
     }
 
+    /***
+     * chu의 상태를 업데이트 하는 메서드
+     * @param user 사용자 정보
+     * @param chu 사용자의 chu 정보
+     */
+    @Transactional
+    public void updateChuStatus(User user, Chu chu) {
+        List<ActivitySnapshotLog> recentLogs = logRepository.findTop3ByUserIdOrderByActivityDateDesc(user.getId());
+
+        int totalCommits = recentLogs.stream()
+            .mapToInt(ActivitySnapshotLog::getCommitCount).sum();
+
+        ChuStatus chuStatus;
+        if(totalCommits <= 0){
+            chuStatus = ChuStatus.HUNGRY;
+        } else if(totalCommits < 5){
+            chuStatus = ChuStatus.NORMAL;
+        } else{
+            chuStatus = ChuStatus.HAPPY;
+        }
+
+        chu.updateStatus(chuStatus);
+    }
+
+    /***
+     * 사용쟈의 대표 chu 정보를 반환하는 메서드
+     *
+     * @param userId 사용자 id
+     * @return 사용자 대표 chu 정보를 반환
+     * @throws CustomException USER_NOT_FOUND : 해당 Id의 사용자가 없을 때
+     * @throws CustomException CHU_NOT_FOUND : 사용자의 chu 정보가 없을 때
+     */
+    public MainChuResponseDto getMainChu(Integer userId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "userId", userId));
+
+        Chu mainChu = chuRepository.findByUser(user)
+            .orElseThrow(() -> new CustomException(ErrorCode.CHU_NOT_FOUND));
+
+        return MainChuResponseDto.of(mainChu);
+    }
+
+    /***
+     * 사용자가 보유한 Chu 스킨 목록을 조회합니다.
+     *
+     * @param userId 요청한 사용자 Id
+     * @return 모든 스킨에 대해 잠금 해제 여부와 대표 스킨 여부를 포함
+     * @throws CustomException USER_NOT_FOUND : 해당 Id의 사용자가 없을 때
+     * @throws CustomException CHU_NOT_FOUND : 사용자의 chu 정보가 없을 때
+     */
+    public List<ChuSkinListResponseDto> getUserChuSkins(Integer userId){
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "userId", userId));
+
+        Chu chu = chuRepository.findByUser(user)
+            .orElseThrow(() -> new CustomException(ErrorCode.CHU_NOT_FOUND));
+
+        //전체 언어 목록 조회
+        List<Language> allLanguages = languageRepository.findAll();
+
+        //사용자가 해금한 언어 목록 조회
+        List<UserLang> userLangs = userLangRepository.findByUserId(userId);
+
+        //set의 contains 연산을 쓰기 위해 집합으로 변환
+        Set<Language> owned = userLangs.stream()
+            .map(UserLang::getLang)
+            .collect(Collectors.toSet());
+
+        return allLanguages.stream()
+            .map(lang -> {
+                boolean unlocked = owned.contains(lang);
+                boolean main    = unlocked && chu.getLang().equals(lang.getLang());
+                return ChuSkinListResponseDto.of(
+                    lang.getId(),
+                    main,
+                    unlocked);
+            })
+            .collect(Collectors.toList());
+    }
 }
