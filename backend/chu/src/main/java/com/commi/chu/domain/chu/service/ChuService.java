@@ -195,16 +195,7 @@ public class ChuService {
         Chu mainChu = chuRepository.findByUser(user)
             .orElseThrow(() -> new CustomException(ErrorCode.CHU_NOT_FOUND));
 
-        ChuStatus mainChuStatus = mainChu.getStatus();
-
-        return MainChuResponseDto.builder()
-            .nickname(mainChu.getName())
-            .level(mainChu.getLevel())
-            .exp(mainChu.getExp())
-            .status(mainChuStatus.toString())
-            .lang(mainChu.getLang())
-            .background(mainChu.getBackground())
-            .build();
+        return MainChuResponseDto.of(mainChu);
     }
 
     /***
@@ -237,11 +228,10 @@ public class ChuService {
             .map(lang -> {
                 boolean unlocked = owned.contains(lang);
                 boolean main    = unlocked && chu.getLang().equals(lang.getLang());
-                return ChuSkinListResponseDto.builder()
-                    .langId(lang.getId()) //스킨 식별자
-                    .isUnlocked(unlocked) //잠금 해제 여부
-                    .isMain(main) //대표 chu 여부
-                    .build();
+                return ChuSkinListResponseDto.of(
+                    lang.getId(),
+                    main,
+                    unlocked);
             })
             .collect(Collectors.toList());
     }
