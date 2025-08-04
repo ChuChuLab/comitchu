@@ -16,6 +16,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * GitHub GraphQL API를 통해 특정 사용자의 저장소별 언어 사용 통계를 조회하고 계산하는 서비스입니다.
@@ -29,7 +30,7 @@ public class GithubLanguageService {
      * - $login: GitHub 사용자명
      * - $after: 페이지네이션 커서(null이면 첫 페이지 조회)
      */
-    private static final String LANG_QUERY = """
+    private static final String LANG_QUERY_TOP10 = """
             query($login: String!, $after: String) {
               user(login: $login) {
                 repositories(
@@ -63,9 +64,36 @@ public class GithubLanguageService {
             }
             """;
 
+    //언어 해금용 쿼리
+    private static final String LANG_QUERY_TOP100 = """  
+      query($login: String!, $after: String) {
+        user(login: $login) {
+          repositories(first: 30, after: $after, isFork: false, ownerAffiliations: [OWNER]) {
+            pageInfo { hasNextPage endCursor }
+            nodes {
+              languages(first: 100, orderBy: { field: SIZE, direction: DESC }) {
+                edges { size node { name } }
+              }
+            }
+          }
+        }
+      }
+    """;
+
 
     private final RestClient restClient;
     private final UserRepository userRepository;
+
+    //컨트롤러 호출용
+    public LanguageStatListResponse fetchLanguagePercentages(Integer userId) {
+        return executeQueryAndAggregate(userId, LANG_QUERY_TOP10);
+    }
+
+    //언어 해금용
+    public List<LanguageStatsDto> getAllLanguageStats(Integer userId) {
+        LanguageStatListResponse resp = executeQueryAndAggregate(userId, LANG_QUERY_TOP100);
+        return resp.getLanguageStats();
+    }
 
     /**
      * 특정 사용자의 저장소 전체에서 언어별 사용량을 집계하고,
@@ -74,7 +102,7 @@ public class GithubLanguageService {
      * @param userId GitHub 사용자 로그인 ID
      * @return 언어별 바이트 수와 비율 정보가 담긴 LanguageStatsDto 리스트(바이트 수 내림차순)
      */
-    public LanguageStatListResponse fetchLanguagePercentages(Integer userId) {
+    public LanguageStatListResponse executeQueryAndAggregate(Integer userId, String query) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "userId", userId));
 
@@ -97,7 +125,7 @@ public class GithubLanguageService {
 
             // 요청 본문에 쿼리와 변수 설정
             Map<String, Object> body = new HashMap<>();
-            body.put("query", LANG_QUERY);
+            body.put("query", query);
             body.put("variables", variables);
 
             // GraphQL API 호출 및 응답 수신
@@ -112,7 +140,7 @@ public class GithubLanguageService {
                 throw new CustomException(ErrorCode.GITHUB_GRAPHQL_FAILED, "username", githubUsername);
             }
 
-            if (resp.getErrors() != null && !resp.getErrors().isEmpty()) {
+            if (Objects.requireNonNull(resp).getErrors() != null && !resp.getErrors().isEmpty()) {
                 throw new CustomException(
                         ErrorCode.GITHUB_GRAPHQL_FAILED,
                         "errors", resp.getErrors()
