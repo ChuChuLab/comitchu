@@ -8,10 +8,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.commi.chu.domain.chu.entity.Chu;
 import com.commi.chu.domain.chu.entity.Language;
 import com.commi.chu.domain.chu.entity.UserLang;
-import com.commi.chu.domain.chu.repository.ChuRepository;
 import com.commi.chu.domain.chu.repository.LanguageRepository;
 import com.commi.chu.domain.chu.repository.UserLangRepository;
 import com.commi.chu.domain.github.dto.language.LanguageStatsDto;
@@ -32,7 +30,6 @@ public class ChuLanguageUnlockService {
 	private final LanguageRepository languageRepository;
 	private final UserLangRepository userLangRepository;
 	private final UserRepository userRepository;
-	private final ChuRepository chuRepository;
 
 	private final GithubLanguageService githubLanguageService;
 
