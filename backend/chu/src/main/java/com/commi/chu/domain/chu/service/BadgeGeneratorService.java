@@ -1,5 +1,6 @@
 package com.commi.chu.domain.chu.service;
 
+import com.commi.chu.domain.chu.entity.ChuStatus;
 import com.commi.chu.global.exception.CustomException;
 import com.commi.chu.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +32,15 @@ public class BadgeGeneratorService {
     private static final int CHARACTER_HORIZONTAL_MOVEMENT_PIXELS = 15;
 
     @Cacheable(value = "badgeSvg", key = "#githubUsername + '_' + #backgroundName + '_' + #lang")
-    public String generateSvgBadge(String githubUsername, String backgroundName, String lang) {
+    public String generateSvgBadge(String githubUsername, String backgroundName, String lang, String status) {
+
+        String dir = "normal/";
+        if(status.equals("HUNGRY"))     dir = "hungry/";
+        else if(status.equals("HAPPY"))    dir = "happy/";
 
         // 1. 이미지 Base64 인코딩
         String base64BgImage = encodeImageToBase64(BACKGROUND_IMAGE_BASE_PATH + backgroundName + ".png", "image/png");
-        String base64CharImage = encodeImageToBase64(CHARACTER_IMAGE_BASE_PATH + lang + ".png", "image/png");
+        String base64CharImage = encodeImageToBase64(CHARACTER_IMAGE_BASE_PATH + dir + lang + ".png", "image/png");
 
         if (base64BgImage == null || base64CharImage == null) {
             throw new CustomException(ErrorCode.INVALID_INPUT_VALUE, "imageName", "Background or character image not found/loadable.");
@@ -48,7 +53,7 @@ public class BadgeGeneratorService {
 
         // 캐릭터 초기 위치 (SVG 중앙 하단)
         int initialCharX = (svgWidth - charWidth) / 2;
-        int initialCharY = (svgHeight - charHeight) - 10;
+        int initialCharY = (svgHeight - charHeight) - 8;
 
         // SVG XML 구성
         StringBuilder svgBuilder = new StringBuilder();
