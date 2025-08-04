@@ -17,16 +17,9 @@ import com.commi.chu.global.exception.CustomException;
 import com.commi.chu.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -56,8 +49,9 @@ public class ChuService {
 
         String backgroundName = chu.getBackground();
         String lang = chu.getLang();
+        String status = chu.getStatus().name();
 
-        return badgeGeneratorService.generateSvgBadge(githubUsername, backgroundName, lang);
+        return badgeGeneratorService.generateSvgBadge(githubUsername, backgroundName, lang, status);
     }
 
     /***

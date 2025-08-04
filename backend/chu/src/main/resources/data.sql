@@ -5,4 +5,4 @@ INSERT INTO language (lang)
 VALUES ('comit'), ('java'), ('python'), ('js'), ('typescript'), ('c'), ('c++'), ('c#'), ('swift'), ('go');
 
 INSERT INTO chu (created_at, exp, user_id, name, level, status, lang, background, last_status_updated_at)
-VALUES (NOW(), 0, 1, '커밋츄', 15, 'NORMAL', 'comit', 'flower', NOW());
+VALUES (NOW(), 0, 1, '커밋츄', 15, 'NORMAL', 'comit', 'village', NOW());
