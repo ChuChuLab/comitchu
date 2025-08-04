@@ -9,11 +9,17 @@ export interface User {
 
 // 츄 데이터 모델
 export interface Chu {
-  chuId: number;
-  nikname: string;
+  nickname: string;
   level: number;
   exp: number;
   status: string;
+  lang: string;
+  background: string;
+}
+
+// 츄 스킨 모델
+export interface ChuSkin {
+  langId: number;
   isMain: boolean;
-  lastStateUpdatedAt: string;
+  isUnlocked: boolean;
 }
