@@ -23,7 +23,7 @@ import java.util.Collections;
 
 @Slf4j
 @Component
-@Profile({"local, prod"}) // 추후 실 운영에서 주석 해제
+@Profile({"local", "prod"}) // 추후 실 운영에서 주석 해제
 @RequiredArgsConstructor
 public class DevAuthenticationFilter extends OncePerRequestFilter {
 
