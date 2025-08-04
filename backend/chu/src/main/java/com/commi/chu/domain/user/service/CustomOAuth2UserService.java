@@ -2,9 +2,15 @@ package com.commi.chu.domain.user.service;
 
 import com.commi.chu.domain.chu.entity.Chu;
 import com.commi.chu.domain.chu.entity.ChuStatus;
+import com.commi.chu.domain.chu.entity.Language;
+import com.commi.chu.domain.chu.entity.UserLang;
 import com.commi.chu.domain.chu.repository.ChuRepository;
+import com.commi.chu.domain.chu.repository.LanguageRepository;
+import com.commi.chu.domain.chu.repository.UserLangRepository;
 import com.commi.chu.domain.user.entity.User;
 import com.commi.chu.domain.user.repository.UserRepository;
+import com.commi.chu.global.exception.CustomException;
+import com.commi.chu.global.exception.code.ErrorCode;
 import com.commi.chu.global.security.auth.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +30,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
     private final ChuRepository chuRepository;
+    private final LanguageRepository languageRepository;
+    private final UserLangRepository userLangRepository;
 
     @Override
     @Transactional
@@ -34,7 +42,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
         // 2. GitHub 사용자 정보를 추출합니다. (고유 ID, 닉네임, 프로필사진)
-        // githubId는 Long 타입일 수 있으므로, Number로 받고 longValue()로 변환합니다.
         Long githubId = ((Number) attributes.get("id")).longValue();
         String githubUsername = (String) attributes.get("login");
         String avatarUrl = (String) attributes.get("avatar_url");
@@ -65,15 +72,25 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                             .exp(0)
                             .status(ChuStatus.NORMAL) //츄의 상태는 기본값 NORAML
                             .lang("comit") //첫번째 츄는 대표캐릭터
-                            .background("flower")
+                            .background("village")
                             .build();
 
                     chuRepository.save(newChu);
 
+                    // 3-3. 해당 유저의 user_lang에 comit 추가
+                    Language lang = languageRepository.findById(1)
+                            .orElseThrow(() -> new CustomException(ErrorCode.INTERNAL_SERVER_ERROR));
+
+                    UserLang newUserLang = UserLang.builder()
+                            .user(newUser)
+                            .lang(lang)
+                            .build();
+
+                    userLangRepository.save(newUserLang);
+
                     return newUser;
                 });
 
-        log.info("UserPrincipal 반환 직전"); // 6. 종료 로그
         // 4. Spring Security가 관리할 우리 시스템의 사용자 정보 객체(UserPrincipal)를 반환합니다.
         return UserPrincipal.builder()
                 .id(user.getId()) // 우리 시스템의 User ID (PK)
