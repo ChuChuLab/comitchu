@@ -26,7 +26,10 @@ public enum ErrorCode {
     CHU_NOT_FOUND(HttpStatus.NOT_FOUND, "H002", "츄 정보를 찾을 수 없습니다"),
 
     // Github
-    GITHUB_GRAPHQL_FAILED(HttpStatus.INTERNAL_SERVER_ERROR,"G001","GitHub GraphQL API 요청에 실패했습니다");
+    GITHUB_GRAPHQL_FAILED(HttpStatus.INTERNAL_SERVER_ERROR,"G001","GitHub GraphQL API 요청에 실패했습니다"),
+
+    //UserLang
+    USER_LANG_NOT_FOUND(HttpStatus.NOT_FOUND, "L001", "해금 언어에서 해당 언어를 찾을 수 없습니다.");
 
     private final HttpStatus status;
     private final String code;
