@@ -4,12 +4,15 @@ import java.util.List;
 
 import com.commi.chu.domain.chu.dto.ChuSkinListResponseDto;
 import com.commi.chu.domain.chu.dto.MainChuResponseDto;
+import com.commi.chu.domain.chu.dto.UpdateMainChuResponseDto;
+import com.commi.chu.domain.chu.scheduler.LanguageUnlockScheduler;
 import com.commi.chu.domain.chu.service.ChuService;
 import com.commi.chu.global.common.response.CommonResponse;
 import com.commi.chu.global.security.auth.UserPrincipal;
 import com.commi.chu.global.util.AuthenticationUtil;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 public class ChuController {
 
     private final ChuService chuService;
+    private final LanguageUnlockScheduler languageUnlockScheduler;
     private final AuthenticationUtil authenticationUtil;
 
     /**
@@ -72,4 +76,34 @@ public class ChuController {
         return CommonResponse.ok(chuService.getUserChuSkins(userId));
     }
 
+    /***
+     * 대표 chu의 언어를 바꾸는 메서드
+     *
+     * @param userPrincipal 요청한 사용자 정보
+     * @param langId 대표 언어로 지정할 langId
+     * @return 대표 언어 변경 완료 메시지
+     */
+    @PatchMapping("/main/{langId}")
+    public ResponseEntity<CommonResponse<UpdateMainChuResponseDto>> updateMainChu(
+        @AuthenticationPrincipal UserPrincipal userPrincipal,
+        @PathVariable Integer langId
+
+    ){
+        Integer userId = authenticationUtil.getCurrentUserId(userPrincipal);
+
+        return CommonResponse.ok(chuService.updateMainChu(userId,langId));
+    }
+
+    /***
+     * 해금 언어 스케줄러를 api 호출로 실행시키기 위한 메서드
+     *
+     * @return 언어 해금
+     */
+    @PatchMapping("/admin/unlock")
+    public ResponseEntity<?> unlockSkin(){
+
+        languageUnlockScheduler.dailyUnlockScheduler();
+
+        return CommonResponse.ok("언어 해금 완료");
+    }
 }

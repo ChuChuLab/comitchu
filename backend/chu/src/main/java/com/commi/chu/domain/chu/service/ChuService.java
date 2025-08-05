@@ -2,6 +2,7 @@ package com.commi.chu.domain.chu.service;
 
 import com.commi.chu.domain.chu.dto.ChuSkinListResponseDto;
 import com.commi.chu.domain.chu.dto.MainChuResponseDto;
+import com.commi.chu.domain.chu.dto.UpdateMainChuResponseDto;
 import com.commi.chu.domain.chu.entity.Chu;
 import com.commi.chu.domain.chu.entity.ChuStatus;
 import com.commi.chu.domain.chu.entity.Language;
@@ -17,10 +18,13 @@ import com.commi.chu.global.exception.CustomException;
 import com.commi.chu.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -132,5 +136,30 @@ public class ChuService {
                     unlocked);
             })
             .collect(Collectors.toList());
+    }
+
+
+    @Transactional
+    public UpdateMainChuResponseDto updateMainChu(Integer userId, Integer langId){
+
+        //사용자 조회
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "userId", userId));
+
+
+        //해당 언어가 사용자가 실제로 해금한 언어인지 확인
+        UserLang userLang = userLangRepository.findByUserIdAndLangId(userId, langId)
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_LANG_NOT_FOUND, "langId", langId));
+
+        //chu 조회
+        Chu chu = chuRepository.findByUser(user)
+            .orElseThrow(() -> new CustomException(ErrorCode.CHU_NOT_FOUND));
+
+
+        chu.updateLang(userLang.getLang().getLang());
+
+        log.info("[updateMainChu] {}의 대표 chu 언어가 {}로 변경 됐습니다.", user.getGithubUsername(),chu.getLang());
+
+        return UpdateMainChuResponseDto.of("대표 언어가 변경 되었습니다.");
     }
 }
