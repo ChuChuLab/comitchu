@@ -94,5 +94,16 @@ public class ChuController {
         return CommonResponse.ok(chuService.updateMainChu(userId,langId));
     }
 
+    /***
+     * 해금 언어 스케줄러를 api 호출로 실행시키기 위한 메서드
+     *
+     * @return 언어 해금
+     */
+    @PatchMapping("/admin/unlock")
+    public ResponseEntity<?> unlockSkin(){
 
+        languageUnlockScheduler.dailyUnlockScheduler();
+
+        return CommonResponse.ok("언어 해금 완료");
+    }
 }
