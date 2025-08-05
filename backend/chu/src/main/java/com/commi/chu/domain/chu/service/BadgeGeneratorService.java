@@ -31,7 +31,7 @@ public class BadgeGeneratorService {
     private static final String ANIMATION_REPEAT_COUNT = "indefinite";
     private static final int CHARACTER_HORIZONTAL_MOVEMENT_PIXELS = 15;
 
-    @Cacheable(value = "badgeSvg", key = "#githubUsername + '_' + #backgroundName + '_' + #lang")
+    @Cacheable(value = "badgeSvg", key = "#githubUsername + '_' + #backgroundName + '_' + #lang + '_' + #status")
     public String generateSvgBadge(String githubUsername, String backgroundName, String lang, String status) {
 
         String dir = "normal/";

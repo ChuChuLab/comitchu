@@ -53,4 +53,9 @@ public class Chu extends BaseEntity {
         this.lastStatusUpdatedAt = LocalDateTime.now();
     }
 
+
+    public void updateLang(String lang) {
+        this.lang = lang;
+        this.lastStatusUpdatedAt = LocalDateTime.now();
+    }
 }
