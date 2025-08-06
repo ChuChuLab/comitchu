@@ -1,53 +1,59 @@
 .dashboard {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px 0;
+  padding: 2rem;
 }
 
 .title {
-  font-size: 36px;
-  font-weight: 700;
-  color: #2c3e50;
-  margin-bottom: 32px;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 
-.petSection {
+.contentWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.svgSection {
+  flex: 2;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   display: flex;
   justify-content: center;
-  padding: 40px 0;
+  align-items: center;
 }
 
-.creatorSection {
-  text-align: center;
+.svgImage {
+  width: 300px;
+  height: 200px;
 }
 
-.subtitle {
-  font-size: 28px;
-  font-weight: 600;
-  color: #4a90e2;
-  margin-bottom: 16px;
+.mainChuSection {
+  flex: 1;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
 }
 
-.description {
-  font-size: 18px;
-  color: #666;
-  margin-bottom: 40px;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+.mainChuSection h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
 }
 
-@media (max-width: 768px) {
-  .title {
-    font-size: 28px;
-  }
+.loading,
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 1.2rem;
+}
 
-  .subtitle {
-    font-size: 24px;
-  }
-
-  .description {
-    font-size: 16px;
-  }
+.error {
+  color: red;
 }

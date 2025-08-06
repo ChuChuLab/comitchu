@@ -20,10 +20,9 @@ const apiClient = axios.create({
   },
 });
 
-// 개발 환경에서만 X-DEV-USER 헤더 추가
-if (import.meta.env.DEV) {
-  apiClient.defaults.headers.common["X-DEV-USER"] = "1";
-  console.log("짜증");
+// 개발 환경에 조건과 .env파일 보유시에만 개발자 계정 접속 가능
+if (import.meta.env.DEV && import.meta.env.VITE_DEV_USER_ID) {
+  apiClient.defaults.headers.common["X-DEV-USER"] = import.meta.env.VITE_DEV_USER_ID;
 }
 
 export default apiClient;
