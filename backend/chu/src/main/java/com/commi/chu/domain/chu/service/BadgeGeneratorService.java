@@ -57,12 +57,12 @@ public class BadgeGeneratorService {
 
         // SVG XML 구성
         StringBuilder svgBuilder = new StringBuilder();
-        svgBuilder.append("<svg width=\"").append(svgWidth).append("\" height=\"").append(svgHeight).append("\" ")
+        svgBuilder.append("<svg viewBox=\"0 0 150 100\" ") // viewBox를 사용하여 내부 콘텐츠 비율 유지
                 .append("xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n");
 
         // 배경 이미지 삽입 (Base64 인코딩)
         svgBuilder.append("  <image xlink:href=\"data:image/png;base64,").append(base64BgImage)
-                .append("\" x=\"0\" y=\"0\" width=\"").append(svgWidth).append("\" height=\"").append(svgHeight).append("\" />\n");
+                .append("\" x=\"0\" y=\"0\" width=\"100%\" height=\"100%\" />\n"); // width와 height를 100%로 변경
 
         // 캐릭터 이미지 삽입 및 애니메이션 (Base64 인코딩)
         svgBuilder.append("  <image xlink:href=\"data:image/png;base64,").append(base64CharImage)
