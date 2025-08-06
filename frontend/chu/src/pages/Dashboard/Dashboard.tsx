@@ -1,56 +1,76 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import useUserStore from "../../store/userStore";
 import useChuStore from "../../store/chuStore";
+import { fetchChuSvgAPI } from "../../api/chu";
 import styles from "./Dashboard.module.css";
 
 const Dashboard = () => {
-  const { mainChu, chuSkins, isLoading, error, fetchMainChu, fetchAllChuSkins } = useChuStore();
+  const { mainChu, isLoading, error, fetchMainChu } = useChuStore();
+
+  // 로그인한 사용자 정보
+  const user = useUserStore((state) => state.user);
+  // svg 관련 상태 정보
+  const [svgContent, setSvgContent] = useState<string | null>(null);
+  const [svgLoading, setSvgLoading] = useState(true);
+  const [svgError, setSvgError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchMainChu();
-    fetchAllChuSkins();
-  }, [fetchMainChu, fetchAllChuSkins]);
+  }, [fetchMainChu]);
 
-  if (isLoading) {
+  useEffect(() => {
+    const getChuSvg = async () => {
+      if (user && user.userName) {
+        try {
+          setSvgLoading(true);
+          const svgData = await fetchChuSvgAPI(user.userName);
+          setSvgContent(svgData);
+          setSvgError(null);
+        } catch (err) {
+          setSvgError(err instanceof Error ? err.message : "츄를 불러오지 못했습니다.");
+        } finally {
+          setSvgLoading(false);
+        }
+      } else {
+        setSvgLoading(false);
+      }
+    };
+
+    getChuSvg();
+  }, [user]);
+
+  if (isLoading || svgLoading) {
     return <p>Loading your Chus...</p>;
   }
 
-  if (error) {
-    return <p>Error: {error}</p>;
+  if (error || svgError) {
+    return <p>Error: {error || svgError}</p>;
   }
 
   return (
     <div className={styles.dashboard}>
-      <h1 className={styles.title}>My Dashboard</h1>
-
-      <section className={styles.mainChuSection}>
-        <h2>My Main Chu</h2>
-        {mainChu ? (
-          <div>
-            <p>Nickname: {mainChu.nickname}</p>
-            <p>Level: {mainChu.level}</p>
-            <p>Language: {mainChu.lang}</p>
-          </div>
-        ) : (
-          <p>No main chu selected.</p>
+      <div className={styles.contentWrapper}>
+        {svgContent && (
+          <section className={styles.svgSection}>
+            <div className={styles.svgImage} dangerouslySetInnerHTML={{ __html: svgContent }} />
+          </section>
         )}
-      </section>
-
-      <section className={styles.chuSkinsSection}>
-        <h2>My Language Skins</h2>
-        {chuSkins.length > 0 ? (
-          <ul className={styles.skinList}>
-            {chuSkins.map((skin) => (
-              <li key={skin.langId} className={skin.isUnlocked ? styles.unlocked : styles.locked}>
-                Language ID: {skin.langId}
-                {skin.isMain && <span> (Main)</span>}
-                {skin.isUnlocked ? " (Unlocked)" : " (Locked)"}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No language skins found.</p>
-        )}
-      </section>
+        <section className={styles.mainChuSection}>
+          {mainChu ? (
+            <div>
+              <h2>Main Chu Info</h2>
+              <p>Nickname: {mainChu.nickname}</p>
+              <p>Level: {mainChu.level}</p>
+              <p>EXP: {mainChu.exp}</p>
+              <p>Status: {mainChu.status}</p>
+              <p>Language: {mainChu.lang}</p>
+              <p>Background: {mainChu.background}</p>
+            </div>
+          ) : (
+            <p>No main chu selected.</p>
+          )}
+        </section>
+      </div>
     </div>
   );
 };
