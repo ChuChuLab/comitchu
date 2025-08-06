@@ -19,12 +19,10 @@ import com.commi.chu.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -128,12 +126,12 @@ public class ChuService {
 
         return allLanguages.stream()
             .map(lang -> {
-                boolean unlocked = owned.contains(lang);
-                boolean main    = unlocked && chu.getLang().equals(lang.getLang());
+                boolean isUnlocked = owned.contains(lang);
+                boolean isMain    = isUnlocked && chu.getLang().equals(lang.getLang());
                 return ChuSkinListResponseDto.of(
                     lang.getId(),
-                    main,
-                    unlocked);
+                    isMain,
+                    isUnlocked);
             })
             .collect(Collectors.toList());
     }
