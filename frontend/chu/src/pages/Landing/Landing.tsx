@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Button from "../../components/common/Button";
 import styles from "./Landing.module.css";
 import { useTranslation } from "react-i18next";
-import heroVisual from "../../assets/img/cave.svg";
+import heroVisual from "../../assets/images/heroImg.svg";
 
 const Landing = () => {
   const { user } = useUserStore();
