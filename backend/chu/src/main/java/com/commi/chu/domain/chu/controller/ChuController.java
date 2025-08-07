@@ -2,6 +2,7 @@ package com.commi.chu.domain.chu.controller;
 
 import java.util.List;
 
+import com.commi.chu.domain.chu.dto.BackgroundRequestDto;
 import com.commi.chu.domain.chu.dto.ChuSkinListResponseDto;
 import com.commi.chu.domain.chu.dto.MainChuResponseDto;
 import com.commi.chu.domain.chu.dto.UpdateBackgroundResponseDto;
@@ -112,17 +113,17 @@ public class ChuController {
      * 배경화면을 변경하는 메서드
      *
      * @param userPrincipal 요청한 사용자 정보
-     * @param background 변경할 배경화면 이름
+     * @param backgroundRequestDto 변경할 배경화면 이름
      * @return 배경화면 변경 성공,실패 응답
      */
     @PatchMapping("/background")
     public ResponseEntity<CommonResponse<UpdateBackgroundResponseDto>> updateBackground(
         @AuthenticationPrincipal UserPrincipal userPrincipal,
-        @RequestParam String background
+        @RequestBody BackgroundRequestDto backgroundRequestDto
     ){
 
         Integer userId = authenticationUtil.getCurrentUserId(userPrincipal);
 
-        return CommonResponse.ok(chuService.updateBackgroundImage(userId,background));
+        return CommonResponse.ok(chuService.updateBackgroundImage(userId,backgroundRequestDto));
     }
 }

@@ -1,0 +1,32 @@
+package com.commi.chu.domain.chu.entity;
+
+public enum Background {
+	abandonedChurch,
+	abandonedRuin,
+	cave,
+	caveEntrance,
+	coffee,
+	dragonNest,
+	forest,
+	glassCity,
+	GoldenRoom,
+	jail,
+	kingdomEntrance,
+	library,
+	magicCircle,
+	magicStore,
+	moonLake,
+	newbie,
+	office,
+	ruin,
+	sakuraRoad,
+	starLibrary,
+	terminal,
+	timeSquare,
+	tower,
+	twilight,
+	village,
+	windmillVillage,
+	witchHouse,
+	witchSchool
+}

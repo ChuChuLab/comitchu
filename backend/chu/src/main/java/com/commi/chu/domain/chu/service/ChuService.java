@@ -1,6 +1,7 @@
 package com.commi.chu.domain.chu.service;
 
 import com.commi.chu.domain.chu.dto.BackgroundRequestDto;
+import com.commi.chu.domain.chu.entity.Background;
 import com.commi.chu.domain.chu.dto.ChuSkinListResponseDto;
 import com.commi.chu.domain.chu.dto.MainChuResponseDto;
 import com.commi.chu.domain.chu.dto.UpdateBackgroundResponseDto;
@@ -171,7 +172,7 @@ public class ChuService {
      * @return 배경화면 변경에 성공했는지 응답
      */
     @Transactional
-    public UpdateBackgroundResponseDto updateBackgroundImage(Integer userId, String backgroundName) {
+    public UpdateBackgroundResponseDto updateBackgroundImage(Integer userId, BackgroundRequestDto backgroundRequestDto) {
 
         //사용자 조회
         User user = userRepository.findById(userId)
@@ -183,11 +184,11 @@ public class ChuService {
 
 
         //배경화면 이름 유효성 조회
-        BackgroundRequestDto background;
+        Background background;
         try{
-            background = BackgroundRequestDto.valueOf(backgroundName);
+            background = Background.valueOf(backgroundRequestDto.getBackgroundName());
         }catch (IllegalArgumentException e){
-            throw new CustomException(ErrorCode.INVALID_INPUT_VALUE, "backgroundName", backgroundName);
+            throw new CustomException(ErrorCode.INVALID_INPUT_VALUE, "backgroundName", backgroundRequestDto.getBackgroundName());
         }
 
         //배경화면 변경
