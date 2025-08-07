@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.commi.chu.domain.chu.dto.ChuSkinListResponseDto;
 import com.commi.chu.domain.chu.dto.MainChuResponseDto;
+import com.commi.chu.domain.chu.dto.UpdateBackgroundResponseDto;
 import com.commi.chu.domain.chu.dto.UpdateMainChuResponseDto;
 import com.commi.chu.domain.chu.scheduler.LanguageUnlockScheduler;
 import com.commi.chu.domain.chu.service.ChuService;
@@ -105,5 +106,23 @@ public class ChuController {
         languageUnlockScheduler.dailyUnlockScheduler();
 
         return CommonResponse.ok("언어 해금 완료");
+    }
+
+    /***
+     * 배경화면을 변경하는 메서드
+     *
+     * @param userPrincipal 요청한 사용자 정보
+     * @param background 변경할 배경화면 이름
+     * @return 배경화면 변경 성공,실패 응답
+     */
+    @PatchMapping("/background")
+    public ResponseEntity<CommonResponse<UpdateBackgroundResponseDto>> updateBackground(
+        @AuthenticationPrincipal UserPrincipal userPrincipal,
+        @RequestParam String background
+    ){
+
+        Integer userId = authenticationUtil.getCurrentUserId(userPrincipal);
+
+        return CommonResponse.ok(chuService.updateBackgroundImage(userId,background));
     }
 }

@@ -1,0 +1,32 @@
+package com.commi.chu.domain.chu.dto;
+
+public enum BackgroundRequestDto {
+	abandonedChurch,
+	abandonedRuin,
+	cave,
+	caveEntrance,
+	coffee,
+	dragonNest,
+	forest,
+	glassCity,
+	GoldenRoom,
+	jail,
+	kingdomEntrance,
+	library,
+	magicCircle,
+	magicStore,
+	moonLake,
+	newbie,
+	office,
+	ruin,
+	sakuraRoad,
+	starLibrary,
+	terminal,
+	timeSquare,
+	tower,
+	twilight,
+	village,
+	windmillVillage,
+	witchHouse,
+	witchSchool
+}
