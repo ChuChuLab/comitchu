@@ -1,7 +1,10 @@
 package com.commi.chu.domain.chu.service;
 
+import com.commi.chu.domain.chu.dto.BackgroundRequestDto;
+import com.commi.chu.domain.chu.entity.Background;
 import com.commi.chu.domain.chu.dto.ChuSkinListResponseDto;
 import com.commi.chu.domain.chu.dto.MainChuResponseDto;
+import com.commi.chu.domain.chu.dto.UpdateBackgroundResponseDto;
 import com.commi.chu.domain.chu.dto.UpdateMainChuResponseDto;
 import com.commi.chu.domain.chu.entity.Chu;
 import com.commi.chu.domain.chu.entity.ChuStatus;
@@ -159,5 +162,38 @@ public class ChuService {
         log.info("[updateMainChu] {}의 대표 chu 언어가 {}로 변경 됐습니다.", user.getGithubUsername(),chu.getLang());
 
         return UpdateMainChuResponseDto.of("대표 언어가 변경 되었습니다.");
+    }
+
+    /***
+     * 배경화면을 바꾸는 비즈니스 로직입니다.
+     *
+     * @param userId 요천한 사용자 Id
+     * @param backgroundName 변경할 배경화면 이름
+     * @return 배경화면 변경에 성공했는지 응답
+     */
+    @Transactional
+    public UpdateBackgroundResponseDto updateBackgroundImage(Integer userId, BackgroundRequestDto backgroundRequestDto) {
+
+        //사용자 조회
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "userId", userId));
+
+        //chu 조회
+        Chu chu = chuRepository.findByUser(user)
+            .orElseThrow(() -> new CustomException(ErrorCode.CHU_NOT_FOUND));
+
+
+        //배경화면 이름 유효성 조회
+        Background background;
+        try{
+            background = Background.valueOf(backgroundRequestDto.getBackgroundName());
+        }catch (IllegalArgumentException e){
+            throw new CustomException(ErrorCode.INVALID_INPUT_VALUE, "backgroundName", backgroundRequestDto.getBackgroundName());
+        }
+
+        //배경화면 변경
+        chu.updateBackground(background.name());
+
+        return UpdateBackgroundResponseDto.of("배경화면이 성공적으로 변경 됐습니다.");
     }
 }
