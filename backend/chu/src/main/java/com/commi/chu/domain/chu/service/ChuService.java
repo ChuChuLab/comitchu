@@ -128,12 +128,12 @@ public class ChuService {
 
         return allLanguages.stream()
             .map(lang -> {
-                boolean unlocked = owned.contains(lang);
-                boolean main    = unlocked && chu.getLang().equals(lang.getLang());
+                boolean isUnlocked = owned.contains(lang);
+                boolean isMain    = isUnlocked && chu.getLang().equals(lang.getLang());
                 return ChuSkinListResponseDto.of(
                     lang.getId(),
-                    main,
-                    unlocked);
+                    isMain,
+                    isUnlocked);
             })
             .collect(Collectors.toList());
     }
