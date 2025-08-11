@@ -2,6 +2,7 @@ package com.commi.chu.domain.chu.service;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
@@ -18,7 +19,9 @@ import com.commi.chu.global.exception.CustomException;
 import com.commi.chu.global.exception.code.ErrorCode;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LevelUpService {
@@ -42,6 +45,8 @@ public class LevelUpService {
 
 	@Transactional
 	public void levelUp(Integer userId) {
+		log.info("levelUp start");
+
 		User user = userRepository.findById(userId)
 			.orElseThrow(()-> new CustomException(ErrorCode.USER_NOT_FOUND,"userId",userId));
 
@@ -53,25 +58,28 @@ public class LevelUpService {
 
 		// 이미 어제 처리 했으면 스킵
 		if (target.equals(chu.getLastLeveledDateKst())) {
+			log.info("이미 처리한 user 입니다. user={}", user.getGithubUsername());
 			return;
 		}
 
 		// 어제 KST 00:00:00 ~ 23:59:59 범위를 UTC로 변환
-		Instant startUtc = target.atStartOfDay(KST)
+		LocalDateTime startUtc = target.atStartOfDay(KST)
 			.withZoneSameInstant(UTC)
-			.toInstant();
+			.toLocalDateTime();
 
-		Instant endUtc = target.plusDays(1).atStartOfDay(KST)
-			.minusNanos(1)
+		LocalDateTime endUtc = target.plusDays(1).atStartOfDay(KST)
 			.withZoneSameInstant(UTC)
-			.toInstant();
+			.toLocalDateTime();
+
+		log.info("startUtc={}, endUtc={}", startUtc, endUtc);
 
 		//어제 업데이트 된 github 통계 데이터가 있는지 확인 없으면 Null
-		ActivitySnapshot snapshot = activitySnapshotRepository.findFirstByUserIdAndCalculatedAtBetweenOrderByCalculatedAtDesc(userId, startUtc, endUtc)
+		ActivitySnapshot snapshot = activitySnapshotRepository.findFirstByUserIdAndCalculatedAtGreaterThanEqualAndCalculatedAtLessThanOrderByCalculatedAtDesc(userId, startUtc, endUtc)
 			.orElse(null);
 
 		if (snapshot == null) {
 			// 스냅샷 지연/미생성 시 스케줄 실패 방지: 예외 대신 스킵
+			log.error("최신 github 통계가 존재하지 않습니다. user={}", user.getGithubUsername());
 			return;
 		}
 
@@ -83,6 +91,9 @@ public class LevelUpService {
 
 		int level = chu.getLevel();
 		long exp = chu.getExp()+ gainedExp;
+
+		log.info("levelUp exp={}", exp);
+		log.info("level={}", level);
 
 		//100레벨이 최대
 		while (level < MAX_LEVEL) {

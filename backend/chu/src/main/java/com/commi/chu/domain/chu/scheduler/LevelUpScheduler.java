@@ -31,7 +31,7 @@ public class LevelUpScheduler {
 				log.info("levelUp 로직 완료 : user={}", user.getGithubUsername());
 			}
 			catch(Exception e){
-				log.error("levelUp 과정에서 에러 발생 : user={}", user.getGithubUsername());
+				log.error("levelUp 과정에서 에러 발생 : user={}", e.getMessage());
 			}
 
 		}
