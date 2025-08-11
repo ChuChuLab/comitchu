@@ -2,6 +2,7 @@ import useUserStore from "../../store/userStore";
 import { Navigate } from "react-router-dom";
 import styles from "./Custom.module.css";
 import ChuViewer from "../../components/ChuViewer/ChuViewer";
+import ChuSkinSelector from "../../components/ChuSkinSelector/ChuSkinSelector";
 
 const Custom = () => {
   const { user } = useUserStore();
@@ -13,6 +14,7 @@ const Custom = () => {
   return (
     <div className={styles.custom}>
       <ChuViewer />
+      <ChuSkinSelector />
     </div>
   );
 };

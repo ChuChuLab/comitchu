@@ -1,0 +1,67 @@
+.selectorContainer {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 1rem;
+  pointer-events: auto;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.skinItem {
+  position: relative;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
+  aspect-ratio: 1 / 1; /* 1:1 비율 유지 */
+}
+
+.skinItem:hover {
+  border-color: #007bff;
+}
+
+.skinImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mainSkin {
+  border-color: #28a745; /* 대표 스킨은 초록색 테두리 */
+  border-width: 3px;
+}
+
+.mainTag {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #28a745;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.lockedSkin {
+  cursor: not-allowed;
+}
+
+.lockedOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
