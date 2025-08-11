@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./ChuSkinSelector.module.css";
 import { fetchAllChuSkinsAPI, updateMainChuAPI } from "../../api/chu";
 import type { ChuSkin } from "../../types/model";
