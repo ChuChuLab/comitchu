@@ -188,6 +188,7 @@ public class ChuService {
         try{
             background = Background.valueOf(backgroundRequestDto.getBackgroundName());
         }catch (IllegalArgumentException e){
+            log.error("잘못된 배경화면 이름입니다. backgroundName : {}", backgroundRequestDto.getBackgroundName());
             throw new CustomException(ErrorCode.INVALID_INPUT_VALUE, "backgroundName", backgroundRequestDto.getBackgroundName());
         }
 
