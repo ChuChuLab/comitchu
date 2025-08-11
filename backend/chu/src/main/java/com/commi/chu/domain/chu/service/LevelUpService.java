@@ -22,7 +22,12 @@ public class LevelUpService {
 	private final UserRepository userRepository;
 	private final ChuRepository chuRepository;
 
-	private static final int A = 50;
+	private static final int MAX_LEVEL = 100;
+
+
+	private static final long A = 50L;
+
+	//레벨업 기준
 	private static final int W_COMMIT = 2;
 	private static final int W_PR = 8;
 	private static final int W_ISSUE = 5;
@@ -39,25 +44,32 @@ public class LevelUpService {
 		ActivitySnapshot latest = activitySnapshotRepository.findByUser_Id(userId)
 			.orElseThrow(() -> new CustomException(ErrorCode.RESOURCE_NOT_FOUND, "userId",userId));
 
-		int gainedExp =
-			latest.getCommitCount() * W_COMMIT
-				+ latest.getPrCount()     * W_PR
-				+ latest.getIssueCount()  * W_ISSUE
-				+ latest.getReviewCount() * W_REVIEW;
+		long gainedExp =
+			(long)latest.getCommitCount() * W_COMMIT
+				+ (long)latest.getPrCount()     * W_PR
+				+ (long)latest.getIssueCount()  * W_ISSUE
+				+ (long)latest.getReviewCount() * W_REVIEW;
 
 		int level = chu.getLevel();
-		int exp = chu.getExp()+ gainedExp;
+		long exp = chu.getExp()+ gainedExp;
 
-		while(exp >= requiredExp(level+1)){
-			exp -= requiredExp(level+1);
+		//100레벨이 최대
+		while (level < MAX_LEVEL && exp >= requiredExp(level + 1)) {
+			exp -= requiredExp(level + 1);
 			level++;
 		}
 
-		chu.levelUp(level,exp);
+		//만렙이면 경험치는 0으로 고정
+		if (level >= MAX_LEVEL) {
+			level = MAX_LEVEL;
+			exp   = 0L;
+		}
+
+		chu.levelUp(level, (int) exp);
 	}
 
-	private int requiredExp(int n) {
+	private long requiredExp(int n) {
 		// ExpRequired(n) = a * n^2
-		return A * n * n;
+		return A * (long) n * (long) n;
 	}
 }
