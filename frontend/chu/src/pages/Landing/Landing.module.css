@@ -5,6 +5,12 @@
   justify-content: center;
   width: 100%;
   gap: 100px;
+  background-color: rgba(10, 10, 10, 0.8);
+  border: 1px solid #444c56;
+  border-radius: 16px;
+  padding: 40px 100px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
 }
 
 /* 미디어쿼리 넣어서 반응형 디자인 적용 */
@@ -16,6 +22,7 @@
   gap: 24px;
   max-width: 400px;
   min-width: 350px;
+  pointer-events: auto;
 }
 
 .title {
@@ -40,4 +47,5 @@
   width: 50%;
   border: 1px solid #3d444d;
   border-radius: 8px;
+  pointer-events: auto;
 }
