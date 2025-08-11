@@ -28,10 +28,10 @@ const Header = () => {
                 Dashboard
               </Link>
               <Link
-                to="/setting"
-                className={`${styles.navLink} ${location.pathname === "/setting" ? styles.active : ""}`}
+                to="/custom"
+                className={`${styles.navLink} ${location.pathname === "/custom" ? styles.active : ""}`}
               >
-                Settings
+                Custom
               </Link>
             </>
           )}
