@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface ActivitySnapshotRepository extends JpaRepository<ActivitySnapshot, Integer> {
 
-    Optional<ActivitySnapshot> findActivitySnapshotByUserId(Integer userId);
+    Optional<ActivitySnapshot> findByUser_Id(Integer userId);
 
 }
