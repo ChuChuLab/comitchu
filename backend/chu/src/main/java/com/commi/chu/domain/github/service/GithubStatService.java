@@ -2,7 +2,6 @@ package com.commi.chu.domain.github.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -119,7 +118,7 @@ public class GithubStatService {
 
         logRepository.save(snapshotLog);
 
-        ActivitySnapshot githubStat = activitySnapshotRepository.findActivitySnapshotByUserId(user.getId())
+        ActivitySnapshot githubStat = activitySnapshotRepository.findByUser_Id(user.getId())
                 .map(existingStat ->
                         //기존의 github 통계를 업데이트한다.
                         existingStat.updateSnapshot(commitCount, prCount, issueCount, reviewCount)
