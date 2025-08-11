@@ -50,18 +50,20 @@ public class Chu extends BaseEntity {
 
     public void updateStatus(ChuStatus newStatus) {
         this.status = newStatus;
-        this.lastStatusUpdatedAt = LocalDateTime.now();
     }
 
 
     public void updateLang(String lang) {
         this.lang = lang;
-        this.lastStatusUpdatedAt = LocalDateTime.now();
     }
 
 
     public void updateBackground(String background) {
         this.background = background;
-        this.lastStatusUpdatedAt = LocalDateTime.now();
+    }
+
+    public void levelUp(int level, int exp) {
+        this.level = level;
+        this.exp = exp;
     }
 }
