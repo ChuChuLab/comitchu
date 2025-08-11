@@ -1,9 +1,9 @@
 import useUserStore from "../../store/userStore";
 import { Navigate } from "react-router-dom";
-import styles from "./Setting.module.css";
+import styles from "./Custom.module.css";
 import ChuViewer from "../../components/ChuViewer/ChuViewer";
 
-const Setting = () => {
+const Custom = () => {
   const { user } = useUserStore();
 
   if (!user) {
@@ -11,10 +11,10 @@ const Setting = () => {
   }
 
   return (
-    <div className={styles.setting}>
+    <div className={styles.custom}>
       <ChuViewer />
     </div>
   );
 };
 
-export default Setting;
+export default Custom;
