@@ -21,7 +21,7 @@ const ChuViewer = () => {
     return <div>No Chu data available.</div>;
   }
 
-  const chuImagePath = new URL(`../../assets/images/chu/happy/${mainChu.lang}.png`, import.meta.url).href;
+  const chuImagePath = new URL(`../../assets/images/chu/${mainChu.lang}.png`, import.meta.url).href;
   const backgroundImagePath = new URL(`../../assets/images/backgrounds/${mainChu.background}.png`, import.meta.url)
     .href;
 

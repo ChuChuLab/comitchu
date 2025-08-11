@@ -7,14 +7,14 @@ import type { ChuSkin } from "../../types/model";
 // 일부 파일명은 추측된 값으로, 실제 파일명과 다를 수 있습니다.
 const LANG_ID_TO_FILENAME: { [key: number]: string } = {
   1: "comit.png",
-  2: "Java.png", // 아직 이미지 없음
-  3: "Python.png", // 아직 이미지 없음
-  4: "Js.png",
+  2: "Java.png",
+  3: "Python.png",
+  4: "Js.png", // 아직 이미지 없음
   5: "TypeScript.png", // 아직 이미지 없음
   6: "C.png",
-  7: "C++.png",
+  7: "C++.png", // 아직 이미지 없음
   8: "Csharp.png", // 아직 이미지 없음
-  9: "Swift.png",
+  9: "Swift.png", // 아직 이미지 없음
   10: "Go.png", // 아직 이미지 없음
 };
 
@@ -61,7 +61,7 @@ const ChuSkinSelector = () => {
           const fileName = LANG_ID_TO_FILENAME[skin.langId];
           if (!fileName) return null; // 매핑에 없는 경우 렌더링하지 않음
 
-          const imageUrl = new URL(`../../assets/images/chu/happy/${fileName}`, import.meta.url).href;
+          const imageUrl = new URL(`../../assets/images/chu/${fileName}`, import.meta.url).href;
 
           return (
             <div
