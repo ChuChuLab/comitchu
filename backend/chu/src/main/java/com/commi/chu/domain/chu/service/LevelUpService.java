@@ -35,8 +35,6 @@ public class LevelUpService {
 
 	private static final int MAX_LEVEL = 100;
 
-	private static final long A = 50L;
-
 	//레벨업 기준
 	private static final int W_COMMIT = 2;
 	private static final int W_PR = 8;
@@ -117,6 +115,8 @@ public class LevelUpService {
 
 	private long requiredExp(int n) {
 		// ExpRequired(n) = a * n^2
-		return A * (long) n * (long) n;
+		if(n<=10) return 2L * (long) n * (long) n;
+		if(n<=40) return 8L * (long) n * (long) n;
+		return 20L * (long) n * (long) n;
 	}
 }
