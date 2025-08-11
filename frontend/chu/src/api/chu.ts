@@ -31,6 +31,36 @@ export const fetchAllChuSkinsAPI = async (): Promise<ChuSkin[]> => {
   }
 };
 
+// 대표 츄 스킨(언어)을 변경하는 API
+export const updateMainChuAPI = async (langId: number): Promise<string> => {
+  try {
+    const response = await apiClient.patch<ApiResponse<{ message: string }>>(`/chu/main/${langId}`);
+    if (response.data.success) {
+      return response.data.data.message;
+    } else {
+      throw new Error(response.data.error?.message || "대표 츄를 변경하는 중 알 수 없는 오류가 발생했습니다.");
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다.";
+    throw new Error(message);
+  }
+};
+
+// 대표 츄 배경화면을 변경하는 API
+export const updateChuBackgroundAPI = async (backgroundName: string): Promise<string> => {
+  try {
+    const response = await apiClient.patch<ApiResponse<{ message: string }>>("/chu/background", { backgroundName });
+    if (response.data.success) {
+      return response.data.data.message;
+    } else {
+      throw new Error(response.data.error?.message || "배경화면을 변경하는 중 알 수 없는 오류가 발생했습니다.");
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다.";
+    throw new Error(message);
+  }
+};
+
 // githubUsername을 기반으로 츄 svg를 가져오는 api
 export const fetchChuSvgAPI = async (githubUsername: string): Promise<string> => {
   try {
