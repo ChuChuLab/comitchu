@@ -1,5 +1,6 @@
 package com.commi.chu.domain.chu.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.LastModifiedDate;
@@ -48,20 +49,29 @@ public class Chu extends BaseEntity {
     @LastModifiedDate
     private LocalDateTime lastStatusUpdatedAt;
 
+    @Column(name = "last_leveled_date_kst")
+    private LocalDate lastLeveledDateKst;
+
     public void updateStatus(ChuStatus newStatus) {
         this.status = newStatus;
-        this.lastStatusUpdatedAt = LocalDateTime.now();
     }
 
 
     public void updateLang(String lang) {
         this.lang = lang;
-        this.lastStatusUpdatedAt = LocalDateTime.now();
     }
 
 
     public void updateBackground(String background) {
         this.background = background;
-        this.lastStatusUpdatedAt = LocalDateTime.now();
+    }
+
+    public void levelUp(int level, int exp) {
+        this.level = level;
+        this.exp = exp;
+    }
+
+    public void markLeveledToday(LocalDate kstDate) {
+        this.lastLeveledDateKst = kstDate;
     }
 }
