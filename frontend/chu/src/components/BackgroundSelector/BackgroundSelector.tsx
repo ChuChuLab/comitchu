@@ -1,4 +1,3 @@
-import React from "react";
 import useChuStore from "../../store/chuStore";
 import { updateChuBackgroundAPI } from "../../api/chu";
 import styles from "./BackgroundSelector.module.css";
