@@ -168,7 +168,7 @@ public class ChuService {
      * 배경화면을 바꾸는 비즈니스 로직입니다.
      *
      * @param userId 요천한 사용자 Id
-     * @param backgroundName 변경할 배경화면 이름
+     * @param backgroundRequestDto 변경할 배경화면 이름
      * @return 배경화면 변경에 성공했는지 응답
      */
     @Transactional

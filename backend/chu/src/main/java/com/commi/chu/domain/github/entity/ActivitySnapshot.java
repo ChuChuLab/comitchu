@@ -46,7 +46,6 @@ public class ActivitySnapshot extends BaseEntity {
         this.prCount = prCount;
         this.issueCount = issueCount;
         this.reviewCount = reviewCount;
-        this.calculatedAt = LocalDateTime.now();
         return this;
     }
 
