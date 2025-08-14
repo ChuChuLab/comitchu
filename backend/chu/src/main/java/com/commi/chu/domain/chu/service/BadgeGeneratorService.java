@@ -1,5 +1,6 @@
 package com.commi.chu.domain.chu.service;
 
+import com.commi.chu.domain.chu.entity.ChuStatus;
 import com.commi.chu.global.exception.CustomException;
 import com.commi.chu.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +31,16 @@ public class BadgeGeneratorService {
     private static final String ANIMATION_REPEAT_COUNT = "indefinite";
     private static final int CHARACTER_HORIZONTAL_MOVEMENT_PIXELS = 15;
 
-    @Cacheable(value = "badgeSvg", key = "#githubUsername + '_' + #backgroundName + '_' + #lang")
-    public String generateSvgBadge(String githubUsername, String backgroundName, String lang) {
+    @Cacheable(value = "badgeSvg", key = "#githubUsername + '_' + #backgroundName + '_' + #lang + '_' + #status")
+    public String generateSvgBadge(String githubUsername, String backgroundName, String lang, String status) {
+
+        String dir = "normal/";
+        if(status.equals("HUNGRY"))     dir = "hungry/";
+        else if(status.equals("HAPPY"))    dir = "happy/";
 
         // 1. 이미지 Base64 인코딩
         String base64BgImage = encodeImageToBase64(BACKGROUND_IMAGE_BASE_PATH + backgroundName + ".png", "image/png");
-        String base64CharImage = encodeImageToBase64(CHARACTER_IMAGE_BASE_PATH + lang + ".png", "image/png");
+        String base64CharImage = encodeImageToBase64(CHARACTER_IMAGE_BASE_PATH + dir + lang + ".png", "image/png");
 
         if (base64BgImage == null || base64CharImage == null) {
             throw new CustomException(ErrorCode.INVALID_INPUT_VALUE, "imageName", "Background or character image not found/loadable.");
@@ -48,16 +53,16 @@ public class BadgeGeneratorService {
 
         // 캐릭터 초기 위치 (SVG 중앙 하단)
         int initialCharX = (svgWidth - charWidth) / 2;
-        int initialCharY = (svgHeight - charHeight) - 10;
+        int initialCharY = (svgHeight - charHeight) - 8;
 
         // SVG XML 구성
         StringBuilder svgBuilder = new StringBuilder();
-        svgBuilder.append("<svg width=\"").append(svgWidth).append("\" height=\"").append(svgHeight).append("\" ")
+        svgBuilder.append("<svg viewBox=\"0 0 150 100\" ") // viewBox를 사용하여 내부 콘텐츠 비율 유지
                 .append("xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n");
 
         // 배경 이미지 삽입 (Base64 인코딩)
         svgBuilder.append("  <image xlink:href=\"data:image/png;base64,").append(base64BgImage)
-                .append("\" x=\"0\" y=\"0\" width=\"").append(svgWidth).append("\" height=\"").append(svgHeight).append("\" />\n");
+                .append("\" x=\"0\" y=\"0\" width=\"100%\" height=\"100%\" />\n"); // width와 height를 100%로 변경
 
         // 캐릭터 이미지 삽입 및 애니메이션 (Base64 인코딩)
         svgBuilder.append("  <image xlink:href=\"data:image/png;base64,").append(base64CharImage)

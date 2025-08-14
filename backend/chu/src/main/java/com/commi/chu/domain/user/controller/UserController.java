@@ -21,22 +21,9 @@ public class UserController {
     private final UserService userService;
     private final AuthenticationUtil authenticationUtil;
 
-    /**
-     * test용 api 입니다
-     *
-     * @return 고-수
-     */
-    @GetMapping("/test")
-    public ResponseEntity<CommonResponse<TestResponse>> test (
-            @AuthenticationPrincipal UserPrincipal userPrincipal) {
-
-        Integer userId =  authenticationUtil.getCurrentUserId(userPrincipal);
-
-        return CommonResponse.ok(userService.getGoSuTest(userId));
-    }
-
     @PostMapping("/logout")
     public ResponseEntity<CommonResponse<Void>> logout() {
+
         ResponseCookie deletedAuthCookie = CookieUtil.deleteAuthCookie();
 
         return CommonResponse.okWithCookie(deletedAuthCookie);

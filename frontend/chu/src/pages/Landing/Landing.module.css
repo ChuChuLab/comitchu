@@ -16,14 +16,14 @@
 /* 미디어쿼리 넣어서 반응형 디자인 적용 */
 /* landing 클래스를 display block으로 변경 */
 
-.heroContent {
+/* .heroContent {
   display: flex;
   flex-direction: column;
   gap: 24px;
   max-width: 400px;
   min-width: 350px;
   pointer-events: auto;
-}
+} */
 
 .title {
   font-size: 48px;

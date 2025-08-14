@@ -61,7 +61,7 @@ const ChuSkinSelector = () => {
           const fileName = LANG_ID_TO_FILENAME[skin.langId];
           if (!fileName) return null; // 매핑에 없는 경우 렌더링하지 않음
 
-          const imageUrl = new URL(`../../assets/images/chu/${fileName}`, import.meta.url).href;
+          const imageUrl = new URL(`../../assets/images/chu/normal/${fileName}`, import.meta.url).href;
 
           return (
             <div
