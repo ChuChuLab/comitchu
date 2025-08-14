@@ -4,6 +4,7 @@ import Button from "../../components/common/Button";
 import styles from "./Landing.module.css";
 import { useTranslation } from "react-i18next";
 import heroVisual from "../../assets/images/heroImg.svg";
+import TiltedCard from "../../components/ReactBits/TiltedCard";
 
 const Landing = () => {
   const { user } = useUserStore();
@@ -29,7 +30,20 @@ const Landing = () => {
       </div>
 
       {/* 우측영역 */}
-      <img src={heroVisual} alt="Hero Image" className={styles.heroVisual} />
+      <TiltedCard
+        imageSrc={heroVisual}
+        altText="Comitchu Hero Image"
+        captionText="Comitchu"
+        containerHeight="300px"
+        containerWidth="300px"
+        imageHeight="300px"
+        imageWidth="300px"
+        rotateAmplitude={12}
+        scaleOnHover={1.2}
+        showMobileWarning={false}
+        showTooltip={true}
+        displayOverlayContent={true}
+      />
     </div>
   );
 };

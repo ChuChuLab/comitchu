@@ -24,7 +24,7 @@ public class GithubStatScheduler {
     /*
         매일 밤 00시 마다 user들의 github 통계를 업데이트
      */
-    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 59 23 * * *", zone = "Asia/Seoul")
     public void updateAllGithubStats() {
         List<User> users = userRepository.findActiveGithubUsers();
 
