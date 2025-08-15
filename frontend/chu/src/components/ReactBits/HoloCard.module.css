@@ -1,0 +1,20 @@
+.container {
+  position: relative;
+  transition: all 0.1s;
+  transform-style: preserve-3d;
+  will-change: transform;
+  pointer-events: auto;
+  width: 100%; /* 너비를 부모 컨테이너에 맞게 수정 */
+  max-width: 400px; /* 카드가 너무 커지는 것을 방지 */
+  aspect-ratio: 2 / 1; /* 높이가 너비에 맞춰 비율대로 자동 설정되도록 수정 */
+}
+
+.card {
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  /* 선택: 보기 좋게 약간의 그림자 */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}

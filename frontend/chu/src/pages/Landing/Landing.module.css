@@ -2,28 +2,24 @@
   max-width: 1024px;
   margin: 0 auto;
   display: flex;
-  justify-content: center;
+  align-items: center; /* 세로 중앙 정렬 */
   width: 100%;
-  gap: 100px;
-  background-color: rgba(10, 10, 10, 0.8);
-  border: 1px solid #444c56;
-  border-radius: 16px;
-  padding: 40px 100px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  pointer-events: none;
+  gap: 50px;
 }
 
-/* 미디어쿼리 넣어서 반응형 디자인 적용 */
-/* landing 클래스를 display block으로 변경 */
-
-/* .heroContent {
+/* heroContent와 holoCardContainer가 1:1 비율로 너비를 나눠 갖도록 설정 */
+.heroContent,
+.holoCardContainer {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  max-width: 400px;
-  min-width: 350px;
-  pointer-events: auto;
-} */
+  justify-content: center;
+}
+
+/* HoloCard가 컨테이너 중앙에 오도록 설정 */
+.holoCardContainer {
+  align-items: center;
+}
 
 .title {
   font-size: 48px;
@@ -37,15 +33,5 @@
 .subtitle {
   font-size: 18px;
   line-height: 1.6;
-}
-
-.heroVisual {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  object-fit: cover;
-  width: 50%;
-  border: 1px solid #3d444d;
-  border-radius: 8px;
-  pointer-events: auto;
+  margin-top: 24px;
 }
