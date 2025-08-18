@@ -9,7 +9,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   word-break: keep-all;
-  font-family: "DungGeonMo";
+  font-family: "Pretendard";
   background-color: #0d1116;
   color: #f0f6fc;
   min-height: 100vh;
@@ -21,8 +21,8 @@ body {
 }
 
 @font-face {
-  font-family: "DungGeonMo";
-  src: url("/src/assets/fonts/DungGeunMo.woff2") format("woff2");
+  font-family: "Pretendard";
+  src: url("/src/assets/fonts/PretendardVariable.woff2") format("woff2");
   font-weight: 100 900;
   font-display: swap;
   font-style: normal;
