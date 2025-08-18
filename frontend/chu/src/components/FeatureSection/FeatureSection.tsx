@@ -1,14 +1,13 @@
-import React from 'react';
-import HoloCard from '../ReactBits/HoloCard';
-import styles from './FeatureSection.module.css';
-import Button from '../common/Button';
-import { useTranslation } from 'react-i18next';
+import React, { useState } from "react";
+import styles from "./FeatureSection.module.css";
+import Button from "../common/Button";
+import { useTranslation } from "react-i18next";
 
 type FeatureSectionProps = {
   title: string;
   subtitle: string;
   imageSrc: string;
-  imagePosition?: 'left' | 'right';
+  imagePosition?: "left" | "right";
   showButton?: boolean;
 };
 
@@ -16,12 +15,18 @@ const FeatureSection: React.FC<FeatureSectionProps> = ({
   title,
   subtitle,
   imageSrc,
-  imagePosition = 'right',
+  imagePosition = "right",
   showButton = false,
 }) => {
   const { t } = useTranslation();
+  const [imageError, setImageError] = useState(false);
+
   const handleGitHubLogin = () => {
     window.location.href = "https://www.comitchu.shop/oauth2/authorization/github";
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
   };
 
   const content = (
@@ -32,11 +37,16 @@ const FeatureSection: React.FC<FeatureSectionProps> = ({
     </div>
   );
 
-  const image = <HoloCard imageSrc={imageSrc} width={450} height={300} />;
+  const image = !imageError ? (
+    <div className={styles.imageContainer}>
+      <img src={imageSrc} alt="" className={styles.featureImageShadow} onError={handleImageError} />
+      <img src={imageSrc} alt={title} className={styles.featureImage} onError={handleImageError} />
+    </div>
+  ) : null;
 
   return (
-    <section className={styles.featureSection}>
-      {imagePosition === 'left' ? (
+    <section className={`${styles.featureSection} animate-slide-up`}>
+      {imagePosition === "left" ? (
         <>
           {image}
           {content}

@@ -48,18 +48,19 @@ const Dashboard = () => {
   }
 
   return (
-    <div className={styles.dashboard}>
+
+<div className={`${styles.dashboard} animate-slide-up`}>
       <div className={styles.contentWrapper}>
         {svgContent && (
-          <section className={styles.svgSection}>
+          <div className={styles.svgImageContainer}>
+            <div className={styles.svgImageBackground} dangerouslySetInnerHTML={{ __html: svgContent }} />
             <div className={styles.svgImage} dangerouslySetInnerHTML={{ __html: svgContent }} />
-          </section>
+          </div>
         )}
         <section className={styles.mainChuSection}>
           {mainChu ? (
             <div>
-              <h2>Main Chu Info</h2>
-              <p>Nickname: {mainChu.nickname}</p>
+              <h2>{mainChu.nickname}</h2>
               <p>Level: {mainChu.level}</p>
               <p>EXP: {mainChu.exp}</p>
               <p>Status: {mainChu.status}</p>

@@ -35,7 +35,7 @@
   background-size: cover;
   background-position: center;
   border-radius: 8px;
-  transform: translate(10px, 10px);
-  filter: blur(300px);
+  /* transform: translate(10px, 10px); */
+  filter: blur(30px) brightness(0.4);
   z-index: 0;
 }
