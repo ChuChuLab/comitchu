@@ -1,4 +1,3 @@
-import { Link, useLocation } from "react-router-dom";
 import useUserStore from "../../store/userStore";
 import LanguageToggle from "../LanguageToggle/LanguageToggle";
 import styles from "./Header.module.css";
