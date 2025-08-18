@@ -3,10 +3,11 @@ import useUserStore from "../../store/userStore";
 import LanguageToggle from "../LanguageToggle/LanguageToggle";
 import styles from "./Header.module.css";
 import { LogoutIcon } from "./LogoutIcon";
+import PillNav from "../ReactBits/PillNav";
+import logo from "../../../public/favicon.ico";
 
 const Header = () => {
   const { user, logout } = useUserStore();
-  const location = useLocation();
   const handleLogout = () => {
     logout();
   };
@@ -14,30 +15,35 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <Link to="/" className={styles.logo}>
-          ComitChu
-        </Link>
-
         <nav className={styles.nav}>
-          {user && (
-            <>
-              <Link
-                to="/dashboard"
-                className={`${styles.navLink} ${location.pathname === "/dashboard" ? styles.active : ""}`}
-              >
-                Dashboard
-              </Link>
-              <Link
-                to="/custom"
-                className={`${styles.navLink} ${location.pathname === "/custom" ? styles.active : ""}`}
-              >
-                Custom
-              </Link>
-            </>
-          )}
-          <LanguageToggle />
-          {user && (
-            <>
+          {/* 왼쪽 구역 (공간 확보용) */}
+          <div className={styles.left}></div>
+
+          {/* 중앙 구역 (PillNav) */}
+          <div className={styles.center}>
+            {user && (
+              <PillNav
+                logo={logo}
+                logoAlt="ComitChu Logo"
+                items={[
+                  { label: "Home", href: "/" },
+                  { label: "Dashboard", href: "/dashboard" },
+                  { label: "Custom", href: "/custom" },
+                ]}
+                className="custom-nav"
+                ease="power2.easeOut"
+                baseColor="#eeeeee"
+                pillColor="#000000"
+                hoveredPillTextColor="#000000"
+                pillTextColor="#eeeeee"
+              />
+            )}
+          </div>
+
+          {/* 오른쪽 구역 (언어 토글, 유저 정보) */}
+          <div className={styles.right}>
+            <LanguageToggle />
+            {user && (
               <div className={styles.userInfo}>
                 <svg viewBox="0 0 22 22" height="32px" width="32px">
                   <path
@@ -50,8 +56,8 @@ const Header = () => {
                   <LogoutIcon />
                 </button>
               </div>
-            </>
-          )}
+            )}
+          </div>
         </nav>
       </div>
     </header>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./ChuSkinSelector.module.css";
 import { fetchAllChuSkinsAPI, updateMainChuAPI } from "../../api/chu";
 import type { ChuSkin } from "../../types/model";
+import useChuStore from "../../store/chuStore";
 
 // NOTE: 서버로부터 받은 langId와 실제 이미지 파일명을 매핑합니다.
 // 일부 파일명은 추측된 값으로, 실제 파일명과 다를 수 있습니다.
@@ -22,6 +23,7 @@ const ChuSkinSelector = () => {
   const [skins, setSkins] = useState<ChuSkin[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { fetchMainChu } = useChuStore();
 
   useEffect(() => {
     const getSkins = async () => {
@@ -42,6 +44,7 @@ const ChuSkinSelector = () => {
     try {
       const message = await updateMainChuAPI(langId);
       alert(message); // 성공 메시지 표시
+      await fetchMainChu();
       // 선택 후 스킨 목록을 다시 불러와서 UI를 업데이트합니다.
       const fetchedSkins = await fetchAllChuSkinsAPI();
       setSkins(fetchedSkins);
@@ -61,7 +64,7 @@ const ChuSkinSelector = () => {
           const fileName = LANG_ID_TO_FILENAME[skin.langId];
           if (!fileName) return null; // 매핑에 없는 경우 렌더링하지 않음
 
-          const imageUrl = new URL(`../../assets/images/chu/${fileName}`, import.meta.url).href;
+          const imageUrl = new URL(`../../assets/images/chu/normal/${fileName}`, import.meta.url).href;
 
           return (
             <div

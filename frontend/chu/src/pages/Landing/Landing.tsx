@@ -1,35 +1,49 @@
-import useUserStore from "../../store/userStore";
-import { Link } from "react-router-dom";
-import Button from "../../components/common/Button";
 import styles from "./Landing.module.css";
 import { useTranslation } from "react-i18next";
+import FeatureSection from "../../components/FeatureSection/FeatureSection";
 import heroVisual from "../../assets/images/heroImg.svg";
+import githubLogin from "../../assets/images/githubLogin.png";
+import levelUp from "../../assets/images/LevelUp.png";
 
 const Landing = () => {
-  const { user } = useUserStore();
   const { t } = useTranslation();
 
-  const handleGitHubLogin = () => {
-    window.location.href = "https://www.comitchu.shop/oauth2/authorization/github";
-  };
+  const sectionsData = [
+    {
+      title: t("landing.title"),
+      subtitle: t("landing.subtitle"),
+      imageSrc: heroVisual,
+      imagePosition: "right" as const,
+      showButton: true,
+    },
+    {
+      title: "GitHub 연동 로그인",
+      subtitle: "GitHub 계정으로 간편하게 시작할 수 있어요.",
+      imageSrc: githubLogin,
+      imagePosition: "left" as const,
+      showButton: false,
+    },
+    {
+      title: "커밋 기반 성장 시스템",
+      subtitle: "커밋할수록 캐릭터가 성장하고 레벨업합니다.",
+      imageSrc: levelUp,
+      imagePosition: "right" as const,
+      showButton: false,
+    },
+    {
+      title: "GitHub 연동 로그인",
+      subtitle: "GitHub 계정으로 간편하게 시작할 수 있어요.",
+      imageSrc: githubLogin,
+      imagePosition: "left" as const,
+      showButton: false,
+    },
+  ];
 
   return (
-    <div className={styles.landing}>
-      {/* 좌측영역 */}
-      <div className={styles.heroContent}>
-        <h1 className={styles.title}>{t("landing.title")}</h1>
-        <p className={styles.subtitle}>{t("landing.subtitle")}</p>
-        {user ? (
-          <Link to="/dashboard">
-            <Button>{t("landing.goToDashboard")}</Button>
-          </Link>
-        ) : (
-          <Button onClick={handleGitHubLogin}>{t("landing.login")}</Button>
-        )}
-      </div>
-
-      {/* 우측영역 */}
-      <img src={heroVisual} alt="Hero Image" className={styles.heroVisual} />
+    <div className={styles.landingContainer}>
+      {sectionsData.map((section, index) => (
+        <FeatureSection key={index} {...section} />
+      ))}
     </div>
   );
 };
