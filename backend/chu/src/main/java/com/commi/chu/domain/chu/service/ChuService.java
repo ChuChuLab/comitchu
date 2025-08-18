@@ -1,10 +1,7 @@
 package com.commi.chu.domain.chu.service;
 
-import com.commi.chu.domain.chu.dto.BackgroundRequestDto;
-import com.commi.chu.domain.chu.dto.UpdateResponseDto;
+import com.commi.chu.domain.chu.dto.*;
 import com.commi.chu.domain.chu.entity.Background;
-import com.commi.chu.domain.chu.dto.ChuSkinListResponseDto;
-import com.commi.chu.domain.chu.dto.MainChuResponseDto;
 import com.commi.chu.domain.chu.entity.Chu;
 import com.commi.chu.domain.chu.entity.ChuStatus;
 import com.commi.chu.domain.chu.entity.Language;
@@ -21,6 +18,7 @@ import com.commi.chu.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -197,6 +195,32 @@ public class ChuService {
         return UpdateResponseDto.of("배경화면이 성공적으로 변경 됐습니다.");
     }
 
+
+    /***
+     * chu의 닉네임을 변경하는 비즈니스 로직입니다. 
+     * 
+     * @param userId 요청한 사용자 id
+     * @param chuNicknameRequestDto 변경할 chu 닉네임
+     * @return 닉네임 변경 성공 메시지
+     */
+    @Transactional
+    public UpdateResponseDto updateNickname(Integer userId, ChuNicknameRequestDto chuNicknameRequestDto) {
+
+        //사용자 조회
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "userId", userId));
+
+        Chu chu = chuRepository.findByUser(user)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHU_NOT_FOUND));
+
+        String beforeNickname = chu.getName();
+
+        chu.updateName(chuNicknameRequestDto.getNickname());
+
+        log.info("chu 닉네임 변경 : {} -> {}", beforeNickname, chuNicknameRequestDto.getNickname());
+
+        return UpdateResponseDto.of("chu 닉네임이 성공적으로 변경 됐습니다.");
+    }
 
 
 }
