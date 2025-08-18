@@ -5,8 +5,8 @@ import java.util.List;
 import com.commi.chu.domain.chu.dto.BackgroundRequestDto;
 import com.commi.chu.domain.chu.dto.ChuSkinListResponseDto;
 import com.commi.chu.domain.chu.dto.MainChuResponseDto;
-import com.commi.chu.domain.chu.dto.UpdateBackgroundResponseDto;
 import com.commi.chu.domain.chu.dto.UpdateMainChuResponseDto;
+import com.commi.chu.domain.chu.dto.UpdateResponseDto;
 import com.commi.chu.domain.chu.scheduler.LanguageUnlockScheduler;
 import com.commi.chu.domain.chu.service.ChuService;
 import com.commi.chu.global.common.response.CommonResponse;
@@ -86,7 +86,7 @@ public class ChuController {
      * @return 대표 언어 변경 완료 메시지
      */
     @PatchMapping("/main/{langId}")
-    public ResponseEntity<CommonResponse<UpdateMainChuResponseDto>> updateMainChu(
+    public ResponseEntity<CommonResponse<UpdateResponseDto>> updateMainChu(
         @AuthenticationPrincipal UserPrincipal userPrincipal,
         @PathVariable Integer langId
 
@@ -117,7 +117,7 @@ public class ChuController {
      * @return 배경화면 변경 성공,실패 응답
      */
     @PatchMapping("/background")
-    public ResponseEntity<CommonResponse<UpdateBackgroundResponseDto>> updateBackground(
+    public ResponseEntity<CommonResponse<UpdateResponseDto>> updateBackground(
         @AuthenticationPrincipal UserPrincipal userPrincipal,
         @RequestBody BackgroundRequestDto backgroundRequestDto
     ){

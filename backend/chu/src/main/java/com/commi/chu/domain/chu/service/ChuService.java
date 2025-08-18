@@ -1,11 +1,10 @@
 package com.commi.chu.domain.chu.service;
 
 import com.commi.chu.domain.chu.dto.BackgroundRequestDto;
+import com.commi.chu.domain.chu.dto.UpdateResponseDto;
 import com.commi.chu.domain.chu.entity.Background;
 import com.commi.chu.domain.chu.dto.ChuSkinListResponseDto;
 import com.commi.chu.domain.chu.dto.MainChuResponseDto;
-import com.commi.chu.domain.chu.dto.UpdateBackgroundResponseDto;
-import com.commi.chu.domain.chu.dto.UpdateMainChuResponseDto;
 import com.commi.chu.domain.chu.entity.Chu;
 import com.commi.chu.domain.chu.entity.ChuStatus;
 import com.commi.chu.domain.chu.entity.Language;
@@ -141,7 +140,7 @@ public class ChuService {
 
 
     @Transactional
-    public UpdateMainChuResponseDto updateMainChu(Integer userId, Integer langId){
+    public UpdateResponseDto updateMainChu(Integer userId, Integer langId){
 
         //사용자 조회
         User user = userRepository.findById(userId)
@@ -161,7 +160,7 @@ public class ChuService {
 
         log.info("[updateMainChu] {}의 대표 chu 언어가 {}로 변경 됐습니다.", user.getGithubUsername(),chu.getLang());
 
-        return UpdateMainChuResponseDto.of("대표 언어가 변경 되었습니다.");
+        return UpdateResponseDto.of("대표 언어가 변경 되었습니다.");
     }
 
     /***
@@ -172,7 +171,7 @@ public class ChuService {
      * @return 배경화면 변경에 성공했는지 응답
      */
     @Transactional
-    public UpdateBackgroundResponseDto updateBackgroundImage(Integer userId, BackgroundRequestDto backgroundRequestDto) {
+    public UpdateResponseDto updateBackgroundImage(Integer userId, BackgroundRequestDto backgroundRequestDto) {
 
         //사용자 조회
         User user = userRepository.findById(userId)
@@ -195,6 +194,9 @@ public class ChuService {
         //배경화면 변경
         chu.updateBackground(background.name());
 
-        return UpdateBackgroundResponseDto.of("배경화면이 성공적으로 변경 됐습니다.");
+        return UpdateResponseDto.of("배경화면이 성공적으로 변경 됐습니다.");
     }
+
+
+
 }
