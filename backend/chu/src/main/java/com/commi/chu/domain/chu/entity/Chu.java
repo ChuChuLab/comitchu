@@ -39,13 +39,13 @@ public class Chu extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ChuStatus status; // e.g., "NORMAL", "HUNGRY", "HAPPY"
 
-    @Column(name = "lang",nullable = false, length = 50)
+    @Column(name = "lang", nullable = false, length = 50)
     private String lang;
 
-    @Column(name = "background",nullable = false, length = 50)
+    @Column(name = "background", nullable = false, length = 50)
     private String background;
 
-    @Column(name="last_status_updated_at", nullable = false)
+    @Column(name = "last_status_updated_at", nullable = false)
     @LastModifiedDate
     private LocalDateTime lastStatusUpdatedAt;
 
@@ -61,6 +61,9 @@ public class Chu extends BaseEntity {
         this.lang = lang;
     }
 
+    public void updateName(String name) {
+        this.name = name;
+    }
 
     public void updateBackground(String background) {
         this.background = background;

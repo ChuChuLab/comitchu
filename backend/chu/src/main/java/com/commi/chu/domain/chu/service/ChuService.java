@@ -1,11 +1,7 @@
 package com.commi.chu.domain.chu.service;
 
-import com.commi.chu.domain.chu.dto.BackgroundRequestDto;
+import com.commi.chu.domain.chu.dto.*;
 import com.commi.chu.domain.chu.entity.Background;
-import com.commi.chu.domain.chu.dto.ChuSkinListResponseDto;
-import com.commi.chu.domain.chu.dto.MainChuResponseDto;
-import com.commi.chu.domain.chu.dto.UpdateBackgroundResponseDto;
-import com.commi.chu.domain.chu.dto.UpdateMainChuResponseDto;
 import com.commi.chu.domain.chu.entity.Chu;
 import com.commi.chu.domain.chu.entity.ChuStatus;
 import com.commi.chu.domain.chu.entity.Language;
@@ -22,6 +18,7 @@ import com.commi.chu.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -141,7 +138,7 @@ public class ChuService {
 
 
     @Transactional
-    public UpdateMainChuResponseDto updateMainChu(Integer userId, Integer langId){
+    public UpdateResponseDto updateMainChu(Integer userId, Integer langId){
 
         //사용자 조회
         User user = userRepository.findById(userId)
@@ -161,7 +158,7 @@ public class ChuService {
 
         log.info("[updateMainChu] {}의 대표 chu 언어가 {}로 변경 됐습니다.", user.getGithubUsername(),chu.getLang());
 
-        return UpdateMainChuResponseDto.of("대표 언어가 변경 되었습니다.");
+        return UpdateResponseDto.of("대표 언어가 변경 되었습니다.");
     }
 
     /***
@@ -172,7 +169,7 @@ public class ChuService {
      * @return 배경화면 변경에 성공했는지 응답
      */
     @Transactional
-    public UpdateBackgroundResponseDto updateBackgroundImage(Integer userId, BackgroundRequestDto backgroundRequestDto) {
+    public UpdateResponseDto updateBackgroundImage(Integer userId, BackgroundRequestDto backgroundRequestDto) {
 
         //사용자 조회
         User user = userRepository.findById(userId)
@@ -195,6 +192,35 @@ public class ChuService {
         //배경화면 변경
         chu.updateBackground(background.name());
 
-        return UpdateBackgroundResponseDto.of("배경화면이 성공적으로 변경 됐습니다.");
+        return UpdateResponseDto.of("배경화면이 성공적으로 변경 됐습니다.");
     }
+
+
+    /***
+     * chu의 닉네임을 변경하는 비즈니스 로직입니다. 
+     * 
+     * @param userId 요청한 사용자 id
+     * @param chuNicknameRequestDto 변경할 chu 닉네임
+     * @return 닉네임 변경 성공 메시지
+     */
+    @Transactional
+    public UpdateResponseDto updateNickname(Integer userId, ChuNicknameRequestDto chuNicknameRequestDto) {
+
+        //사용자 조회
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "userId", userId));
+
+        Chu chu = chuRepository.findByUser(user)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHU_NOT_FOUND));
+
+        String beforeNickname = chu.getName();
+
+        chu.updateName(chuNicknameRequestDto.getNickname());
+
+        log.info("chu 닉네임 변경 : {} -> {}", beforeNickname, chuNicknameRequestDto.getNickname());
+
+        return UpdateResponseDto.of("chu 닉네임이 성공적으로 변경 됐습니다.");
+    }
+
+
 }
