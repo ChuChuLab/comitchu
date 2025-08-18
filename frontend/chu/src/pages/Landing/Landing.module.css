@@ -1,37 +1,9 @@
-.landing {
+.landingContainer {
   max-width: 1024px;
   margin: 0 auto;
   display: flex;
-  align-items: center; /* 세로 중앙 정렬 */
-  width: 100%;
-  gap: 50px;
-}
-
-/* heroContent와 holoCardContainer가 1:1 비율로 너비를 나눠 갖도록 설정 */
-.heroContent,
-.holoCardContainer {
-  flex: 1;
-  display: flex;
   flex-direction: column;
-  justify-content: center;
-}
-
-/* HoloCard가 컨테이너 중앙에 오도록 설정 */
-.holoCardContainer {
   align-items: center;
-}
-
-.title {
-  font-size: 48px;
-  font-weight: 700;
-  line-height: 1.2;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.subtitle {
-  font-size: 18px;
-  line-height: 1.6;
-  margin-top: 24px;
+  gap: 40px;
+  padding: 0px 20px; /* Add some padding */
 }
