@@ -2,11 +2,7 @@ package com.commi.chu.domain.chu.controller;
 
 import java.util.List;
 
-import com.commi.chu.domain.chu.dto.BackgroundRequestDto;
-import com.commi.chu.domain.chu.dto.ChuSkinListResponseDto;
-import com.commi.chu.domain.chu.dto.MainChuResponseDto;
-import com.commi.chu.domain.chu.dto.UpdateMainChuResponseDto;
-import com.commi.chu.domain.chu.dto.UpdateResponseDto;
+import com.commi.chu.domain.chu.dto.*;
 import com.commi.chu.domain.chu.scheduler.LanguageUnlockScheduler;
 import com.commi.chu.domain.chu.service.ChuService;
 import com.commi.chu.global.common.response.CommonResponse;
@@ -125,5 +121,22 @@ public class ChuController {
         Integer userId = authenticationUtil.getCurrentUserId(userPrincipal);
 
         return CommonResponse.ok(chuService.updateBackgroundImage(userId,backgroundRequestDto));
+    }
+
+    /***
+     * 닉네임 변경 메서드
+     * 
+     * @param userPrincipal 요청한 사용자 정보
+     * @param chuNicknameRequestDto 변경할 닉네임
+     * @return 닉네임 변경 성공, 실패 응답
+     */
+    @PatchMapping("/nickname")
+    public ResponseEntity<CommonResponse<UpdateResponseDto>> updateNickname(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestBody ChuNicknameRequestDto chuNicknameRequestDto
+    ){
+        Integer userId = authenticationUtil.getCurrentUserId(userPrincipal);
+
+        return CommonResponse.ok(chuService.updateNickname(userId,chuNicknameRequestDto));
     }
 }
