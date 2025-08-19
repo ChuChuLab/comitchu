@@ -56,7 +56,7 @@ const Dashboard = () => {
             <div className={styles.svgImage} dangerouslySetInnerHTML={{ __html: svgContent }} />
           </div>
         )}
-        <section className={styles.mainChuSection}>
+        <div className={styles.mainChuSection}>
           {mainChu ? (
             <div>
               <h2>{mainChu.nickname}</h2>
@@ -77,7 +77,7 @@ const Dashboard = () => {
           ) : (
             <p>{t("dashboard.noChu")}</p>
           )}
-        </section>
+        </div>
       </div>
     </div>
   );

@@ -1,8 +1,10 @@
 .selectorContainer {
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  /* border: 1px solid #ccc;
+  border-radius: 8px; */
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .gridContainer {
