@@ -20,11 +20,11 @@
   border-radius: 8px;
   cursor: pointer;
   overflow: hidden;
-  aspect-ratio: 16 / 9; /* 16:9 비율 유지 */
+  aspect-ratio: 16 / 10; /* 16:9 비율 유지 */
 }
 
 .backgroundItem:hover {
-  border-color: #007bff;
+  border-color: #ccc;
 }
 
 .backgroundImage {
@@ -47,4 +47,31 @@
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.8rem;
+}
+
+.paginationControls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.paginationControls button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.paginationControls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

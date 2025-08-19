@@ -4,7 +4,11 @@
   align-items: center;
   gap: 40px;
   width: 100%;
-  padding: 160px 0;
+  margin: 100px;
+  padding: 80px 40px;
+  border: 1px solid #cccccc50;
+  border-radius: 12px;
+  background-color: #28282850;
 }
 
 .featureContent {

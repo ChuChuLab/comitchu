@@ -4,6 +4,7 @@ import FeatureSection from "../../components/FeatureSection/FeatureSection";
 import heroVisual from "../../assets/images/heroImg.svg";
 import githubLogin from "../../assets/images/githubLogin.png";
 import levelUp from "../../assets/images/LevelUp.png";
+import custom from "../../assets/images/custom.png";
 
 const Landing = () => {
   const { t } = useTranslation();
@@ -33,7 +34,7 @@ const Landing = () => {
     {
       title: t("landing.customization.title"),
       subtitle: t("landing.customization.subtitle"),
-      imageSrc: githubLogin,
+      imageSrc: custom,
       imagePosition: "left" as const,
       showButton: false,
     },
