@@ -29,7 +29,7 @@ jobs:
   # 2. 백엔드 배포 잡
   deploy-backend:
     needs: changes # 'changes' 잡이 먼저 실행되어야 함
-    if: needs.changes.outputs.backend == 'false' # 'backend' 폴더에 변경이 있을 때만 실행
+    if: needs.changes.outputs.backend == 'true' # 'backend' 폴더에 변경이 있을 때만 실행
     runs-on: ubuntu-latest
     steps:
       # 1. 저장소 코드 내려받기
@@ -113,7 +113,7 @@ jobs:
   # 3. 프론트엔드 배포 잡
   deploy-frontend:
     needs: changes # 'changes' 잡이 먼저 실행되어야 함
-    if: needs.changes.outputs.frontend == 'false' # 'frontend' 폴더에 변경이 있을 때만 실행
+    if: needs.changes.outputs.frontend == 'true' # 'frontend' 폴더에 변경이 있을 때만 실행
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
