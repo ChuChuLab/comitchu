@@ -80,7 +80,7 @@ const ChuSkinSelector = () => {
     <div className={styles.selectorContainer}>
       <h2>{t("chuSkinSelector.title")}</h2>
       <div className={styles.gridContainer}>
-        {currentSkins.map((skin) => { // Use currentSkins for rendering
+        {currentSkins.map((skin) => {
           const fileName = LANG_ID_TO_FILENAME[skin.langId];
           if (!fileName) return null; // 매핑에 없는 경우 렌더링하지 않음
 
@@ -103,13 +103,10 @@ const ChuSkinSelector = () => {
       </div>
       <div className={styles.paginationControls}>
         <button onClick={handlePrevPage} disabled={currentPage === 1}>
-          Previous
+          &lt;
         </button>
-        <span>
-          Page {currentPage} of {totalPages}
-        </span>
         <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-          Next
+          &gt;
         </button>
       </div>
     </div>
