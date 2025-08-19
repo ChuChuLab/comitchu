@@ -27,6 +27,24 @@ const ChuSkinSelector = () => {
   const [error, setError] = useState<string | null>(null);
   const { fetchMainChu } = useChuStore();
 
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const skinsPerPage = 4;
+
+  const indexOfLastSkin = currentPage * skinsPerPage;
+  const indexOfFirstSkin = indexOfLastSkin - skinsPerPage;
+  const currentSkins = skins.slice(indexOfFirstSkin, indexOfLastSkin);
+
+  const totalPages = Math.ceil(skins.length / skinsPerPage);
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
   useEffect(() => {
     const getSkins = async () => {
       try {
@@ -62,7 +80,7 @@ const ChuSkinSelector = () => {
     <div className={styles.selectorContainer}>
       <h2>{t("chuSkinSelector.title")}</h2>
       <div className={styles.gridContainer}>
-        {skins.map((skin) => {
+        {currentSkins.map((skin) => { // Use currentSkins for rendering
           const fileName = LANG_ID_TO_FILENAME[skin.langId];
           if (!fileName) return null; // 매핑에 없는 경우 렌더링하지 않음
 
@@ -82,6 +100,17 @@ const ChuSkinSelector = () => {
             </div>
           );
         })}
+      </div>
+      <div className={styles.paginationControls}>
+        <button onClick={handlePrevPage} disabled={currentPage === 1}>
+          Previous
+        </button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          Next
+        </button>
       </div>
     </div>
   );
