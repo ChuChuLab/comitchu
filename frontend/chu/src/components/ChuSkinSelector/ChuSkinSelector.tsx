@@ -11,13 +11,13 @@ const LANG_ID_TO_FILENAME: { [key: number]: string } = {
   1: "comit.png",
   2: "Java.png",
   3: "Python.png",
-  4: "Js.png", // 아직 이미지 없음
-  5: "TypeScript.png", // 아직 이미지 없음
+  4: "Js.png",
+  5: "TypeScript.png",
   6: "C.png",
-  7: "C++.png", // 아직 이미지 없음
-  8: "Csharp.png", // 아직 이미지 없음
-  9: "Swift.png", // 아직 이미지 없음
-  10: "Go.png", // 아직 이미지 없음
+  7: "C++.png",
+  8: "CSharp.png",
+  9: "Swift.png",
+  10: "Php.png",
 };
 
 const ChuSkinSelector = () => {

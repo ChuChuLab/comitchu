@@ -5,13 +5,15 @@
   align-items: center;
   text-align: center;
   padding: 80px 20px;
-  gap: 20px;
+  gap: 30px;
+  min-height: 90vh;
 }
 .link {
-  display: inline-block;
+  position: relative;
+  left: 6px;
   padding: 12px 24px;
   background-color: #333;
-  color: #fff;
+  color: #ccc;
   border-radius: 8px;
   text-decoration: none;
   transition: background-color 0.2s ease;

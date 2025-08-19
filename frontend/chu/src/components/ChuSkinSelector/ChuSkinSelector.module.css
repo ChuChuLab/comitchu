@@ -19,21 +19,15 @@
 }
 
 .skinItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
   position: relative;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
 }
 
 .skinItem:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-color: #ccc;
 }
 
 .skinImage {

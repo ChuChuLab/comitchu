@@ -18,7 +18,7 @@ const Custom = () => {
   }
 
   const chuImagePath = mainChu
-    ? new URL(`../../assets/images/chu/normal/${mainChu.lang}.png`, import.meta.url).href
+    ? new URL(`../../assets/images/chu/normal/${encodeURIComponent(mainChu.lang)}.png`, import.meta.url).href
     : "";
   const backgroundImagePath = mainChu
     ? new URL(`../../assets/images/backgrounds/${mainChu.background}.png`, import.meta.url).href
