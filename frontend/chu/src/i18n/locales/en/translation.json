@@ -1,28 +1,54 @@
 {
   "landing": {
-    "title": "Meet Your Git Companion",
-    "subtitle": "ComitChu is a developer-focused service that turns your GitHub activity into a growing character.As you make more commits, your character evolves and collects badges, turning your coding journey into a visual experience.",
+
+    "title": "Your Own Character",
+    "subtitle": "Grow with Comitchu, a service that visualizes your GitHub commit activity. Today's single line of code is a single step for your character.",
     "login": "Login with GitHub",
     "goToDashboard": "Go to Dashboard",
     "level": "Level {{level}}",
     "howItWorks": "How It Works",
-    "feature": {
-      "choose": {
-        "title": "Choose Your Pet",
-        "desc": "Select from various adorable characters to be your coding companion"
-      },
-      "grow": {
-        "title": "Grow Together",
-        "desc": "Your pet gains XP and levels up as you make commits to your repositories"
-      },
-      "show": {
-        "title": "Show Off",
-        "desc": "Display your pet's progress with beautiful SVG badges in your README"
-      }
+    "githubLogin": {
+      "title": "Login with GitHub",
+      "subtitle": "Get started easily with your GitHub account."
     },
-    "preview": {
-      "title": "Live Badge Preview",
-      "description": "Here's what your ComitChu badge will look like in your repository:"
+    "commitSystem": {
+      "title": "Commit-Based Growth System",
+      "subtitle": "Your character grows and levels up as you commit."
+    },
+    "customization": {
+      "title": "Customizable Characters",
+      "subtitle": "Decorate your character with various skins."
     }
+  },
+  "dashboard": {
+    "loading": "Loading your Chus...",
+    "error": "Error: {{error}}",
+    "fetchError": "Failed to load Chu.",
+    "level": "Level",
+    "exp": "EXP",
+    "status": "Status",
+    "language": "Language",
+    "background": "Background",
+    "noChu": "No main chu selected."
+  },
+  "chuSkinSelector": {
+    "fetchError": "Failed to load skin list.",
+    "updateError": "Failed to change skin.",
+    "loading": "Loading...",
+    "error": "Error: {{error}}",
+    "title": "Select Main Chu Skin",
+    "mainTag": "Main"
+  },
+  "backgroundSelector": {
+    "updateError": "Failed to change background.",
+    "title": "Select Background",
+    "activeTag": "Applied"
+  },
+  "chuViewer": {
+    "loading": "Loading...",
+    "error": "Error: {{error}}",
+    "noData": "No Chu data available.",
+    "backgroundAlt": "Background",
+    "chuAlt": "Chu"
   }
 }

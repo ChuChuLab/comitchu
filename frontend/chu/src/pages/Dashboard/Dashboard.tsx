@@ -3,8 +3,10 @@ import useUserStore from "../../store/userStore";
 import useChuStore from "../../store/chuStore";
 import { fetchChuSvgAPI } from "../../api/chu";
 import styles from "./Dashboard.module.css";
+import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
+  const { t } = useTranslation();
   const { mainChu, isLoading, error, fetchMainChu } = useChuStore();
 
   // 로그인한 사용자 정보
@@ -27,29 +29,26 @@ const Dashboard = () => {
           setSvgContent(svgData);
           setSvgError(null);
         } catch (err) {
-          setSvgError(err instanceof Error ? err.message : "츄를 불러오지 못했습니다.");
+          setSvgError(err instanceof Error ? err.message : t("dashboard.fetchError"));
         } finally {
           setSvgLoading(false);
         }
-      } else {
-        setSvgLoading(false);
       }
     };
 
     getChuSvg();
-  }, [user]);
+  }, [user, t]);
 
   if (isLoading || svgLoading) {
-    return <p>Loading your Chus...</p>;
+    return <p>{t("dashboard.loading")}</p>;
   }
 
   if (error || svgError) {
-    return <p>Error: {error || svgError}</p>;
+    return <p>{t("dashboard.error", { error: error || svgError })}</p>;
   }
 
   return (
-
-<div className={`${styles.dashboard} animate-slide-up`}>
+    <div className={`${styles.dashboard} animate-slide-up`}>
       <div className={styles.contentWrapper}>
         {svgContent && (
           <div className={styles.svgImageContainer}>
@@ -57,20 +56,28 @@ const Dashboard = () => {
             <div className={styles.svgImage} dangerouslySetInnerHTML={{ __html: svgContent }} />
           </div>
         )}
-        <section className={styles.mainChuSection}>
+        <div className={styles.mainChuSection}>
           {mainChu ? (
             <div>
               <h2>{mainChu.nickname}</h2>
-              <p>Level: {mainChu.level}</p>
-              <p>EXP: {mainChu.exp}</p>
-              <p>Status: {mainChu.status}</p>
-              <p>Language: {mainChu.lang}</p>
-              <p>Background: {mainChu.background}</p>
+              <p>
+                {t("dashboard.level")}: {mainChu.level}
+              </p>
+              <p>
+                {t("dashboard.exp")}: {mainChu.exp}
+              </p>
+              <p>
+                {t("dashboard.status")}: {mainChu.status}
+              </p>
+              <p>
+                {t("dashboard.language")}: {mainChu.lang}
+              </p>
+              {/* <p>{t("dashboard.background")}: {mainChu.background}</p> */}
             </div>
           ) : (
-            <p>No main chu selected.</p>
+            <p>{t("dashboard.noChu")}</p>
           )}
-        </section>
+        </div>
       </div>
     </div>
   );

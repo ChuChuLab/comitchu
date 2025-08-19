@@ -1,6 +1,8 @@
+import { useState } from "react";
 import useChuStore from "../../store/chuStore";
 import { updateChuBackgroundAPI } from "../../api/chu";
 import styles from "./BackgroundSelector.module.css";
+import { useTranslation } from "react-i18next";
 
 const BACKGROUND_IMAGES = [
   "abandonedChurch.png",
@@ -34,7 +36,26 @@ const BACKGROUND_IMAGES = [
 ];
 
 const BackgroundSelector = () => {
+  const { t } = useTranslation();
   const { mainChu, fetchMainChu } = useChuStore();
+
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const backgroundsPerPage = 6; // Same as skinsPerPage for consistency
+
+  const indexOfLastBackground = currentPage * backgroundsPerPage;
+  const indexOfFirstBackground = indexOfLastBackground - backgroundsPerPage;
+  const currentBackgrounds = BACKGROUND_IMAGES.slice(indexOfFirstBackground, indexOfLastBackground);
+
+  const totalPages = Math.ceil(BACKGROUND_IMAGES.length / backgroundsPerPage);
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
 
   const handleSelectBackground = async (backgroundName: string) => {
     // API 요청 시에는 파일 확장자를 제거하고 보냅니다.
@@ -44,15 +65,15 @@ const BackgroundSelector = () => {
       alert(message);
       await fetchMainChu(); // 상태를 최신화하여 UI에 반영
     } catch (err) {
-      alert(err instanceof Error ? err.message : "배경 변경에 실패했습니다.");
+      alert(err instanceof Error ? err.message : t("backgroundSelector.updateError"));
     }
   };
 
   return (
     <div className={styles.selectorContainer}>
-      <h2>배경화면 선택</h2>
+      <h2>{t("backgroundSelector.title")}</h2>
       <div className={styles.gridContainer}>
-        {BACKGROUND_IMAGES.map((imageFile) => {
+        {currentBackgrounds.map((imageFile) => {
           const imageUrl = new URL(`../../assets/images/backgrounds/${imageFile}`, import.meta.url).href;
           const backgroundName = imageFile.replace(".png", "");
           const isActive = mainChu?.background === backgroundName;
@@ -64,10 +85,19 @@ const BackgroundSelector = () => {
               onClick={() => handleSelectBackground(imageFile)}
             >
               <img src={imageUrl} alt={backgroundName} className={styles.backgroundImage} />
-              {isActive && <div className={styles.activeTag}>적용중</div>}
+              {isActive && <div className={styles.activeTag}>{t("backgroundSelector.activeTag")}</div>}
             </div>
           );
         })}
+      </div>
+      {/* Pagination Controls */}
+      <div className={styles.paginationControls}>
+        <button onClick={handlePrevPage} disabled={currentPage === 1}>
+          &lt;
+        </button>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          &gt;
+        </button>
       </div>
     </div>
   );

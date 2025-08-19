@@ -4,6 +4,7 @@ import FeatureSection from "../../components/FeatureSection/FeatureSection";
 import heroVisual from "../../assets/images/heroImg.svg";
 import githubLogin from "../../assets/images/githubLogin.png";
 import levelUp from "../../assets/images/LevelUp.png";
+import custom from "../../assets/images/custom.png";
 
 const Landing = () => {
   const { t } = useTranslation();
@@ -17,23 +18,23 @@ const Landing = () => {
       showButton: true,
     },
     {
-      title: "GitHub 연동 로그인",
-      subtitle: "GitHub 계정으로 간편하게 시작할 수 있어요.",
+      title: t("landing.githubLogin.title"),
+      subtitle: t("landing.githubLogin.subtitle"),
       imageSrc: githubLogin,
       imagePosition: "left" as const,
       showButton: false,
     },
     {
-      title: "커밋 기반 성장 시스템",
-      subtitle: "커밋할수록 캐릭터가 성장하고 레벨업합니다.",
+      title: t("landing.commitSystem.title"),
+      subtitle: t("landing.commitSystem.subtitle"),
       imageSrc: levelUp,
       imagePosition: "right" as const,
       showButton: false,
     },
     {
-      title: "GitHub 연동 로그인",
-      subtitle: "GitHub 계정으로 간편하게 시작할 수 있어요.",
-      imageSrc: githubLogin,
+      title: t("landing.customization.title"),
+      subtitle: t("landing.customization.subtitle"),
+      imageSrc: custom,
       imagePosition: "left" as const,
       showButton: false,
     },

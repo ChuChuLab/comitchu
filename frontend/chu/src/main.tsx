@@ -8,7 +8,9 @@ import "./i18n";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <div className="crt">
+        <App />
+      </div>
     </BrowserRouter>
   </React.StrictMode>
 );

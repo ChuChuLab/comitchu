@@ -1,15 +1,17 @@
+/* ===== Reset ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* ===== Base ===== */
 body {
   font-weight: 600;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   word-break: keep-all;
-  font-family: "Pretendard";
+  font-family: "DungGeonMo";
   background-color: #0d1116;
   color: #f0f6fc;
   min-height: 100vh;
@@ -20,14 +22,16 @@ body {
   min-height: 100vh;
 }
 
+/* ===== Font ===== */
 @font-face {
-  font-family: "Pretendard";
-  src: url("/src/assets/fonts/PretendardVariable.woff2") format("woff2");
+  font-family: "DungGeonMo";
+  src: url("/src/assets/fonts/DungGeunMo.woff2") format("woff2");
   font-weight: 100 900;
   font-display: swap;
   font-style: normal;
 }
 
+/* ===== Animation: Slide Up ===== */
 @keyframes slideUp {
   from {
     opacity: 0;
@@ -41,4 +45,67 @@ body {
 
 .animate-slide-up {
   animation: slideUp 0.8s ease-out forwards;
+}
+
+/* ===== CRT Effect ===== */
+:root {
+  --crt-scanline-size: 2px;
+  --crt-scanline-alpha: 0.25;
+  --crt-rgb-intensity: 0.06;
+  --crt-text-glow: 3px;
+}
+
+/* 글씨 깜빡임 효과 */
+/* @keyframes crt-textShadow {
+  0%,
+  100% {
+    text-shadow: 2px 0 1px rgba(0, 30, 255, 0.5), -2px 0 1px rgba(255, 0, 80, 0.3),
+      0 0 var(--crt-text-glow) currentColor;
+  }
+  50% {
+    text-shadow: 3px 0 1px rgba(0, 30, 255, 0.5), -3px 0 1px rgba(255, 0, 80, 0.3),
+      0 0 var(--crt-text-glow) currentColor;
+  }
+} */
+
+.crt {
+  position: relative;
+  isolation: isolate;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0.6) 70%);
+  border-radius: 12px;
+  /* animation: crt-textShadow 1.6s infinite; */
+}
+
+.crt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, var(--crt-scanline-alpha)) 50%),
+    linear-gradient(
+      90deg,
+      rgba(255, 0, 0, var(--crt-rgb-intensity)),
+      rgba(0, 255, 0, calc(var(--crt-rgb-intensity) * 0.33)),
+      rgba(0, 0, 255, var(--crt-rgb-intensity))
+    );
+  background-size: 100% var(--crt-scanline-size), 3px 100%;
+}
+.crt img,
+.crt canvas,
+.crt video,
+.crt svg,
+.crt picture {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crt,
+  .crt * {
+    animation: none !important;
+  }
+  .crt::after {
+    animation: none !important;
+  }
 }
