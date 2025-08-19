@@ -1,8 +1,10 @@
 import useChuStore from "../../store/chuStore";
 import { useEffect } from "react";
 import styles from "./ChuViewer.module.css";
+import { useTranslation } from "react-i18next";
 
 const ChuViewer = () => {
+  const { t } = useTranslation();
   const { mainChu, isLoading, error, fetchMainChu } = useChuStore();
 
   useEffect(() => {
@@ -10,15 +12,15 @@ const ChuViewer = () => {
   }, [fetchMainChu]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>{t("chuViewer.loading")}</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>{t("chuViewer.error", { error: error })}</div>;
   }
 
   if (!mainChu) {
-    return <div>No Chu data available.</div>;
+    return <div>{t("chuViewer.noData")}</div>;
   }
 
   const chuImagePath = new URL(`../../assets/images/chu/normal/${mainChu.lang}.png`, import.meta.url).href;
@@ -27,8 +29,8 @@ const ChuViewer = () => {
 
   return (
     <div className={styles.chuViewer}>
-      <img src={backgroundImagePath} alt="Background" className={styles.backgroundImage} />
-      <img src={chuImagePath} alt="Chu" className={styles.chuImage} />
+      <img src={backgroundImagePath} alt={t("chuViewer.backgroundAlt")} className={styles.backgroundImage} />
+      <img src={chuImagePath} alt={t("chuViewer.chuAlt")} className={styles.chuImage} />
     </div>
   );
 };

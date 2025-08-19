@@ -1,6 +1,7 @@
 import useChuStore from "../../store/chuStore";
 import { updateChuBackgroundAPI } from "../../api/chu";
 import styles from "./BackgroundSelector.module.css";
+import { useTranslation } from "react-i18next";
 
 const BACKGROUND_IMAGES = [
   "abandonedChurch.png",
@@ -34,6 +35,7 @@ const BACKGROUND_IMAGES = [
 ];
 
 const BackgroundSelector = () => {
+  const { t } = useTranslation();
   const { mainChu, fetchMainChu } = useChuStore();
 
   const handleSelectBackground = async (backgroundName: string) => {
@@ -44,13 +46,13 @@ const BackgroundSelector = () => {
       alert(message);
       await fetchMainChu(); // 상태를 최신화하여 UI에 반영
     } catch (err) {
-      alert(err instanceof Error ? err.message : "배경 변경에 실패했습니다.");
+      alert(err instanceof Error ? err.message : t("backgroundSelector.updateError"));
     }
   };
 
   return (
     <div className={styles.selectorContainer}>
-      <h2>배경화면 선택</h2>
+      <h2>{t("backgroundSelector.title")}</h2>
       <div className={styles.gridContainer}>
         {BACKGROUND_IMAGES.map((imageFile) => {
           const imageUrl = new URL(`../../assets/images/backgrounds/${imageFile}`, import.meta.url).href;
@@ -64,7 +66,7 @@ const BackgroundSelector = () => {
               onClick={() => handleSelectBackground(imageFile)}
             >
               <img src={imageUrl} alt={backgroundName} className={styles.backgroundImage} />
-              {isActive && <div className={styles.activeTag}>적용중</div>}
+              {isActive && <div className={styles.activeTag}>{t("backgroundSelector.activeTag")}</div>}
             </div>
           );
         })}
