@@ -8,6 +8,7 @@ import custom from "../../assets/images/custom.png";
 import howToCopy from "../../assets/images/howToCopy.png";
 import howToApply from "../../assets/images/howToApply.png";
 import howToUnlock from "../../assets/images/howToUnlock.png";
+import FullpageScroll from "../../components/FullpageScroll/FullpageScroll";
 
 const Landing = () => {
   const { t } = useTranslation();
@@ -65,11 +66,23 @@ const Landing = () => {
   ];
 
   return (
-    <div className={styles.landingContainer}>
-      {sectionsData.map((section, index) => (
-        <FeatureSection key={index} {...section} />
+    <FullpageScroll>
+      {sectionsData.map((section, idx) => (
+        <FullpageScroll.Section key={idx}>
+          <div className={styles.landingContainer}>
+            <FeatureSection {...section} />
+            {idx < sectionsData.length - 1 && (
+              <svg className={styles.blinkingSvg} viewBox="0 0 22 22" style={{ height: "60px", width: "60px" }}>
+                <path
+                  fill="currentColor"
+                  d="M4 8H18V10H17V11H16V12H15V13H14V14H13V15H12V16H10V15H9V14H8V13H7V12H6V11H5V10H4V8M8 10V11H9V12H10V13H12V12H13V11H14V10H8Z"
+                ></path>
+              </svg>
+            )}
+          </div>
+        </FullpageScroll.Section>
       ))}
-    </div>
+    </FullpageScroll>
   );
 };
 

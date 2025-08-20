@@ -7,18 +7,18 @@ import { useTranslation } from "react-i18next";
 import Modal from "../../components/common/Modal";
 
 const LANG_ID_TO_FILENAME: { [key: number]: string } = {
-  1: "comit.png",
-  2: "Java.png",
-  3: "Python.png",
-  4: "Js.png",
-  5: "TypeScript.png",
-  6: "C.png",
-  7: "C++.png",
-  8: "CSharp.png",
-  9: "Swift.png",
-  10: "Go.png",
-  11: "Php.png",
-  12: "Docker.png",
+  1: "comit",
+  2: "Java",
+  3: "Python",
+  4: "Js",
+  5: "TypeScript",
+  6: "C",
+  7: "C++",
+  8: "CSharp",
+  9: "Swift",
+  10: "Go",
+  11: "Php",
+  12: "Docker",
 };
 
 const ChuSkinSelector = () => {
@@ -112,7 +112,7 @@ const ChuSkinSelector = () => {
             const fileName = LANG_ID_TO_FILENAME[skin.langId];
             if (!fileName) return null;
 
-            const imageUrl = new URL(`../../assets/images/chu/normal/${fileName}`, import.meta.url).href;
+            const imageUrl = new URL(`../../assets/images/chu/normal/${fileName}.png`, import.meta.url).href;
 
             return (
               <div
@@ -140,6 +140,7 @@ const ChuSkinSelector = () => {
                     </svg>
                   </div>
                 )}
+                <span className={styles.skinNameOverlay}>{fileName}</span>
               </div>
             );
           })}

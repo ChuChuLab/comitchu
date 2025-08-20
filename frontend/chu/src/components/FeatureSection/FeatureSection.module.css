@@ -4,7 +4,9 @@
   align-items: center;
   gap: 40px;
   width: 100%;
-  margin: 100px;
+  margin: 0px 100px;
+  margin-top: 80px;
+  margin-bottom: 50px;
   padding: 80px 40px;
   border: 1px solid #cccccc50;
   border-radius: 12px;
