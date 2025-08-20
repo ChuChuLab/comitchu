@@ -2,7 +2,7 @@ import styles from "./Landing.module.css";
 import { useTranslation } from "react-i18next";
 import FeatureSection from "../../components/FeatureSection/FeatureSection";
 import heroVisual from "../../assets/images/heroImg.svg";
-import githubLogin from "../../assets/images/githubLogin.png";
+// import githubLogin from "../../assets/images/githubLogin.png";
 import levelUp from "../../assets/images/LevelUp.png";
 import custom from "../../assets/images/custom.png";
 import howToCopy from "../../assets/images/howToCopy.png";
