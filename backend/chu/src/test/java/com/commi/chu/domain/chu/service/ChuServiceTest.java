@@ -33,7 +33,7 @@ public class ChuServiceTest {
 
     @InjectMocks
     ChuService chuService;
-
+    
     @Test
     @DisplayName("닉네임 변경 성공 - chu 엔티티 상태가 변경된다.")
     public void updateNickname_success() {
@@ -55,7 +55,7 @@ public class ChuServiceTest {
 
         //then
         assertEquals("after", chu.getName()); // 메서드 호출로 상태 변경되었는지
-        assertEquals("chu 닉네임이 성공적으로 변경 됐습니다.", res.getMessage());
+        assertEquals("닉네임이 변경 되었습니다.", res.getMessage());
 
         //테스트하려는 비즈니스 로직이 리포지토리를 불필요하게 더 호출하지 않는지 확인
         then(userRepository).should().findById(userId);

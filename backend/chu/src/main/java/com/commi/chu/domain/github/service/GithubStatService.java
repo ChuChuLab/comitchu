@@ -118,7 +118,7 @@ public class GithubStatService {
 
         logRepository.save(snapshotLog);
 
-        ActivitySnapshot githubStat = activitySnapshotRepository.findByUser_Id(user.getId())
+        activitySnapshotRepository.findByUser_Id(user.getId())
                 .map(existingStat ->
                         //기존의 github 통계를 업데이트한다.
                         existingStat.updateSnapshot(commitCount, prCount, issueCount, reviewCount)
