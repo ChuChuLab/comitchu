@@ -42,9 +42,7 @@ const FeatureSection: React.FC<FeatureSectionProps> = ({
       <h1 className={styles.title}>{title}</h1>
       <p className={styles.subtitle}>{subtitle}</p>
       {showButton && (
-        <Button onClick={handleGitHubLogin}>
-          {user ? t("landing.goToDashboard") : t("landing.login")}
-        </Button>
+        <Button onClick={handleGitHubLogin}>{user ? t("landing.goToDashboard") : t("landing.login")}</Button>
       )}
     </div>
   );
