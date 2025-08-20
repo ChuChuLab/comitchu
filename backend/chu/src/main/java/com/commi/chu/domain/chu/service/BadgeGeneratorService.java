@@ -57,12 +57,27 @@ public class BadgeGeneratorService {
 
         // SVG XML 구성
         StringBuilder svgBuilder = new StringBuilder();
-        svgBuilder.append("<svg viewBox=\"0 0 150 100\" ") // viewBox를 사용하여 내부 콘텐츠 비율 유지
-                .append("xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n");
 
-        // 배경 이미지 삽입 (Base64 인코딩)
-        svgBuilder.append("  <image xlink:href=\"data:image/png;base64,").append(base64BgImage)
-                .append("\" x=\"0\" y=\"0\" width=\"100%\" height=\"100%\" />\n"); // width와 height를 100%로 변경
+        svgBuilder.append("<svg viewBox=\"0 0 150 100\" ")
+                .append("xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ")
+                .append("width=\"100%\" height=\"100%\">\n");
+
+        // 스타일 추가
+        svgBuilder.append("  <style>\n")
+                .append("    image { image-rendering: pixelated; image-rendering: crisp-edges; }\n")
+                .append("  </style>\n");
+
+        // clipPath 정의 (상대 크기 사용)
+        svgBuilder.append("  <defs>\n")
+                .append("    <clipPath id=\"roundedBg\">\n")
+                .append("      <rect x=\"0\" y=\"0\" width=\"100%\" height=\"100%\" rx=\"8\" ry=\"8\" />\n")
+                .append("    </clipPath>\n")
+                .append("  </defs>\n");
+
+        // 배경 이미지 (clipPath 적용)
+        svgBuilder.append("  <image xlink:href=\"data:image/png;base64,")
+                .append(base64BgImage)
+                .append("\" x=\"0\" y=\"0\" width=\"100%\" height=\"100%\" clip-path=\"url(#roundedBg)\" />\n");
 
         // 캐릭터 이미지 삽입 및 애니메이션 (Base64 인코딩)
         svgBuilder.append("  <image xlink:href=\"data:image/png;base64,").append(base64CharImage)
@@ -86,6 +101,10 @@ public class BadgeGeneratorService {
                 .append(" calcMode=\"discrete\"/>");
 
         svgBuilder.append("  </image>\n");
+
+        // 테두리도 100% 크기로
+        svgBuilder.append("  <rect x=\"0\" y=\"0\" width=\"100%\" height=\"100%\" rx=\"8\" ry=\"8\" ")
+                .append("fill=\"none\" stroke=\"#00000030\" stroke-width=\"1\" />\n");
 
         svgBuilder.append("</svg>");
 
