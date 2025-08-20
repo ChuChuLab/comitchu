@@ -19,6 +19,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.hibernate.sql.Update;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -204,6 +207,11 @@ public class ChuService {
      * @return 닉네임 변경 성공 메시지
      */
     @Transactional
+    @Retryable(
+            retryFor = ObjectOptimisticLockingFailureException.class,
+            maxAttempts = 3,
+            backoff = @Backoff(delay = 50)
+    )
     public UpdateResponseDto updateNickname(Integer userId, ChuNicknameRequestDto chuNicknameRequestDto) {
 
         //사용자 조회
@@ -219,7 +227,11 @@ public class ChuService {
 
         log.info("chu 닉네임 변경 : {} -> {}", beforeNickname, chuNicknameRequestDto.getNickname());
 
-        return UpdateResponseDto.of("chu 닉네임이 성공적으로 변경 됐습니다.");
+        // 트랜잭션 종료 시 하이버네이트가 자동으로 업데이트 쿼리를 실행합니다.
+        // 이때, @Version 필드를 사용하여 동시성 충돌을 감지하고,
+        // 충돌 시 Retryable 어노테이션에 의해 이 메서드가 다시 실행됩니다.
+
+        return UpdateResponseDto.of("닉네임이 변경 되었습니다.");
     }
 
 

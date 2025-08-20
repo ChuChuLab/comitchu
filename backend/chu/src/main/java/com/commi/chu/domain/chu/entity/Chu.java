@@ -52,6 +52,9 @@ public class Chu extends BaseEntity {
     @Column(name = "last_leveled_date_kst")
     private LocalDate lastLeveledDateKst;
 
+    @Version
+    private Long version;
+
     public void updateStatus(ChuStatus newStatus) {
         this.status = newStatus;
     }
