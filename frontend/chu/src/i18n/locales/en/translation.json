@@ -30,7 +30,8 @@
     "language": "Language",
     "background": "Background",
     "noChu": "No main chu selected.",
-    "copiedToClipboard": "Copied to clipboard"
+    "copiedToClipboard": "Copied to clipboard",
+    "nicknameUpdateSuccess": "Nickname changed successfully."
   },
   "chuSkinSelector": {
     "fetchError": "Failed to load skin list.",
