@@ -1,23 +1,27 @@
 package com.commi.chu.domain.github.controller;
 
 import com.commi.chu.domain.github.dto.language.LanguageStatListResponse;
+import com.commi.chu.domain.github.scheduler.GithubStatScheduler;
 import com.commi.chu.domain.github.service.GithubLanguageService;
 import com.commi.chu.global.common.response.CommonResponse;
 import com.commi.chu.global.security.auth.UserPrincipal;
 import com.commi.chu.global.util.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/github")
 public class GithubController {
 
     private final GithubLanguageService langService;
+    private final GithubStatScheduler statScheduler;
     private final AuthenticationUtil authenticationUtil;
 
     /***
@@ -33,5 +37,15 @@ public class GithubController {
         LanguageStatListResponse result = langService.fetchLanguagePercentages(userId);
 
         return CommonResponse.ok(result);
+    }
+
+
+    @GetMapping("/stat")
+    public ResponseEntity<CommonResponse<String>> schedularStat() {
+        statScheduler.updateAllGithubStats();
+
+        log.info("github Stat 스케줄러 API");
+
+        return CommonResponse.ok("github stat 스케줄러 돌림");
     }
 }
