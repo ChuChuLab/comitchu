@@ -19,12 +19,16 @@
       "subtitle": "GitHub 계정으로 간편하게 시작할 수 있어요."
     },
     "commitSystem": {
-      "title": "커밋 기반 성장 시스템",
+      "title": "커밋 기반 성장",
       "subtitle": "커밋할수록 캐릭터가 성장하고 레벨업합니다."
     },
     "customization": {
-      "title": "커스터마이징 가능한 캐릭터",
-      "subtitle": "다양한 스킨으로 내 캐릭터를 꾸며보세요."
+      "title": "다양한 스킨과 배경",
+      "subtitle": "다양한 스킨과 배경 내 츄를 꾸며보세요."
+    },
+    "howToUnlock": {
+      "title": "해금 방법",
+      "subtitle": "다양한 언어를 커밋해보세요. 스킨이 해금됩니다!"
     }
   },
   "dashboard": {
@@ -34,7 +38,7 @@
     "level": "레벨",
     "exp": "경험치",
     "status": "상태",
-    "language": "언어",
+    "language": "스킨",
     "background": "배경",
     "noChu": "선택된 메인 츄가 없습니다.",
     "copiedToClipboard": "클립보드에 저장됨",

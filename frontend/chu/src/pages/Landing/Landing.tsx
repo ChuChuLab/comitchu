@@ -7,6 +7,7 @@ import levelUp from "../../assets/images/LevelUp.png";
 import custom from "../../assets/images/custom.png";
 import howToCopy from "../../assets/images/howToCopy.png";
 import howToApply from "../../assets/images/howToApply.png";
+import howToUnlock from "../../assets/images/howToUnlock.png";
 
 const Landing = () => {
   const { t } = useTranslation();
@@ -33,10 +34,17 @@ const Landing = () => {
       imagePosition: "right" as const,
       showButton: false,
     },
+    // {
+    //   title: t("landing.githubLogin.title"),
+    //   subtitle: t("landing.githubLogin.subtitle"),
+    //   imageSrc: githubLogin,
+    //   imagePosition: "left" as const,
+    //   showButton: false,
+    // },
     {
-      title: t("landing.githubLogin.title"),
-      subtitle: t("landing.githubLogin.subtitle"),
-      imageSrc: githubLogin,
+      title: t("landing.howToUnlock.title"),
+      subtitle: t("landing.howToUnlock.subtitle"),
+      imageSrc: howToUnlock,
       imagePosition: "left" as const,
       showButton: false,
     },

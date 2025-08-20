@@ -21,7 +21,7 @@
   height: 400px;
 }
 
-.svgImage,
+/* .svgImage,
 .svgImageBackground {
   position: absolute;
   top: 0;
@@ -45,7 +45,7 @@
 
 .svgImage {
   z-index: 1;
-}
+} */
 
 .mainChuSection {
   position: relative;
