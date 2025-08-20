@@ -21,6 +21,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Slf4j
@@ -84,6 +85,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     UserLang newUserLang = UserLang.builder()
                             .user(newUser)
                             .lang(lang)
+                            .unlockedAt(LocalDateTime.now())
                             .build();
 
                     userLangRepository.save(newUserLang);
