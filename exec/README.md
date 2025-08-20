@@ -5,6 +5,13 @@
 
 ---
 
+### 👾 MY COMITCHU 👾
+<a href="https://www.comitchu.shop" target="_blank">
+  <img src="https://www.comitchu.shop/api/chu/dmswldk28" alt="커밋츄" width="300" height="200" />
+</a>
+
+<br>
+
 ## 🔹 소개
 - 관심 분야: 웹 개발, 알고리즘, 오픈소스  
 - 사용 언어: Java, JavaScript, Python  
@@ -20,6 +27,6 @@
 
 ## 🔹 연락처
 - GitHub: [github.com/내아이디](https://github.com/내아이디)  
-- Email: example@email.com  
+- Email: example@email.com
 
 >> 이는 시연영상 용 README.md 입니다.
