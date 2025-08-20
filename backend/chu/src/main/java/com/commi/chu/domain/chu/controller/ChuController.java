@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.commi.chu.domain.chu.dto.*;
 import com.commi.chu.domain.chu.scheduler.LanguageUnlockScheduler;
+import com.commi.chu.domain.chu.scheduler.LevelUpScheduler;
 import com.commi.chu.domain.chu.service.ChuService;
 import com.commi.chu.global.common.response.CommonResponse;
 import com.commi.chu.global.security.auth.UserPrincipal;
@@ -26,6 +27,8 @@ public class ChuController {
     private final ChuService chuService;
     private final LanguageUnlockScheduler languageUnlockScheduler;
     private final AuthenticationUtil authenticationUtil;
+
+    private final LevelUpScheduler levelUpScheduler;
 
     /**
      * 사용자의 커밋츄 뱃지 이미지를 반환합니다.
@@ -138,5 +141,13 @@ public class ChuController {
         Integer userId = authenticationUtil.getCurrentUserId(userPrincipal);
 
         return CommonResponse.ok(chuService.updateNickname(userId,chuNicknameRequestDto));
+    }
+
+
+    @PostMapping("/levelup")
+    public ResponseEntity<CommonResponse<String>> levelUpScheduler(){
+        levelUpScheduler.levelUpAllUsers();
+
+        return CommonResponse.ok("levelUp 스케줄러 api 성공");
     }
 }
