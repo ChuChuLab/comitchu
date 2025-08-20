@@ -10,7 +10,7 @@ const Dashboard = () => {
   const { mainChu, isLoading, error, fetchMainChu } = useChuStore();
   const [showCopyModal, setShowCopyModal] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
-  const modalTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const modalTimeoutRef = useRef<number | null>(null);
 
   // 로그인한 사용자 정보
   const user = useUserStore((state) => state.user);
@@ -46,7 +46,7 @@ const Dashboard = () => {
     // Cleanup timeout on component unmount
     return () => {
       if (modalTimeoutRef.current) {
-        clearTimeout(modalTimeoutRef.current);
+        window.clearTimeout(modalTimeoutRef.current);
       }
     };
   }, []);
@@ -54,7 +54,7 @@ const Dashboard = () => {
   const handleCopyClick = () => {
     if (user && user.userName) {
       if (modalTimeoutRef.current) {
-        clearTimeout(modalTimeoutRef.current);
+        window.clearTimeout(modalTimeoutRef.current);
       }
 
       const textToCopy = `<a href="https://www.comitchu.shop" target="_blank"><img src="https://www.comitchu.shop/api/chu/mini-${user.userName}" alt="커밋츄" width="300" height="200" /></a>`;
@@ -62,10 +62,10 @@ const Dashboard = () => {
         setShowCopyModal(true);
         setIsExiting(false);
 
-        modalTimeoutRef.current = setTimeout(() => {
+        modalTimeoutRef.current = window.setTimeout(() => {
           setIsExiting(true);
 
-          modalTimeoutRef.current = setTimeout(() => {
+          modalTimeoutRef.current = window.setTimeout(() => {
             setShowCopyModal(false);
           }, 800); // Animation duration
         }, 2200); // Time before exit starts
