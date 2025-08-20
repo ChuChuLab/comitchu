@@ -60,14 +60,11 @@
 .mainChuSection h2 {
   font-size: 32px;
   margin-top: 0;
-  margin-bottom: 1rem;
-  border-bottom: 2px solid #ccc;
-  padding-bottom: 1rem;
 }
 
 .mainChuSection p {
   font-size: 28px;
-  line-height: 1.1;
+  margin-top: 0.5rem;
 }
 
 .loading,
@@ -83,33 +80,72 @@
   color: red;
 }
 
-.copyButton {
+.buttonContainer {
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.copyButton,
+.editButton {
   background: #00000020;
   border: 2px solid #eee;
   border-radius: 8px;
   cursor: pointer;
-  margin: 1rem;
   padding: 6px;
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: #eee;
   transition: background-color 0.2s, border-color 0.2s;
 }
 
-.copyButton:hover {
+.copyButton:hover,
+.editButton:hover {
   background: #333;
+  border-color: #fff;
 }
 
-.copyModal {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #333;
+.nicknameWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.editNicknameWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.nicknameInput {
+  position: relative;
+  bottom: 0;
+  flex-grow: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 32px;
+  color: inherit;
+  width: 100%;
+}
+
+.saveButton,
+.cancelButton {
+  background-color: transparent;
   color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }

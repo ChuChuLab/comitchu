@@ -1,6 +1,5 @@
 {
   "landing": {
-
     "title": "Your Own Character",
     "subtitle": "Grow with Comitchu, a service that visualizes your GitHub commit activity. Today's single line of code is a single step for your character.",
     "login": "Login with GitHub",
@@ -30,19 +29,20 @@
     "language": "Language",
     "background": "Background",
     "noChu": "No main chu selected.",
-    "copiedToClipboard": "Copied to clipboard"
+    "copiedToClipboard": "Copied to clipboard",
+    "nicknameUpdateSuccess": "Nickname changed successfully."
   },
   "chuSkinSelector": {
     "fetchError": "Failed to load skin list.",
     "updateError": "Failed to change skin.",
     "loading": "Loading...",
     "error": "Error: {{error}}",
-    "title": "Select Main Chu Skin",
+    "title": "ChuS  kin",
     "mainTag": "Main"
   },
   "backgroundSelector": {
     "updateError": "Failed to change background.",
-    "title": "Select Background",
+    "title": "Background",
     "activeTag": "Applied"
   },
   "chuViewer": {
