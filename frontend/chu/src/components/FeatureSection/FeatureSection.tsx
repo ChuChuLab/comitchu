@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styles from "./FeatureSection.module.css";
 import Button from "../common/Button";
 import { useTranslation } from "react-i18next";
+import useUserStore from "../../store/userStore"; // Import useUserStore
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 type FeatureSectionProps = {
   title: string;
@@ -20,9 +22,15 @@ const FeatureSection: React.FC<FeatureSectionProps> = ({
 }) => {
   const { t } = useTranslation();
   const [imageError, setImageError] = useState(false);
+  const { user } = useUserStore();
+  const navigate = useNavigate();
 
   const handleGitHubLogin = () => {
-    window.location.href = "https://www.comitchu.shop/oauth2/authorization/github";
+    if (user) {
+      navigate("/dashboard");
+    } else {
+      window.location.href = "https://www.comitchu.shop/oauth2/authorization/github";
+    }
   };
 
   const handleImageError = () => {
@@ -33,7 +41,11 @@ const FeatureSection: React.FC<FeatureSectionProps> = ({
     <div className={styles.featureContent}>
       <h1 className={styles.title}>{title}</h1>
       <p className={styles.subtitle}>{subtitle}</p>
-      {showButton && <Button onClick={handleGitHubLogin}>{t("landing.login")}</Button>}
+      {showButton && (
+        <Button onClick={handleGitHubLogin}>
+          {user ? t("landing.goToDashboard") : t("landing.login")}
+        </Button>
+      )}
     </div>
   );
 
