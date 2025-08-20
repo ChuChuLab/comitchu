@@ -71,25 +71,11 @@ body {
   --crt-text-glow: 3px;
 }
 
-/* 글씨 깜빡임 효과 */
-/* @keyframes crt-textShadow {
-  0%,
-  100% {
-    text-shadow: 2px 0 1px rgba(0, 30, 255, 0.5), -2px 0 1px rgba(255, 0, 80, 0.3),
-      0 0 var(--crt-text-glow) currentColor;
-  }
-  50% {
-    text-shadow: 3px 0 1px rgba(0, 30, 255, 0.5), -3px 0 1px rgba(255, 0, 80, 0.3),
-      0 0 var(--crt-text-glow) currentColor;
-  }
-} */
-
 .crt {
   position: relative;
   isolation: isolate;
   background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0.6) 70%);
   border-radius: 12px;
-  /* animation: crt-textShadow 1.6s infinite; */
 }
 
 .crt::before {

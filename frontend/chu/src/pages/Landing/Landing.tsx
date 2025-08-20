@@ -5,6 +5,8 @@ import heroVisual from "../../assets/images/heroImg.svg";
 import githubLogin from "../../assets/images/githubLogin.png";
 import levelUp from "../../assets/images/LevelUp.png";
 import custom from "../../assets/images/custom.png";
+import howToCopy from "../../assets/images/howToCopy.png";
+import howToApply from "../../assets/images/howToApply.png";
 
 const Landing = () => {
   const { t } = useTranslation();
@@ -16,6 +18,20 @@ const Landing = () => {
       imageSrc: heroVisual,
       imagePosition: "right" as const,
       showButton: true,
+    },
+    {
+      title: t("landing.howToCopy.title"),
+      subtitle: t("landing.howToCopy.subtitle"),
+      imageSrc: howToCopy,
+      imagePosition: "left" as const,
+      showButton: false,
+    },
+    {
+      title: t("landing.howToApply.title"),
+      subtitle: t("landing.howToApply.subtitle"),
+      imageSrc: howToApply,
+      imagePosition: "right" as const,
+      showButton: false,
     },
     {
       title: t("landing.githubLogin.title"),

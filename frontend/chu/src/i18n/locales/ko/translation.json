@@ -6,6 +6,14 @@
     "goToDashboard": "대시보드로 가기",
     "level": "레벨 {{level}}",
     "howItWorks": "서비스 이용 방법",
+    "howToCopy": {
+      "title": "커밋츄 사용 방법",
+      "subtitle": "복사 버튼을 눌러 클립보드에 저장하세요."
+    },
+    "howToApply": {
+      "title": "커밋츄 적용 방법",
+      "subtitle": "README.md에 복사하여 사용하세요."
+    },
     "githubLogin": {
       "title": "GitHub 연동 로그인",
       "subtitle": "GitHub 계정으로 간편하게 시작할 수 있어요."
