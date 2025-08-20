@@ -23,6 +23,7 @@ const Dashboard = () => {
   const [showNicknameModal, setShowNicknameModal] = useState(false);
   const [isNicknameModalExiting, setIsNicknameModalExiting] = useState(false);
   const nicknameModalTimeoutRef = useRef<number | null>(null);
+  const [nicknameMessage, setNicknameMessage] = useState<string>("");
 
   // 로그인한 사용자 정보
   const user = useUserStore((state) => state.user);
@@ -111,6 +112,8 @@ const Dashboard = () => {
     if (nicknameModalTimeoutRef.current) {
       window.clearTimeout(nicknameModalTimeoutRef.current);
     }
+
+    setNicknameMessage(message);
     setShowNicknameModal(true);
     setIsNicknameModalExiting(false);
 
@@ -228,11 +231,7 @@ const Dashboard = () => {
         </div>
       </div>
       <Modal isOpen={showCopyModal} isExiting={isCopyModalExiting} message={t("dashboard.copiedToClipboard")} />
-      <Modal
-        isOpen={showNicknameModal}
-        isExiting={isNicknameModalExiting}
-        message={t("dashboard.nicknameUpdateSuccess")}
-      />
+      <Modal isOpen={showNicknameModal} isExiting={isNicknameModalExiting} message={nicknameMessage} />
     </Fragment>
   );
 };
