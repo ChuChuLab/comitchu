@@ -17,7 +17,7 @@
 
 .skinItem {
   position: relative;
-  border: 2px solid transparent;
+  border: 2px solid #55555550;
   border-radius: 8px;
   cursor: pointer;
   overflow: hidden;

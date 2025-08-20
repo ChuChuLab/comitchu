@@ -4,6 +4,9 @@
   height: 100%;
 }
 
+.selectorContainer h2 {
+  font-size: 32px;
+}
 .gridContainer {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -17,7 +20,7 @@
   border-radius: 8px;
   cursor: pointer;
   overflow: hidden;
-  aspect-ratio: 32 / 19;
+  aspect-ratio: 128 / 75;
 }
 
 .backgroundItem:hover {
