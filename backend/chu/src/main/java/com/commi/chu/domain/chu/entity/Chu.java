@@ -52,6 +52,7 @@ public class Chu extends BaseEntity {
     @Column(name = "last_leveled_date_kst")
     private LocalDate lastLeveledDateKst;
 
+    //동시성 충돌 방지를 위한 version
     @Version
     private Long version = 0L;
 
