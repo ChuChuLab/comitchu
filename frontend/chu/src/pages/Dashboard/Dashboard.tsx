@@ -79,7 +79,7 @@ const Dashboard = () => {
         window.clearTimeout(copyModalTimeoutRef.current);
       }
 
-      const textToCopy = `<a href="https://www.comitchu.shop" target="_blank"><img src="https://www.comitchu.shop/api/chu/mini-${user.userName}" alt="커밋츄" width="300" height="200" /></a>`;
+      const textToCopy = `<a href="https://www.comitchu.shop" target="_blank"><img src="https://www.comitchu.shop/api/chu/${user.userName}" alt="커밋츄" width="300" height="200" /></a>`;
       navigator.clipboard.writeText(textToCopy).then(() => {
         setShowCopyModal(true);
         setIsCopyModalExiting(false);
