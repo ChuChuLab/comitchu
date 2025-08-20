@@ -29,7 +29,8 @@
     "status": "Status",
     "language": "Language",
     "background": "Background",
-    "noChu": "No main chu selected."
+    "noChu": "No main chu selected.",
+    "copiedToClipboard": "Copied to clipboard"
   },
   "chuSkinSelector": {
     "fetchError": "Failed to load skin list.",
