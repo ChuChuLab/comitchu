@@ -157,7 +157,7 @@ const Dashboard = () => {
         <div className={styles.contentWrapper}>
           {svgContent && (
             <div className={styles.svgImageContainer}>
-              <div className={styles.svgImageBackground} dangerouslySetInnerHTML={{ __html: svgContent }} />
+              {/* <div className={styles.svgImageBackground} dangerouslySetInnerHTML={{ __html: svgContent }} /> */}
               <div className={styles.svgImage} dangerouslySetInnerHTML={{ __html: svgContent }} />
             </div>
           )}

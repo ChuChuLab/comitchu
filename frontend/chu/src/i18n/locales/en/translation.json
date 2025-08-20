@@ -25,6 +25,10 @@
     "customization": {
       "title": "Customizable Characters",
       "subtitle": "Decorate your character with various skins."
+    },
+    "howToUnlock": {
+      "title": "How to Unlock",
+      "subtitle": "Commit in different languages. Skins are used!"
     }
   },
   "dashboard": {
@@ -34,7 +38,7 @@
     "level": "Level",
     "exp": "EXP",
     "status": "Status",
-    "language": "Language",
+    "language": "Skin",
     "background": "Background",
     "noChu": "No main chu selected.",
     "copiedToClipboard": "Copied to clipboard",
