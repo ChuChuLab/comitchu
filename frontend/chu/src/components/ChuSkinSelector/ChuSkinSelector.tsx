@@ -96,7 +96,13 @@ const ChuSkinSelector = () => {
             >
               <img src={imageUrl} alt={`Skin ${skin.langId}`} className={styles.skinImage} />
               {skin.isMain && <div className={styles.mainTag}>{t("chuSkinSelector.mainTag")}</div>}
-              {!skin.isUnlocked && <div className={styles.lockedOverlay}>🔒</div>}
+              {!skin.isUnlocked && (
+                <div className={styles.lockedOverlay}>
+                  <svg viewBox="0 0 22 22" width="60px" height="60px" fill="currentColor">
+                    <path d="M10 12H12V13H13V15H12V16H10V15H9V13H10V12M8 2H14V3H15V4H16V8H17V9H18V19H17V20H5V19H4V9H5V8H6V4H7V3H8V2M9 4V5H8V8H14V5H13V4H9M16 10H6V18H16V10Z"></path>
+                  </svg>
+                </div>
+              )}
             </div>
           );
         })}

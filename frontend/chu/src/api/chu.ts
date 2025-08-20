@@ -71,3 +71,18 @@ export const fetchChuSvgAPI = async (githubUsername: string): Promise<string> =>
     throw new Error(message);
   }
 };
+
+// 츄 닉네임을 변경하는 API
+export const updateChuNicknameAPI = async (nickname: string): Promise<string> => {
+  try {
+    const response = await apiClient.patch<ApiResponse<{ message: string }>>("/chu/nickname", { nickname });
+    if (response.data.success) {
+      return response.data.data.message;
+    } else {
+      throw new Error(response.data.error?.message || "닉네임 변경 중 알 수 없는 오류가 발생했습니다.");
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다.";
+    throw new Error(message);
+  }
+};
