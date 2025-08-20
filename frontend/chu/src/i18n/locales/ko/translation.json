@@ -28,7 +28,8 @@
     "status": "상태",
     "language": "언어",
     "background": "배경",
-    "noChu": "선택된 메인 츄가 없습니다."
+    "noChu": "선택된 메인 츄가 없습니다.",
+    "copiedToClipboard": "클립보드에 저장됨"
   },
   "chuSkinSelector": {
     "fetchError": "스킨 목록을 불러오는데 실패했습니다.",
