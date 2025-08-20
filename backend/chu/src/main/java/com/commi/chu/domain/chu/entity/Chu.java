@@ -53,7 +53,7 @@ public class Chu extends BaseEntity {
     private LocalDate lastLeveledDateKst;
 
     @Version
-    private Long version;
+    private Long version = 0L;
 
     public void updateStatus(ChuStatus newStatus) {
         this.status = newStatus;
