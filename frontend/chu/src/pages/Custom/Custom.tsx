@@ -25,7 +25,7 @@ const Custom = () => {
     : "";
 
   return (
-    <div className={`${styles.custom} animate-slide-up`}>
+    <div className={styles.custom}>
       <div className={styles.contentWrapper}>
         <div className={dashboardStyles.svgImageContainer}>
           <ChuViewer

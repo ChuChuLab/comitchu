@@ -153,7 +153,7 @@ const Dashboard = () => {
 
   return (
     <Fragment>
-      <div className={`${styles.dashboard} animate-slide-up`}>
+      <div className={styles.dashboard}>
         <div className={styles.contentWrapper}>
           {svgContent && (
             <div className={styles.svgImageContainer}>

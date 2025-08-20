@@ -6,6 +6,14 @@
     "goToDashboard": "Go to Dashboard",
     "level": "Level {{level}}",
     "howItWorks": "How It Works",
+    "howToCopy": {
+      "title": "How to Use Comitchu",
+      "subtitle": "Click the copy button to save to clipboard."
+    },
+    "howToApply": {
+      "title": "How to Apply Comitchu",
+      "subtitle": "Copy and use in README.md."
+    },
     "githubLogin": {
       "title": "Login with GitHub",
       "subtitle": "Get started easily with your GitHub account."

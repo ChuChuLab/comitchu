@@ -6,8 +6,6 @@ import useChuStore from "../../store/chuStore";
 import { useTranslation } from "react-i18next";
 import Modal from "../../components/common/Modal";
 
-// NOTE: 서버로부터 받은 langId와 실제 이미지 파일명을 매핑합니다.
-// 일부 파일명은 추측된 값으로, 실제 파일명과 다를 수 있습니다.
 const LANG_ID_TO_FILENAME: { [key: number]: string } = {
   1: "comit.png",
   2: "Java.png",
@@ -18,7 +16,9 @@ const LANG_ID_TO_FILENAME: { [key: number]: string } = {
   7: "C++.png",
   8: "CSharp.png",
   9: "Swift.png",
-  10: "Php.png",
+  10: "Go.png",
+  11: "Php.png",
+  12: "Docker.png",
 };
 
 const ChuSkinSelector = () => {
