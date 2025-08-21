@@ -55,7 +55,7 @@ const FeatureSection: React.FC<FeatureSectionProps> = ({
   ) : null;
 
   return (
-    <section className={`${styles.featureSection} animate-slide-up`}>
+    <section className={styles.featureSection}>
       {imagePosition === "left" ? (
         <>
           {image}
