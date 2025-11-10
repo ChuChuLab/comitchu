@@ -35,17 +35,32 @@ public class ChuController {
      *
      * @return PNG 이미지 바이트 배열을 포함하는 ResponseEntity
      */
-    @GetMapping(value = "/{githubUsername}", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<String> getChu(@PathVariable String githubUsername) {
-        try {
-            String svgString = chuService.generateCommitchuLevelBadge(githubUsername);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.valueOf("image/svg+xml"));
-            return new ResponseEntity<>(svgString, headers, HttpStatus.OK);
-        } catch (Exception e) {
-            throw e;
-        }
+    @GetMapping(value="/{githubUsername}", produces="image/svg+xml; charset=UTF-8")
+    public ResponseEntity<String> getBadge(@PathVariable String githubUsername) {
+        String svg = chuService.generateCommitchuLevelBadge(githubUsername);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "image/svg+xml; charset=UTF-8")
+                .header(HttpHeaders.CACHE_CONTROL, "max-age=300, public")
+                .body(svg);
     }
+
+
+//    /**
+//     * 사용자의 커밋츄 뱃지 이미지를 반환합니다.
+//     *
+//     * @return PNG 이미지 바이트 배열을 포함하는 ResponseEntity
+//     */
+//    @GetMapping(value = "/{githubUsername}", produces = MediaType.IMAGE_PNG_VALUE)
+//    public ResponseEntity<String> getChu(@PathVariable String githubUsername) {
+//        try {
+//            String svgString = chuService.generateCommitchuLevelBadge(githubUsername);
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentType(MediaType.valueOf("image/svg+xml"));
+//            return new ResponseEntity<>(svgString, headers, HttpStatus.OK);
+//        } catch (Exception e) {
+//            throw e;
+//        }
+//    }
 
     /***
      * 사용자의 대표 chu 정보를 반환합니다.

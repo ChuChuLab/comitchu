@@ -1,6 +1,5 @@
 package com.commi.chu.domain.chu.service;
 
-import com.commi.chu.domain.chu.entity.ChuStatus;
 import com.commi.chu.global.exception.CustomException;
 import com.commi.chu.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -9,11 +8,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Base64;
 
 @Slf4j
 @Service
@@ -24,7 +21,7 @@ public class BadgeGeneratorService {
     private final ResourceLoader resourceLoader;
 
     private static final String BACKGROUND_IMAGE_BASE_PATH = "images/backgrounds/";
-    private static final String CHARACTER_IMAGE_BASE_PATH = "images/chu/";
+    private static final String CHARACTER_IMAGE_BASE_PATH  = "images/chu/";
 
     // --- 애니메이션 관련 상수 ---
     private static final String X_ANIMATION_DURATION = "6s";
@@ -35,90 +32,94 @@ public class BadgeGeneratorService {
     public String generateSvgBadge(String githubUsername, String backgroundName, String lang, String status) {
 
         String dir = "normal/";
-        if(status.equals("HUNGRY"))     dir = "hungry/";
-        else if(status.equals("HAPPY"))    dir = "happy/";
+        if ("HUNGRY".equals(status))      dir = "hungry/";
+        else if ("HAPPY".equals(status))  dir = "happy/";
 
-        // 1. 이미지 Base64 인코딩
-        String base64BgImage = encodeImageToBase64(BACKGROUND_IMAGE_BASE_PATH + backgroundName + ".png", "image/png");
-        String base64CharImage = encodeImageToBase64(CHARACTER_IMAGE_BASE_PATH + dir + lang + ".png", "image/png");
+        // 1) SVG 파일을 그대로 읽어서 <svg> 바디만 추출
+        String bgInner   = loadSvgInner(BACKGROUND_IMAGE_BASE_PATH + backgroundName + ".svg");
+        String charInner = loadSvgInner(CHARACTER_IMAGE_BASE_PATH  + dir + lang + ".svg");
 
-        if (base64BgImage == null || base64CharImage == null) {
-            throw new CustomException(ErrorCode.INVALID_INPUT_VALUE, "imageName", "Background or character image not found/loadable.");
+        if (bgInner == null || charInner == null) {
+            throw new CustomException(ErrorCode.INVALID_INPUT_VALUE, "imageName", "Background or character SVG not found/loadable.");
         }
 
+        // 배지/캐릭터 크기
         int svgWidth = 150;
         int svgHeight = 100;
         int charWidth = 60;
         int charHeight = 60;
 
-        // 캐릭터 초기 위치 (SVG 중앙 하단)
+        // 캐릭터 초기 위치 (중앙 하단)
         int initialCharX = (svgWidth - charWidth) / 2;
         int initialCharY = (svgHeight - charHeight) - 8;
 
-        // SVG XML 구성
-        StringBuilder svgBuilder = new StringBuilder();
+        // 애니메이션 경로(translate) 구성
+        int L1 = initialCharX - CHARACTER_HORIZONTAL_MOVEMENT_PIXELS;
+        int L2 = initialCharX - CHARACTER_HORIZONTAL_MOVEMENT_PIXELS * 2;
+        int R1 = initialCharX + CHARACTER_HORIZONTAL_MOVEMENT_PIXELS;
+        int R2 = initialCharX + CHARACTER_HORIZONTAL_MOVEMENT_PIXELS * 2;
+        String translateValues =
+                initialCharX + "," + initialCharY + ";" +   // center
+                        L1           + "," + initialCharY + ";" +
+                        L2           + "," + initialCharY + ";" +
+                        L1           + "," + initialCharY + ";" +
+                        initialCharX + "," + initialCharY + ";" +
+                        R1           + "," + initialCharY + ";" +
+                        R2           + "," + initialCharY + ";" +
+                        R1           + "," + initialCharY + ";" +
+                        initialCharX + "," + initialCharY;
 
-        svgBuilder.append("<svg viewBox=\"0 0 150 100\" ")
-                .append("xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ")
-                .append("width=\"100%\" height=\"100%\">\n");
+        StringBuilder svg = new StringBuilder();
+        svg.append("<svg viewBox=\"0 0 ").append(svgWidth).append(" ").append(svgHeight).append("\" ")
+                .append("xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\">\n");
 
-        // 스타일 추가
-        svgBuilder.append("  <style>\n")
-                .append("    image { image-rendering: pixelated; image-rendering: crisp-edges; }\n")
+        // 스타일
+        svg.append("  <style>")
+                .append("  *{shape-rendering:crispEdges}")
                 .append("  </style>\n");
 
-        // clipPath 정의 (상대 크기 사용)
-        svgBuilder.append("  <defs>\n")
-                .append("    <clipPath id=\"roundedBg\">\n")
-                .append("      <rect x=\"0\" y=\"0\" width=\"100%\" height=\"100%\" rx=\"8\" ry=\"8\" />\n")
-                .append("    </clipPath>\n")
+        // defs: 읽어온 SVG들을 symbol로 보관
+        svg.append("  <defs>\n")
+                .append("    <clipPath id=\"roundedBg\"><rect x=\"0\" y=\"0\" width=\"100%\" height=\"100%\" rx=\"8\" ry=\"8\"/></clipPath>\n")
+                .append("    <symbol id=\"bg\" viewBox=\"0 0 ").append(svgWidth).append(" ").append(svgHeight).append("\">")
+                .append(bgInner)
+                .append("</symbol>\n")
+                .append("    <symbol id=\"char\" viewBox=\"0 0 ").append(charWidth).append(" ").append(charHeight).append("\">")
+                .append(charInner)
+                .append("</symbol>\n")
                 .append("  </defs>\n");
 
-        // 배경 이미지 (clipPath 적용)
-        svgBuilder.append("  <image xlink:href=\"data:image/png;base64,")
-                .append(base64BgImage)
-                .append("\" x=\"0\" y=\"0\" width=\"100%\" height=\"100%\" clip-path=\"url(#roundedBg)\" />\n");
+        // 배경
+        svg.append("  <use href=\"#bg\" x=\"0\" y=\"0\" width=\"100%\" height=\"100%\" clip-path=\"url(#roundedBg)\"/>\n");
 
-        // 캐릭터 이미지 삽입 및 애니메이션 (Base64 인코딩)
-        svgBuilder.append("  <image xlink:href=\"data:image/png;base64,").append(base64CharImage)
-                .append("\" x=\"").append(initialCharX).append("\" y=\"").append(initialCharY)
-                .append("\" width=\"").append(charWidth).append("\" height=\"").append(charHeight).append("\">\n");
+        // 캐릭터 + 애니메이션 (translate로 좌우 왕복)
+        svg.append("  <g id=\"charWrap\" transform=\"translate(")
+                .append(initialCharX).append(",").append(initialCharY).append(")\">\n")
+                .append("    <use href=\"#char\" width=\"").append(charWidth).append("\" height=\"").append(charHeight).append("\"/>\n")
+                .append("    <animateTransform attributeName=\"transform\" type=\"translate\" ")
+                .append("values=\"").append(translateValues).append("\" ")
+                .append("keyTimes=\"0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8\" ")
+                .append("dur=\"").append(X_ANIMATION_DURATION).append("\" repeatCount=\"").append(ANIMATION_REPEAT_COUNT).append("\" ")
+                .append("calcMode=\"discrete\"/>\n")
+                .append("  </g>\n");
 
-        // SMIL 애니메이션: 좌우 왕복 움직임 (x 좌표 변경) - 뚝뚝 끊기게 이동하도록 calcMode="discrete" 추가
-        svgBuilder.append("<animate attributeName=\"x\" values=\"")
-                .append(initialCharX).append(";") // 0초: 중앙 (시작)
-                .append(initialCharX - CHARACTER_HORIZONTAL_MOVEMENT_PIXELS).append(";") // 0.1초: 왼쪽 1
-                .append(initialCharX - CHARACTER_HORIZONTAL_MOVEMENT_PIXELS * 2).append(";") // 0.2초: 왼쪽 2
-                .append(initialCharX - CHARACTER_HORIZONTAL_MOVEMENT_PIXELS).append(";") // 0.3초:
-                .append(initialCharX).append(";") // 0.4초: 중앙 (오른쪽으로 이동 중 중앙 지점)
-                .append(initialCharX + CHARACTER_HORIZONTAL_MOVEMENT_PIXELS).append(";") // 0.5초: 오른쪽 1
-                .append(initialCharX + CHARACTER_HORIZONTAL_MOVEMENT_PIXELS * 2).append(";") // 0.6초: 오른쪽 2
-                .append(initialCharX + CHARACTER_HORIZONTAL_MOVEMENT_PIXELS).append(";")
-                .append(initialCharX).append("\"") // 0.8초: 중앙 (왼쪽으로 이동 중 중앙 지점, 애니메이션 사이클 종료)
-                .append(" keyTimes=\"0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8\"") // 키타임 조정 (총 9개 값, 0.1초 간격으로 설정)
-                .append(" dur=\"").append(X_ANIMATION_DURATION).append("\"") // 전체 애니메이션 지속 시간 (4초 유지)
-                .append(" repeatCount=\"").append(ANIMATION_REPEAT_COUNT).append("\"")
-                .append(" calcMode=\"discrete\"/>");
+        // 테두리
+        svg.append("  <rect x=\"0\" y=\"0\" width=\"100%\" height=\"100%\" rx=\"8\" ry=\"8\" fill=\"none\" stroke=\"#00000030\" stroke-width=\"1\"/>\n");
 
-        svgBuilder.append("  </image>\n");
-
-        // 테두리도 100% 크기로
-        svgBuilder.append("  <rect x=\"0\" y=\"0\" width=\"100%\" height=\"100%\" rx=\"8\" ry=\"8\" ")
-                .append("fill=\"none\" stroke=\"#00000030\" stroke-width=\"1\" />\n");
-
-        svgBuilder.append("</svg>");
-
-        return svgBuilder.toString();
+        svg.append("</svg>");
+        return svg.toString();
     }
 
-    // 이미지 파일을 Base64 문자열로 인코딩하는 헬퍼 메서드
-    private String encodeImageToBase64(String imagePath, String mimeType) {
-        try {
-            InputStream inputStream = resourceLoader.getResource("classpath:" + imagePath).getInputStream();
-            byte[] imageBytes = FileCopyUtils.copyToByteArray(inputStream);
-            return Base64.getEncoder().encodeToString(imageBytes);
+    /** classpath의 SVG 파일을 읽어 <svg> 태그 안쪽(컨텐츠)만 반환 */
+    private String loadSvgInner(String classpathSvg) {
+        try (InputStream in = resourceLoader.getResource("classpath:" + classpathSvg).getInputStream()) {
+            String raw = new String(in.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+            // <svg ...>와 </svg> 제거
+            raw = raw.replaceFirst("(?is)^.*?<svg[^>]*>", "");
+            raw = raw.replaceFirst("(?is)</svg>\\s*$", "");
+            return raw;
         } catch (IOException e) {
-            log.error("Error loading image: {} - {}", imagePath, e.getMessage());
+            log.error("Error loading svg: {} - {}", classpathSvg, e.getMessage());
             return null;
         }
     }
