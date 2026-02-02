@@ -4,7 +4,7 @@
 **ComitChu** is a developer-focused service that transforms your GitHub activity into a growing character.  
 Every commit you make helps your character level up, unlock new skins, and show your journey as a developer in a fun, visual way.  
 
-<a href="https://www.comitchu.shop" target="_blank">
+<!-- <a href="https://www.comitchu.shop" target="_blank">
   <img src="https://www.comitchu.shop/api/chu/khp9798" alt="커밋츄" width="150" height="100" />
 </a>
 <a href="https://www.comitchu.shop" target="_blank">
@@ -15,7 +15,7 @@ Every commit you make helps your character level up, unlock new skins, and show 
 </a>
 <a href="https://www.comitchu.shop" target="_blank">
   <img src="https://www.comitchu.shop/api/chu/userdkdk" alt="커밋츄" width="150" height="100" />
-</a>
+</a> -->
 
 ---
 
