@@ -127,6 +127,7 @@ public class GithubStatService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public ActivitySnapshotLog collectActivityForDate(User user, LocalDate activityDate) {
+		// 과거 날짜도 같은 방식으로 조회할 수 있어 스케줄 장애 이후 누락분을 복구할 수 있다.
 		GraphQlResponse<GithubStat> stat = fetchStats(user.getGithubUsername(), activityDate);
 
         //전체 커밋 수
@@ -142,6 +143,7 @@ public class GithubStatService {
         Integer reviewCount = stat.getData().getUser().getContributionsCollection().getTotalPullRequestReviewContributions();
 
         //해당 유저의 github 통계를 가져온다.
+		// 같은 날짜를 재수집할 때 로그를 추가하지 않고 기존 값을 갱신한다.
 		ActivitySnapshotLog snapshotLog = logRepository
 			.findFirstByUserIdAndActivityDateOrderByCreatedAtDesc(user.getId(), activityDate)
 			.orElseGet(() -> ActivitySnapshotLog.builder()

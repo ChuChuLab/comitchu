@@ -49,6 +49,7 @@ public class LevelUpService {
 			.orElseThrow(()-> new CustomException(ErrorCode.CHU_NOT_FOUND));
 
 		LocalDate yesterday = LocalDate.now(KST).minusDays(1);
+		// 최초 실행은 어제부터, 재실행은 마지막 처리일의 다음 날부터 시작한다.
 		LocalDate target = chu.getLastLeveledDateKst() == null
 			? yesterday
 			: chu.getLastLeveledDateKst().plusDays(1);
@@ -58,17 +59,21 @@ public class LevelUpService {
 			return;
 		}
 
+		// 장애로 누락된 날짜가 있으면 오래된 날짜부터 어제까지 순서대로 복구한다.
 		while (!target.isAfter(yesterday)) {
 			ActivitySnapshotLog snapshot = getOrCollectActivity(user, target);
+			// 재수집도 실패하면 처리일을 남기지 않아 다음 스케줄 실행에서 다시 시도한다.
 			if (snapshot == null) return;
 
 			applyExperience(chu, snapshot);
+			// 경험치 반영이 끝난 날짜만 기록하여 중복 반영을 방지한다.
 			chu.markLeveledToday(target);
 			target = target.plusDays(1);
 		}
 	}
 
 	private ActivitySnapshotLog getOrCollectActivity(User user, LocalDate target) {
+		// 날짜별 로그가 이미 있으면 API를 다시 호출하지 않고 저장된 통계를 사용한다.
 		return logRepository.findFirstByUserIdAndActivityDateOrderByCreatedAtDesc(user.getId(), target)
 			.orElseGet(() -> {
 				try {
