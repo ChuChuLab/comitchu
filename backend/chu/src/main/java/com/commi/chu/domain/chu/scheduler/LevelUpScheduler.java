@@ -20,7 +20,8 @@ public class LevelUpScheduler {
 	private final LevelUpService levelUpService;
 	private final UserRepository userRepository;
 
-	@Scheduled(cron = "0 5 0 * * *", zone = "Asia/Seoul")
+	// 매시 5분에 실행한다. 처리 완료 사용자는 즉시 종료하고, 누락된 날짜만 재수집한다.
+	@Scheduled(cron = "0 5 * * * *", zone = "Asia/Seoul")
 	public void levelUpAllUsers() {
 
 		List<User> users = userRepository.findAll();
@@ -31,7 +32,7 @@ public class LevelUpScheduler {
 				log.info("levelUp 로직 완료 : user={}", user.getGithubUsername());
 			}
 			catch(Exception e){
-				log.error("levelUp 과정에서 에러 발생 : user={}", e.getMessage());
+				log.error("levelUp 과정에서 에러 발생 : user={}", user.getGithubUsername(), e);
 			}
 
 		}
