@@ -48,6 +48,10 @@ public class GithubStatService {
      * @return github GraphQL로 통계 데이터를 받아옵니다.
      */
     public GraphQlResponse<GithubStat> fetchStats(String username) {
+		return fetchStats(username, LocalDate.now(ZoneId.of("Asia/Seoul")));
+	}
+
+	public GraphQlResponse<GithubStat> fetchStats(String username, LocalDate activityDate) {
         String query = """
                 	query($login: String!, $from: DateTime!, $to: DateTime!) {
                 	user(login: $login) {
@@ -63,8 +67,7 @@ public class GithubStatService {
 
         Map<String, Object> params = new HashMap<>();
 
-        LocalDate today = LocalDate.now();
-        ZonedDateTime from = today.atStartOfDay(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneOffset.UTC);
+		ZonedDateTime from = activityDate.atStartOfDay(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneOffset.UTC);
         ZonedDateTime to = from.plusDays(1).minusSeconds(1);
 
         DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
@@ -92,7 +95,39 @@ public class GithubStatService {
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateUserStat(User user) {
-        GraphQlResponse<GithubStat> stat = fetchStats(user.getGithubUsername());
+		LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
+		ActivitySnapshotLog snapshotLog = collectActivityForDate(user, today);
+
+		Integer commitCount = snapshotLog.getCommitCount();
+		Integer prCount = snapshotLog.getPrCount();
+		Integer issueCount = snapshotLog.getIssueCount();
+		Integer reviewCount = snapshotLog.getReviewCount();
+
+		activitySnapshotRepository.findByUser_Id(user.getId())
+			.map(existingStat -> existingStat.updateSnapshot(commitCount, prCount, issueCount, reviewCount))
+			.orElseGet(() -> activitySnapshotRepository.save(ActivitySnapshot.builder()
+				.user(user)
+				.commitCount(commitCount)
+				.prCount(prCount)
+				.issueCount(issueCount)
+				.reviewCount(reviewCount)
+				.calculatedAt(LocalDateTime.now())
+				.build()));
+
+		Chu chu = chuRepository.findByUser(user)
+			.orElseThrow(() -> new CustomException(ErrorCode.CHU_NOT_FOUND));
+
+		chuService.updateChuStatus(user, chu);
+
+		log.info("업데이트 완료: {} → chu 상태 : {}", user.getGithubUsername(), chu.getStatus());
+	}
+
+	/**
+	 * 지정한 KST 날짜의 GitHub 활동을 수집한다. 같은 날짜를 다시 수집하면 기존 로그를 갱신한다.
+	 */
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public ActivitySnapshotLog collectActivityForDate(User user, LocalDate activityDate) {
+		GraphQlResponse<GithubStat> stat = fetchStats(user.getGithubUsername(), activityDate);
 
         //전체 커밋 수
         Integer commitCount = stat.getData().getUser().getContributionsCollection().getTotalCommitContributions();
@@ -107,42 +142,18 @@ public class GithubStatService {
         Integer reviewCount = stat.getData().getUser().getContributionsCollection().getTotalPullRequestReviewContributions();
 
         //해당 유저의 github 통계를 가져온다.
-        ActivitySnapshotLog snapshotLog = ActivitySnapshotLog.builder()
-            .user(user)
-            .commitCount(commitCount)
-            .prCount(prCount)
-            .issueCount(issueCount)
-            .reviewCount(reviewCount)
-            .activityDate(LocalDate.now(ZoneId.of("Asia/Seoul")))
-            .build();
+		ActivitySnapshotLog snapshotLog = logRepository
+			.findFirstByUserIdAndActivityDateOrderByCreatedAtDesc(user.getId(), activityDate)
+			.orElseGet(() -> ActivitySnapshotLog.builder()
+				.user(user)
+				.activityDate(activityDate)
+				.commitCount(commitCount)
+				.prCount(prCount)
+				.issueCount(issueCount)
+				.reviewCount(reviewCount)
+				.build());
 
-        logRepository.save(snapshotLog);
-
-        activitySnapshotRepository.findByUser_Id(user.getId())
-                .map(existingStat ->
-                        //기존의 github 통계를 업데이트한다.
-                        existingStat.updateSnapshot(commitCount, prCount, issueCount, reviewCount)
-                )
-                .orElseGet(() -> {
-                    //기존 github 통계가 없다면 새로운 통계를 저장한다.
-                    ActivitySnapshot newStat = ActivitySnapshot.builder()
-                            .user(user)
-                            .commitCount(commitCount)
-                            .prCount(prCount)
-                            .issueCount(issueCount)
-                            .reviewCount(reviewCount)
-                            .calculatedAt(LocalDateTime.now())
-                            .build();
-
-                    return activitySnapshotRepository.save(newStat);
-                });
-
-        //user의 chu 정보를 불러와서 chu 상태를 업데이트함.
-        Chu chu = chuRepository.findByUser(user)
-            .orElseThrow(() -> new CustomException(ErrorCode.CHU_NOT_FOUND));
-
-        chuService.updateChuStatus(user, chu);
-
-        log.info("업데이트 완료: {} → chu 상태 : {}", user.getGithubUsername(), chu.getStatus());
-    }
+		snapshotLog.updateCounts(commitCount, prCount, issueCount, reviewCount);
+		return logRepository.save(snapshotLog);
+	}
 }

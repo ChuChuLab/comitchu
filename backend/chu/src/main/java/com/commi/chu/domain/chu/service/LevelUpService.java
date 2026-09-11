@@ -1,18 +1,16 @@
 package com.commi.chu.domain.chu.service;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.commi.chu.domain.chu.entity.Chu;
 import com.commi.chu.domain.chu.repository.ChuRepository;
-import com.commi.chu.domain.github.entity.ActivitySnapshot;
-import com.commi.chu.domain.github.repository.ActivitySnapshotRepository;
+import com.commi.chu.domain.github.entity.ActivitySnapshotLog;
+import com.commi.chu.domain.github.repository.LogRepository;
+import com.commi.chu.domain.github.service.GithubStatService;
 import com.commi.chu.domain.user.entity.User;
 import com.commi.chu.domain.user.repository.UserRepository;
 import com.commi.chu.global.exception.CustomException;
@@ -26,13 +24,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class LevelUpService {
 
-	private final ActivitySnapshotRepository activitySnapshotRepository;
+	private final LogRepository logRepository;
+	private final GithubStatService githubStatService;
 	private final UserRepository userRepository;
 	private final ChuRepository chuRepository;
 
 	private static final ZoneId KST = ZoneId.of("Asia/Seoul");
-	private static final ZoneOffset UTC = ZoneOffset.UTC;
-
 	private static final int MAX_LEVEL = 100;
 
 	//레벨업 기준
@@ -51,35 +48,40 @@ public class LevelUpService {
 		Chu chu = chuRepository.findByUser(user)
 			.orElseThrow(()-> new CustomException(ErrorCode.CHU_NOT_FOUND));
 
-		// KST 기준 어제 날짜
-		LocalDate target = LocalDate.now(KST).minusDays(1);
+		LocalDate yesterday = LocalDate.now(KST).minusDays(1);
+		LocalDate target = chu.getLastLeveledDateKst() == null
+			? yesterday
+			: chu.getLastLeveledDateKst().plusDays(1);
 
-		// 이미 어제 처리 했으면 스킵
-		if (target.equals(chu.getLastLeveledDateKst())) {
+		if (target.isAfter(yesterday)) {
 			log.info("이미 처리한 user 입니다. user={}", user.getGithubUsername());
 			return;
 		}
 
-		// 어제 KST 00:00:00 ~ 23:59:59 범위를 UTC로 변환
-		LocalDateTime startUtc = target.atStartOfDay(KST)
-			.withZoneSameInstant(UTC)
-			.toLocalDateTime();
+		while (!target.isAfter(yesterday)) {
+			ActivitySnapshotLog snapshot = getOrCollectActivity(user, target);
+			if (snapshot == null) return;
 
-		LocalDateTime endUtc = target.plusDays(1).atStartOfDay(KST)
-			.withZoneSameInstant(UTC)
-			.toLocalDateTime();
-
-		log.info("startUtc={}, endUtc={}", startUtc, endUtc);
-
-		//어제 업데이트 된 github 통계 데이터가 있는지 확인 없으면 Null
-		ActivitySnapshot snapshot = activitySnapshotRepository.findFirstByUserIdAndCalculatedAtGreaterThanEqualAndCalculatedAtLessThanOrderByCalculatedAtDesc(userId, startUtc, endUtc)
-			.orElse(null);
-
-		if (snapshot == null) {
-			// 스냅샷 지연/미생성 시 스케줄 실패 방지: 예외 대신 스킵
-			log.error("최신 github 통계가 존재하지 않습니다. user={}", user.getGithubUsername());
-			return;
+			applyExperience(chu, snapshot);
+			chu.markLeveledToday(target);
+			target = target.plusDays(1);
 		}
+	}
+
+	private ActivitySnapshotLog getOrCollectActivity(User user, LocalDate target) {
+		return logRepository.findFirstByUserIdAndActivityDateOrderByCreatedAtDesc(user.getId(), target)
+			.orElseGet(() -> {
+				try {
+					log.info("누락된 GitHub 통계를 재수집합니다. user={}, date={}", user.getGithubUsername(), target);
+					return githubStatService.collectActivityForDate(user, target);
+				} catch (Exception e) {
+					log.error("GitHub 통계 재수집 실패. user={}, date={}", user.getGithubUsername(), target, e);
+					return null;
+				}
+			});
+	}
+
+	private void applyExperience(Chu chu, ActivitySnapshotLog snapshot) {
 
 		long gainedExp =
 			(long)snapshot.getCommitCount() * W_COMMIT
@@ -109,8 +111,6 @@ public class LevelUpService {
 
 		chu.levelUp(level, (int) exp);
 
-		//어제 날짜 데이터로 레벨을 계산하기 때문에 어제 날짜로 저장 (다음날 중복 방지)
-		chu.markLeveledToday(target);
 	}
 
 	private long requiredExp(int n) {

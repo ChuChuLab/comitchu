@@ -1,6 +1,8 @@
 package com.commi.chu.domain.github.repository;
 
 import java.util.List;
+import java.time.LocalDate;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,4 +12,6 @@ public interface LogRepository extends JpaRepository<ActivitySnapshotLog, Intege
 
 	//최신 3일간의 log 데이터를 가져오는 메서드
 	List<ActivitySnapshotLog> findTop3ByUserIdOrderByActivityDateDesc(Integer userId);
+
+	Optional<ActivitySnapshotLog> findFirstByUserIdAndActivityDateOrderByCreatedAtDesc(Integer userId, LocalDate activityDate);
 }

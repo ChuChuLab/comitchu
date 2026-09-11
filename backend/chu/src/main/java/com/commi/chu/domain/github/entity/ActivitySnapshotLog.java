@@ -44,4 +44,11 @@ public class ActivitySnapshotLog extends BaseEntity {
 	@Column(name = "activity_date", nullable = false)
 	private LocalDate activityDate;
 
+	public void updateCounts(Integer commitCount, Integer prCount, Integer issueCount, Integer reviewCount) {
+		this.commitCount = commitCount;
+		this.prCount = prCount;
+		this.issueCount = issueCount;
+		this.reviewCount = reviewCount;
+	}
+
 }
